@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Optimeringspartiet (OP) – KommunOS</title>
-    <meta name="description" content="Optimeringspartiet (OP) vill göra kommunen lika begriplig som ett välbyggt strategispel. KommunOS sköter vardagsbyråkratin – folkvalda politiker är den mänskliga säkerhetsspärren. Testa politiken i praktiken.">
+    <title>Optimeringspartiet (OP) Haninge – KommunOS</title>
+    <meta name="description" content="Optimeringspartiet (OP) vill göra Haninge lika begripligt som ett välbyggt strategispel. KommunOS sköter vardagsbyråkratin – folkvalda politiker är den mänskliga säkerhetsspärren. Testa politiken i praktiken.">
     <meta name="theme-color" content="#0b1220">
     <meta property="og:type" content="website">
     <meta property="og:locale" content="sv_SE">
-    <meta property="og:title" content="Optimeringspartiet (OP) – KommunOS">
-    <meta property="og:description" content="Algoritmisk verkstad, mänsklig säkerhetskontroll. Testa hur politiken skulle fungera i praktiken.">
+    <meta property="og:title" content="Optimeringspartiet (OP) Haninge – KommunOS">
+    <meta property="og:description" content="Algoritmisk verkstad, mänsklig säkerhetskontroll. Testa hur politiken skulle fungera i Haninge.">
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%232563eb'/%3E%3Ctext x='32' y='42' font-family='Arial,sans-serif' font-size='27' font-weight='700' text-anchor='middle' fill='white'%3EOP%3C/text%3E%3C/svg%3E">
     <script>
         (function () {
@@ -656,6 +656,35 @@
             box-shadow: var(--shadow-sm);
         }
         .statement strong { color: var(--text); }
+
+        /* Haninge: lokala områden */
+        .places {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 16px;
+        }
+        .place {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 22px;
+            box-shadow: var(--shadow-sm);
+        }
+        .place h3 { display: flex; align-items: center; gap: 10px; margin: 0; font-size: 1.1rem; }
+        .place-icon { font-size: 1.3rem; }
+        .place-tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; }
+        .place-tags span {
+            font: 600 .72rem var(--font-mono);
+            padding: 3px 9px;
+            border-radius: 99px;
+            background: var(--blue-soft);
+            color: var(--blue-text);
+            border: 1px solid var(--blue-line);
+        }
+        .place > p:last-child { margin: 0; color: var(--text-muted); font-size: .94rem; }
 
         /* Flödet i fyra steg */
         .flow {
@@ -1509,7 +1538,7 @@
 
         @media (max-width: 980px) {
             .hero { grid-template-columns: 1fr; gap: 36px; padding-top: 44px; }
-            .pillars { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .pillars, .places { grid-template-columns: repeat(2, minmax(0, 1fr)); }
             .fact-layout, .budget-layout { grid-template-columns: 1fr; }
             .guess-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
         }
@@ -1537,7 +1566,7 @@
         @media (max-width: 640px) {
             :root { --header-offset: 108px; }
             .container { padding-inline: 16px; }
-            .pillars { grid-template-columns: 1fr; }
+            .pillars, .places { grid-template-columns: 1fr; }
             .flow, .card, .statement { padding: 20px; }
             .lab { border-radius: var(--radius-lg); }
             .lab-panel { padding: 18px; }
@@ -1598,7 +1627,7 @@
             </a>
 
             <div class="hud-metrics" aria-label="KommunOS status">
-                <div class="metric" id="metric-trivsel" title="Beräknad trivsel i exempelkommunen Tycköping">
+                <div class="metric" id="metric-trivsel" title="Beräknad trivsel i simuleringen av Haninge">
                     <span class="metric-label">Trivsel</span>
                     <span class="meter" aria-hidden="true"><span id="hud-trivsel-bar"></span></span>
                     <span class="metric-value" id="hud-trivsel">65&nbsp;%</span>
@@ -1623,6 +1652,7 @@
             <div class="container hud-nav-inner">
                 <ul class="nav-links">
                     <li><a href="#iden">Idén</a></li>
+                    <li><a href="#haninge">Haninge</a></li>
                     <li><a href="#sa-funkar-det">Så funkar det</a></li>
                     <li><a href="#testlabbet">Testlabbet</a></li>
                     <li><a href="#program">Partiprogram</a></li>
@@ -1650,10 +1680,10 @@
         <div class="hero-wrap" id="top">
             <section class="container hero" aria-labelledby="hero-title">
                 <div class="hero-copy">
-                    <p class="eyebrow">Partiprogram 2026 · Optimeringspartiet (OP)</p>
-                    <h1 id="hero-title">En begriplig kommun med <span class="grad">algoritmisk verkstad</span> och <span class="grad grad--violet">mänsklig säkerhetskontroll</span></h1>
+                    <p class="eyebrow">Partiprogram 2026 · Optimeringspartiet (OP) Haninge</p>
+                    <h1 id="hero-title">Ett begripligt Haninge med <span class="grad">algoritmisk verkstad</span> och <span class="grad grad--violet">mänsklig säkerhetskontroll</span></h1>
                     <p class="lead">
-                        Varför är det enklare att förstå hur man sköter en hel stad i <em>Cities: Skylines</em> än hur den egna hemkommunen fattar beslut?
+                        Varför är det enklare att förstå hur man sköter en hel stad i <em>Cities: Skylines</em> än hur Haninge kommun fattar beslut?
                         Med <strong>KommunOS</strong> sköts vardagsbyråkratin på sekunder – medan dina folkvalda granskar, debatterar och stoppar maskinen när den har fel.
                     </p>
                     <div class="hero-actions">
@@ -1667,9 +1697,9 @@
                     </dl>
                 </div>
 
-                <aside class="live-panel" aria-label="KommunOS live, exempeldata från den fiktiva kommunen Tycköping">
+                <aside class="live-panel" aria-label="KommunOS live, exempeldata för Haninge">
                     <div class="live-head">
-                        <span class="live-head-title"><span class="status-dot" aria-hidden="true"></span>KommunOS · Tycköping</span>
+                        <span class="live-head-title"><span class="status-dot" aria-hidden="true"></span>KommunOS · Haninge</span>
                         <span class="live-head-actions">
                             <span class="chip chip--dim">Exempeldata</span>
                             <button class="live-pause" id="live-pause" type="button" aria-pressed="false">⏸ Pausa</button>
@@ -1738,13 +1768,57 @@
         </section>
 
         <!-- =====================================================
-             02 SÅ FUNKAR DET
+             02 HANINGE
+             ===================================================== -->
+        <section class="section container" id="haninge" aria-labelledby="haninge-title">
+            <header class="section-head">
+                <span class="section-kicker">02 · Haninge</span>
+                <h2 id="haninge-title">Från Utö till Jordbro – så skulle KommunOS jobba i Haninge</h2>
+                <p>Haninge har drygt 100&nbsp;000 invånare, en stadskärna som växer och en stor del av Stockholms södra skärgård. Det kräver en förvaltning som klarar både Haninge centrum och en brygga på Ornö.</p>
+            </header>
+
+            <div class="places">
+                <article class="place">
+                    <h3><span class="place-icon" aria-hidden="true">🏝️</span>Skärgården</h3>
+                    <p class="place-tags"><span>Utö</span><span>Ornö</span><span>Muskö</span><span>Dalarö</span></p>
+                    <p>Servicen i skärgården styrs av båttider och avstånd. KommunOS samordnar hemtjänst, sophämtning och skolskjuts med turlistorna, och tankebubblor kan lämnas via telefon eller sms – inte bara i en app.</p>
+                </article>
+                <article class="place">
+                    <h3><span class="place-icon" aria-hidden="true">🚆</span>Pendling och trafik</h3>
+                    <p class="place-tags"><span>Nynäsgrenen</span><span>Väg 73</span><span>Tvärförbindelse Södertörn</span></p>
+                    <p>Pendeltågen och de statliga vägarna ägs inte av kommunen. KommunOS mäter beläggningen vid stationerna och skickar färdiga underlag till Region Stockholm och Trafikverket, så att Haninges krav blir svåra att ignorera.</p>
+                </article>
+                <article class="place">
+                    <h3><span class="place-icon" aria-hidden="true">🏙️</span>Haninge centrum</h3>
+                    <p class="place-tags"><span>Handen</span><span>Haninge centrum</span></p>
+                    <p>Stadsutvecklingen får en öppen tidslinje. Varje detaljplan, byggprojekt och budgetpost syns från samråd till inflyttning, så att alla kan följa vad som händer och varför.</p>
+                </article>
+                <article class="place">
+                    <h3><span class="place-icon" aria-hidden="true">👶</span>Växande Vega</h3>
+                    <p class="place-tags"><span>Vega</span><span>Västerhaninge</span></p>
+                    <p>Nya bostäder kräver förskolor och skolor i rätt tid. KommunOS kopplar ihop bygglov med befolkningsprognoser och varnar innan köerna uppstår – inte efter.</p>
+                </article>
+                <article class="place">
+                    <h3><span class="place-icon" aria-hidden="true">🛡️</span>Trygga kvarter</h3>
+                    <p class="place-tags"><span>Jordbro</span><span>Brandbergen</span><span>Tungelsta</span></p>
+                    <p>Trasig belysning och klotter åtgärdas på dagar, och fritidsgårdarnas öppettider bygger på verkliga behov. Ansiktsigenkänning används aldrig.</p>
+                </article>
+                <article class="place">
+                    <h3><span class="place-icon" aria-hidden="true">🌲</span>Naturen</h3>
+                    <p class="place-tags"><span>Tyresta</span><span>Hanveden</span><span>Gålö</span><span>Rudan</span></p>
+                    <p>Nationalpark, naturreservat och en lång kustlinje. I KommunOS är strandskydd, naturvärden och skyddsvärda träd hårda gränser som maskinen aldrig får räkna bort.</p>
+                </article>
+            </div>
+        </section>
+
+        <!-- =====================================================
+             03 SÅ FUNKAR DET
              ===================================================== -->
         <section class="section container" id="sa-funkar-det" aria-labelledby="flow-title">
             <header class="section-head">
-                <span class="section-kicker">02 · Så fungerar KommunOS</span>
+                <span class="section-kicker">03 · Så fungerar KommunOS</span>
                 <h2 id="flow-title">Fyra steg från tankebubbla till färdigt jobb</h2>
-                <p>Tryck på knappen och följ ett vardagsärende genom hela systemet – från invånarens felanmälan till hantverkaren som gör jobbet.</p>
+                <p>Tryck på knappen och följ ett vardagsärende i Haninge genom hela systemet – från invånarens felanmälan till hantverkaren som gör jobbet.</p>
             </header>
 
             <div class="flow">
@@ -1776,19 +1850,19 @@
                 </ol>
                 <div class="flow-controls">
                     <button class="btn btn--primary" id="flow-run" type="button">▶ Kör ett ärende genom KommunOS</button>
-                    <p class="flow-status" id="flow-status" aria-live="polite">Systemet hämtar ett riktigt vardagsärende från exempelkommunen Tycköping.</p>
+                    <p class="flow-status" id="flow-status" aria-live="polite">Systemet hämtar ett vardagsärende från Haninge (exempel).</p>
                 </div>
             </div>
         </section>
 
         <!-- =====================================================
-             03 TESTLABBET
+             04 TESTLABBET
              ===================================================== -->
         <section class="section container" id="testlabbet" aria-labelledby="lab-title">
             <header class="section-head">
-                <span class="section-kicker">03 · Testlabbet</span>
+                <span class="section-kicker">04 · Testlabbet</span>
                 <h2 id="lab-title">Testa politiken i praktiken</h2>
-                <p>Fyra interaktiva tester visar hur OP:s modell skulle fungera i en vanlig svensk kommun. Alla siffror gäller den fiktiva exempelkommunen <strong>Tycköping</strong> (41&nbsp;800 invånare).</p>
+                <p>Fyra interaktiva tester visar hur OP:s modell skulle fungera i <strong>Haninge</strong>. Platserna och frågorna är Haninges, men siffrorna i testerna är simulerade exempel – inte kommunens verkliga data, utom där det står att en uppgift är verklig.</p>
                 <div class="lab-progress" id="lab-progress" aria-label="Dina framsteg">
                     <span data-test="fakta">⚖️ Faktalåset</span>
                     <span data-test="sparr">🛡️ Säkerhetsspärren</span>
@@ -1811,7 +1885,7 @@
                     </button>
                     <button class="lab-tab" role="tab" id="tab-budget" aria-controls="panel-budget" aria-selected="false" tabindex="-1" data-test="budget" type="button">
                         <span class="lab-tab-icon" aria-hidden="true">📊</span>
-                        <span class="lab-tab-text"><strong>Budgettycoon</strong><small>Fördela 3 miljarder</small></span>
+                        <span class="lab-tab-text"><strong>Budgettycoon</strong><small>Fördela 7 miljarder</small></span>
                         <span class="lab-tab-check" aria-hidden="true">✓</span>
                     </button>
                     <button class="lab-tab" role="tab" id="tab-race" aria-controls="panel-race" aria-selected="false" tabindex="-1" data-test="race" type="button">
@@ -1825,7 +1899,7 @@
                 <div class="lab-panel" role="tabpanel" id="panel-fakta" aria-labelledby="tab-fakta" tabindex="0">
                     <div class="panel-intro">
                         <h3>Faktalåset i Kommunfullmäktige 2.0</h3>
-                        <p>I Kommunfullmäktige 2.0 syns KommunOS på storbildsskärm. Varje sakpåstående från talarstolen kontrolleras i realtid mot kommunens egna data. <strong>Gissa först</strong> – stämmer påståendet? Sedan ser du hur Faktalåset bedömer det.</p>
+                        <p>I Haninges Kommunfullmäktige 2.0 syns KommunOS på storbildsskärm. Varje sakpåstående från talarstolen kontrolleras i realtid mot kommunens egna data. <strong>Gissa först</strong> – stämmer påståendet? Sedan ser du hur Faktalåset bedömer det.</p>
                     </div>
                     <div class="fact-layout">
                         <ul class="claim-list" id="claim-list" aria-label="Påståenden från talarstolen"></ul>
@@ -1849,7 +1923,7 @@
                         </div>
                     </div>
                     <div class="fact-summary" id="fact-summary" hidden></div>
-                    <p class="fine-print">Faktalåset granskar bara sakpåståenden – aldrig åsikter, värderingar eller prioriteringar. Alla data är påhittade exempel.</p>
+                    <p class="fine-print">Faktalåset granskar bara sakpåståenden – aldrig åsikter, värderingar eller prioriteringar. Siffrorna är simulerade exempel, utom i påståendet om Tvärförbindelse Södertörn som bygger på verkliga uppgifter från Trafikverket.</p>
                 </div>
 
                 <!-- PANEL 2: SÄKERHETSSPÄRREN -->
@@ -1869,8 +1943,8 @@
                 <!-- PANEL 3: BUDGETTYCOON -->
                 <div class="lab-panel" role="tabpanel" id="panel-budget" aria-labelledby="tab-budget" tabindex="0" hidden>
                     <div class="panel-intro">
-                        <h3>Budgettycoon: fördela Tycköpings pengar</h3>
-                        <p>Tycköping har ungefär 3 miljarder kronor om året. Flytta reglagen och se direkt hur trivsel, köer och väntetider påverkas – precis som i ett strategispel. Målet: <strong>en budget i balans</strong> (kommunallagens balanskrav) med så hög trivsel som möjligt.</p>
+                        <h3>Budgettycoon: fördela Haninges pengar</h3>
+                        <p>Haninge har drygt 100&nbsp;000 invånare och cirka 7 miljarder kronor om året i skatteintäkter och statsbidrag. Här fördelar du en förenklad exempelbudget i den storleken. Flytta reglagen och se direkt hur trivsel, köer och väntetider påverkas – precis som i ett strategispel. Målet: <strong>en budget i balans</strong> (kommunallagens balanskrav) med så hög trivsel som möjligt.</p>
                     </div>
                     <div class="budget-layout">
                         <div class="budget-controls">
@@ -1878,10 +1952,10 @@
                             <div class="slider-row">
                                 <div class="slider-top">
                                     <label for="tax"><span aria-hidden="true">🧾</span> Kommunalskatt</label>
-                                    <output id="tax-out" for="tax">21,45&nbsp;kr</output>
+                                    <output id="tax-out" for="tax">18,95&nbsp;kr</output>
                                 </div>
-                                <input type="range" id="tax" min="20.45" max="22.45" step="0.05" value="21.45" aria-describedby="tax-hint">
-                                <span class="slider-hint" id="tax-hint">Kronor per 100 kr beskattningsbar inkomst. 1 krona ≈ 75 Mkr per år. Skattehöjningar sänker trivseln.</span>
+                                <input type="range" id="tax" min="17.95" max="19.95" step="0.05" value="18.95" aria-describedby="tax-hint">
+                                <span class="slider-hint" id="tax-hint">Kronor per 100 kr beskattningsbar inkomst. Haninges verkliga skattesats 2026 är 18,95 kr. 1 krona ≈ 250 Mkr per år (uppskattning). Skattehöjningar sänker trivseln.</span>
                             </div>
                             <label class="switch-row">
                                 <input type="checkbox" id="kos-toggle" role="switch">
@@ -1894,7 +1968,7 @@
                             <div class="budget-big">
                                 <div class="big-kpi" id="b-result-box">
                                     <span>Resultat</span>
-                                    <strong id="b-result">−10&nbsp;Mkr</strong>
+                                    <strong id="b-result">−20&nbsp;Mkr</strong>
                                     <small id="b-result-note">Underskott – bryter mot balanskravet</small>
                                 </div>
                                 <div class="big-kpi">
@@ -1916,10 +1990,10 @@
                             <details class="assumptions">
                                 <summary>Visa modellens antaganden</summary>
                                 <ul>
-                                    <li>Alla belopp är fiktiva och avrundade. Tycköping har 41&nbsp;800 invånare och intäkter på 3&nbsp;000 Mkr vid skattesatsen 21,45 kr.</li>
+                                    <li>Invånarantalet (drygt 100&nbsp;000), intäkterna (cirka 7 miljarder kr) och skattesatsen 18,95 kr följer Haninges verkliga nivå för 2026. Fördelningen mellan verksamheterna, nyckeltalen och effekterna är förenklade exempel – inte Haninges budget.</li>
                                     <li>Trivseln är ett viktat snitt av hur väl varje verksamhet är finansierad, med avtagande nytta: de första kronorna gör mest skillnad.</li>
                                     <li>KommunOS-effekten (−18 % adminkostnad) är ett antagande för att visa principen – inte en utlovad besparing.</li>
-                                    <li>KommunOS förslag följer ramar från fullmäktige: lagkrav är hårda gränser, ingen verksamhet minskas mer än 3 % och resultatet ska vara minst +20 Mkr. Skattesatsen rör maskinen aldrig.</li>
+                                    <li>KommunOS förslag följer ramar från fullmäktige: lagkrav är hårda gränser, ingen verksamhet minskas mer än 3 % och resultatet ska vara minst +50 Mkr. Skattesatsen rör maskinen aldrig.</li>
                                 </ul>
                             </details>
                         </div>
@@ -1957,12 +2031,12 @@
         </section>
 
         <!-- =====================================================
-             04 PARTIPROGRAM
+             05 PARTIPROGRAM
              ===================================================== -->
         <section class="section container" id="program" aria-labelledby="program-title">
             <header class="section-head">
-                <span class="section-kicker">04 · Partiprogram</span>
-                <h2 id="program-title">Sex byggstenar för en begriplig kommun</h2>
+                <span class="section-kicker">05 · Partiprogram</span>
+                <h2 id="program-title">Sex byggstenar för ett begripligt Haninge</h2>
                 <p>Så vill Optimeringspartiet bygga om lokalpolitiken – stegvis, öppet och med människan i förarsätet.</p>
             </header>
 
@@ -1971,13 +2045,13 @@
                     <div class="pillar-top"><span class="pillar-icon" aria-hidden="true">🧠</span><span class="pillar-num" aria-hidden="true">01</span></div>
                     <span class="pillar-tag">Öppen källkod</span>
                     <h3>KommunOS – en öppen förvaltnings-AI</h3>
-                    <p>Varje invånare ska kunna se varför en gata asfalterades före en annan.</p>
+                    <p>Varje invånare ska kunna se varför en gata i Brandbergen asfalterades före en i Tungelsta.</p>
                     <ul>
                         <li>All källkod publiceras under fri licens och granskas av oberoende revisorer.</li>
                         <li>Varje arbetsorder får en offentlig logg: indata, beräkning och ansvarig politiker.</li>
                         <li>Data lagras inom EU – aldrig hos annonsfinansierade plattformar.</li>
                     </ul>
-                    <p class="tycoon-bubble">💬 ”Jag förstår äntligen varför min gata plogas sist.”</p>
+                    <p class="tycoon-bubble">💬 ”Jag förstår äntligen varför min gata i Tungelsta plogas sist.”</p>
                 </article>
 
                 <article class="pillar pillar--amber">
@@ -1986,7 +2060,7 @@
                     <h3>Kommunfullmäktige 2.0 med Faktalås</h3>
                     <p>Debatten ska handla om vad vi vill – inte om vems siffror som stämmer.</p>
                     <ul>
-                        <li>Sakpåståenden i talarstolen kontrolleras mot kommunens egna data och visas på storbildsskärm.</li>
+                        <li>Sakpåståenden i talarstolen i Haninges fullmäktige kontrolleras mot kommunens egna data och visas på storbildsskärm.</li>
                         <li>Faktalåset bedömer bara fakta – aldrig åsikter eller prioriteringar.</li>
                         <li>Alla debatter sänds och arkiveras med sökbara faktarutor.</li>
                     </ul>
@@ -2012,11 +2086,11 @@
                     <h3>Tankebubblor – invånarnas röst i realtid</h3>
                     <p>Felanmälningar, köer och synpunkter blir styrdata i stället för ärenden i en hög.</p>
                     <ul>
-                        <li>En enkel app och ett vanligt telefonnummer – även för den som inte är digital.</li>
+                        <li>En enkel app, sms och ett vanligt telefonnummer – från Utö till Jordbro, även för den som inte är digital.</li>
                         <li>Data används anonymiserat och aggregerat. Inga individprofiler.</li>
                         <li>Medborgarbudget: 1 % av investeringsbudgeten fördelas genom invånaromröstning.</li>
                     </ul>
-                    <p class="tycoon-bubble">💬 ”Jag anmälde den trasiga gungan i måndags. I torsdags var den lagad!”</p>
+                    <p class="tycoon-bubble">💬 ”Jag anmälde den trasiga gungan i Vega i måndags. I torsdags var den lagad!”</p>
                 </article>
 
                 <article class="pillar pillar--green">
@@ -2048,11 +2122,11 @@
         </section>
 
         <!-- =====================================================
-             05 FRÅGOR & SVAR
+             06 FRÅGOR & SVAR
              ===================================================== -->
         <section class="section container" id="fragor" aria-labelledby="faq-title">
             <header class="section-head">
-                <span class="section-kicker">05 · Frågor &amp; svar</span>
+                <span class="section-kicker">06 · Frågor &amp; svar</span>
                 <h2 id="faq-title">Kritiska frågor – raka svar</h2>
                 <p>En AI i kommunen väcker frågor. Bra. Här är våra svar.</p>
             </header>
@@ -2080,7 +2154,7 @@
                 </details>
                 <details>
                     <summary>Vad kostar det?</summary>
-                    <p>KommunOS byggs som öppen källkod tillsammans med andra kommuner, så att varje kommun inte behöver köpa samma system var för sig. Vi börjar med ett pilotområde – felanmälan inom gata och park – och utvärderar öppet innan nästa steg tas.</p>
+                    <p>KommunOS byggs som öppen källkod tillsammans med andra kommuner, så att varje kommun inte behöver köpa samma system var för sig. Vi börjar med ett pilotområde i Haninge – felanmälan inom gata och park – och utvärderar öppet innan nästa steg tas.</p>
                 </details>
             </div>
         </section>
@@ -2090,8 +2164,8 @@
              ===================================================== -->
         <section class="container cta" id="ga-med" aria-labelledby="cta-title">
             <div class="cta-inner">
-                <h2 id="cta-title">Redo att uppgradera din kommun?</h2>
-                <p>Vi vill göra lokalpolitiken lika begriplig som ett välbyggt strategispel – men med riktiga människor vid spakarna och riktiga yrkesfolk i verkstaden.</p>
+                <h2 id="cta-title">Redo att uppgradera Haninge?</h2>
+                <p>Vi vill göra politiken i Haninge lika begriplig som ett välbyggt strategispel – men med riktiga människor vid spakarna och riktiga yrkesfolk i verkstaden.</p>
                 <div class="cta-result" id="cta-result">Du har inte gjort några tester ännu – börja i testlabbet.</div>
                 <div class="cta-actions">
                     <a class="btn btn--vote" href="#testlabbet">▶ Gör alla tester</a>
@@ -2102,8 +2176,8 @@
     </main>
 
     <footer class="container site-footer">
-        <p><strong>Optimeringspartiet (OP)</strong> · En begriplig kommun med algoritmisk verkstad och mänsklig säkerhetskontroll.</p>
-        <p>Simuleringarna använder påhittade exempeldata från den fiktiva kommunen Tycköping. Lagrum är förenklat beskrivna i pedagogiskt syfte. Sidan använder inga spårningskakor.</p>
+        <p><strong>Optimeringspartiet (OP) Haninge</strong> · Ett begripligt Haninge med algoritmisk verkstad och mänsklig säkerhetskontroll.</p>
+        <p>Simuleringarna använder förenklade exempelsiffror i Haninges storlek – inte kommunens verkliga data, utom där det anges. Lagrum är förenklat beskrivna i pedagogiskt syfte. Sidan använder inga spårningskakor.</p>
     </footer>
 
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
@@ -2278,15 +2352,16 @@
            HERO: live-flöde med tankebubblor
            ========================================================= */
         const FEED = [
-            ['Gatlampan på Björkvägen blinkar', 'Arbetsorder · gatuenheten', 'ok'],
-            ['Kö till simhallen på lördagar', 'Förslag: utökade öppettider', 'sparr'],
-            ['Potthål på Industrivägen', 'Arbetsorder · lagas inom 24 h', 'ok'],
-            ['Önskar fler bänkar längs ån', 'Medborgarbudget · 212 röster', 'fm'],
-            ['Fulla papperskorgar i Ekparken', 'Tömningsschema justerat', 'ok'],
-            ['Förskolan i Västerby saknar vikarier', 'Bemanningsförslag', 'sparr'],
-            ['Halt på gångbron vid skolan', 'Sandning beställd · 2 h', 'ok'],
-            ['Håll fritidsgården öppen på fredagar', 'Budgetfråga → fullmäktige', 'fm'],
-            ['Busskuren vid Torget läcker', 'Arbetsorder · kollektivtrafik', 'ok'],
+            ['Gatlampa blinkar på gångvägen i Jordbro', 'Arbetsorder · gatuenheten', 'ok'],
+            ['Lång kö till simskolan', 'Förslag: fler simskolegrupper', 'sparr'],
+            ['Potthål på en gata i Brandbergen', 'Arbetsorder · lagas inom 24 h', 'ok'],
+            ['Önskar fler bänkar vid Rudan', 'Medborgarbudget · 212 röster', 'fm'],
+            ['Fulla papperskorgar vid Årsta havsbad', 'Tömningsschema justerat', 'ok'],
+            ['Förskolan i Vega saknar vikarier', 'Bemanningsförslag', 'sparr'],
+            ['Halt på gångbron i Handen', 'Sandning beställd · 2 h', 'ok'],
+            ['Håll fritidsgården i Jordbro öppen på fredagar', 'Budgetfråga → fullmäktige', 'fm'],
+            ['Klotter på skolgården i Tungelsta', 'Sanering beställd', 'ok'],
+            ['Sophämtningen på Ornö missar vintertid', 'Nytt schema efter båtturerna', 'sparr'],
         ];
         const FEED_CHIPS = {
             ok: ['Utförs', 'chip--ok'],
@@ -2348,25 +2423,25 @@
            ========================================================= */
         const FLOW_CASES = [
             [
-                '💬 ”Gungan på Parklekens lekplats är trasig” – 14 anmälningar på två dagar.',
+                '💬 ”Gungan på lekplatsen i Vega är trasig” – 14 anmälningar på två dagar.',
                 '🧮 Budget park & lek: 186 000 kr kvar · detaljplan: parkmark ✓ · arbetsorder #2291 skapad.',
                 '🛡️ Ledamot granskar: inga lagkonflikter, ingen påverkan på enskilda → godkänt.',
                 '🔧 Parkenhetens personal byter kedja och säte – klart på 3 dagar.',
             ],
             [
-                '💬 ”Isigt på gångbron vid skolan” – 22 anmälningar + väderdata.',
+                '💬 ”Isigt på gång- och cykelvägen till skolan i Brandbergen” – 22 anmälningar + väderdata.',
                 '🧮 Vinterväghållning prioritet 1 (skolväg) · ramavtal finns · arbetsorder #2292.',
                 '🛡️ Godkänt direkt enligt fullmäktiges regel för akut halkbekämpning – loggat för granskning i efterhand.',
                 '🔧 Sandbil på plats inom 2 timmar.',
             ],
             [
-                '💬 ”Bussen till Västerby är alltid full kl. 07.40” – ködata från biljettsystemet.',
-                '🧮 Beläggning 118 % · extra tur kostar 94 000 kr/termin · ryms i trafikbudgeten.',
-                '🛡️ Ledamot granskar: påverkar inga andra linjer negativt → godkänt.',
-                '🔧 Extra tur 07.25 börjar gå på måndag – förare enligt kollektivavtal.',
+                '💬 ”Pendlarparkeringen vid Västerhaninge station är full redan 07.10” – beläggningsdata från sensorer.',
+                '🧮 Beläggning 104 % på vardagar · pendeltågen är Region Stockholms ansvar – KommunOS tar fram ett färdigt underlag.',
+                '🛡️ Ledamot granskar: underlaget skickas till Region Stockholm och Trafikverket i kommunens namn → godkänt.',
+                '🔧 Under tiden bygger gatuenheten 40 nya cykelplatser med tak vid stationen.',
             ],
             [
-                '💬 ”Mycket skräp vid badplatsen på helgerna” – 31 anmälningar + sensordata från sopkärl.',
+                '💬 ”Mycket skräp vid Årsta havsbad på helgerna” – 31 anmälningar + sensordata från sopkärl.',
                 '🧮 +2 tömningar lör–sön · 6 200 kr/mån · arbetsorder #2294.',
                 '🛡️ Ledamot granskar: rutinärende inom budget → godkänt.',
                 '🔧 Nytt tömningsschema gäller från fredag.',
@@ -2453,39 +2528,42 @@
         const FACTS = [
             {
                 id: 'fritidsgard',
+                sample: true,
                 speaker: 'Ledamot i budgetdebatten',
-                claim: 'Vi har absolut inte råd att hålla fritidsgården öppen på fredagskvällar!',
+                claim: 'Vi har absolut inte råd att hålla fritidsgården i Jordbro öppen på fredagskvällar!',
                 verdict: 'falskt',
                 lines: [
-                    ['DATA', 'Hämtar budget och prognos för kultur- och fritidsnämnden 2026…', 'blue'],
+                    ['DATA', 'Hämtar budget och prognos för kultur- och fritidsverksamheten 2026…', 'blue'],
                     ['BERÄKNING', 'Fredagsöppet: 2 fritidsledare × 5 h × 52 kvällar ≈ 234 000 kr', 'blue'],
-                    ['BERÄKNING', 'Lokal, el och städ: 58 000 kr → totalt 0,29 Mkr per år (ca 0,01 % av kommunens budget)', 'blue'],
-                    ['DATA', 'Nämndens prognos för 2026: överskott på 1,8 Mkr', 'blue'],
+                    ['BERÄKNING', 'Lokal, el och städ: 58 000 kr → totalt 0,29 Mkr per år (under 0,01 % av kommunens budget)', 'blue'],
+                    ['DATA', 'Verksamhetens prognos för 2026: överskott på 1,8 Mkr', 'blue'],
                     ['UTSLAG', 'STÄMMER INTE – pengarna finns. Det är en prioriteringsfråga, inte en ekonomisk omöjlighet.', 'red'],
                 ],
                 note: 'Faktalåset säger inte att fritidsgården måste hålla öppet – bara att ”vi har inte råd” inte stämmer. Själva beslutet är fortfarande politiskt.',
             },
             {
-                id: 'brott',
+                id: 'skadegorelse',
+                sample: true,
                 speaker: 'Ledamot i trygghetsdebatten',
-                claim: 'Skadegörelsen i centrum har fördubblats sedan förra året!',
+                claim: 'Skadegörelsen i Handen har fördubblats sedan förra året!',
                 verdict: 'delvis',
                 lines: [
-                    ['DATA', 'Hämtar anmäld skadegörelse, område Centrum, 2024–2025…', 'blue'],
+                    ['DATA', 'Hämtar anmäld skadegörelse, kommundelen Handen, 2024–2025…', 'blue'],
                     ['BERÄKNING', 'Totalt: 212 → 247 anmälningar (+17 %)', 'blue'],
                     ['BERÄKNING', 'Delkategorin klotter på busskurer: 31 → 64 anmälningar (+106 %)', 'amber'],
                     ['UTSLAG', 'STÄMMER DELVIS – totalt +17 %. Bara klottret på busskurerna har fördubblats.', 'amber'],
                 ],
-                note: 'Ökningen är verklig och värd att agera på, men ”fördubblats” överdriver. KommunOS skickar samtidigt ett förslag om klotterskydd på busskurerna till säkerhetsspärren.',
+                note: 'Ökningen är värd att agera på, men ”fördubblats” överdriver. KommunOS skickar samtidigt ett förslag om klotterskydd på busskurerna till säkerhetsspärren.',
             },
             {
-                id: 'parkering',
+                id: 'pendlarparkering',
+                sample: true,
                 speaker: 'Ledamot i samhällsbyggnadsdebatten',
-                claim: 'Det är juridiskt omöjligt att bygga fler p-platser vid stationen!',
+                claim: 'Det är juridiskt omöjligt att bygga fler pendlarparkeringar vid Västerhaninge station!',
                 verdict: 'falskt',
                 lines: [
-                    ['DATA', 'Söker gällande detaljplaner inom 300 m från stationen…', 'blue'],
-                    ['LAGRUM', 'Detaljplan DP 2019:14, kv. Spåret 2: användningen parkering är tillåten', 'blue'],
+                    ['DATA', 'Söker gällande detaljplaner inom 300 m från Västerhaninge station…', 'blue'],
+                    ['LAGRUM', 'En kommunägd tomt nära stationen har en detaljplan som tillåter parkering', 'blue'],
                     ['BERÄKNING', 'Byggbar yta 4 200 m² ≈ 150 parkeringsplatser', 'blue'],
                     ['LAGRUM', 'Krav: bygglov och dagvattenutredning. Inga hinder enligt plan- och bygglagen hittade.', 'blue'],
                     ['UTSLAG', 'STÄMMER INTE – det är juridiskt möjligt enligt gällande detaljplan.', 'red'],
@@ -2493,38 +2571,42 @@
                 note: 'Om parkering är rätt prioritering – jämfört med till exempel ett cykelgarage – är en politisk fråga. Men påståendet att det är juridiskt omöjligt håller inte.',
             },
             {
-                id: 'aldreomsorg',
-                speaker: 'Ledamot i omsorgsdebatten',
-                claim: 'Tycköping har längst väntetid till äldreboende i hela länet!',
+                id: 'vega',
+                sample: true,
+                speaker: 'Ledamot i utbildningsdebatten',
+                claim: 'Förskolekön är längre i Vega än i resten av Haninge!',
                 verdict: 'sant',
                 lines: [
-                    ['DATA', 'Hämtar väntetid till särskilt boende för länets 12 kommuner…', 'blue'],
-                    ['BERÄKNING', 'Tycköping: 94 dagar i snitt · länssnittet: 61 dagar', 'blue'],
-                    ['BERÄKNING', 'Rangordning: plats 12 av 12', 'blue'],
-                    ['UTSLAG', 'STÄMMER – Tycköping har längst väntetid i länet.', 'green'],
+                    ['DATA', 'Hämtar väntetid till förskoleplats per kommundel…', 'blue'],
+                    ['BERÄKNING', 'Vega: 71 dagar i snitt · övriga Haninge: 38 dagar', 'blue'],
+                    ['BERÄKNING', 'Andel barn 1–5 år har ökat snabbast i Vega de senaste tre åren', 'blue'],
+                    ['UTSLAG', 'STÄMMER – kön är längst i Vega.', 'green'],
                 ],
-                note: 'Ett korrekt påstående får grönt ljus direkt – oavsett vilket parti som säger det. KommunOS tar samtidigt fram ett förslag om fler korttidsplatser.',
+                note: 'Ett korrekt påstående får grönt ljus direkt – oavsett vilket parti som säger det. KommunOS tar samtidigt fram ett förslag om en tillfällig förskoleavdelning i Vega.',
             },
             {
-                id: 'skatt',
-                speaker: 'Kommunstyrelsens ordförande',
-                claim: 'Vi har sänkt skatten varje år sedan 2020!',
+                id: 'tvarforbindelsen',
+                sample: false,
+                speaker: 'Ledamot i trafikdebatten',
+                claim: 'Det är kommunens fel att Tvärförbindelse Södertörn har dröjt – det är ju Haninges väg!',
                 verdict: 'falskt',
                 lines: [
-                    ['DATA', 'Hämtar kommunalskatt 2020–2026…', 'blue'],
-                    ['BERÄKNING', '21,95 → 21,95 → 21,70 → 21,70 → 21,45 → 21,45 → 21,45', 'blue'],
-                    ['BERÄKNING', 'Sänkningar: 2022 och 2024 – alltså 2 av 6 år', 'blue'],
-                    ['UTSLAG', 'STÄMMER INTE – skatten har sänkts två gånger, inte varje år.', 'red'],
+                    ['DATA', 'Söker huvudman för väg 259, Tvärförbindelse Södertörn…', 'blue'],
+                    ['FAKTA', 'Statligt vägprojekt: Trafikverket är huvudman och byggherre', 'blue'],
+                    ['FAKTA', 'Sträckning: E4/E20 vid Vårby backe via Flemingsberg till väg 73 vid Jordbro trafikplats', 'blue'],
+                    ['FAKTA', 'Regeringen gav Trafikverket klartecken för byggstart i april 2026', 'blue'],
+                    ['UTSLAG', 'STÄMMER INTE – vägen är statlig. Haninge kan samverka och påverka, men inte bestämma tidsplanen.', 'red'],
                 ],
-                note: 'Skatten har faktiskt sänkts – men ”varje år” är en överdrift som Faktalåset flaggar oavsett vem som säger det.',
+                note: 'Det här exemplet bygger på verkliga uppgifter från Trafikverket. Faktalåset visar också vem som faktiskt bestämmer – ett vanligt missförstånd i lokal debatt.',
             },
             {
                 id: 'cykel',
+                sample: true,
                 speaker: 'Ledamot i trafikdebatten',
-                claim: 'Nya cykelbanan har gjort Storgatan säkrare – olyckorna har nästan halverats!',
+                claim: 'Den nya cykelbanan i Handen har nästan halverat olyckorna!',
                 verdict: 'delvis',
                 lines: [
-                    ['DATA', 'Hämtar olyckor med cyklister på Storgatan, 12 månader före och efter…', 'blue'],
+                    ['DATA', 'Hämtar olyckor med cyklister på sträckan, 12 månader före och efter…', 'blue'],
                     ['BERÄKNING', 'Före: 9 olyckor · efter: 5 olyckor (−44 %)', 'blue'],
                     ['OSÄKERHET', 'Cykeltrafiken minskade 12 % under perioden (vägarbete i fyra månader)', 'amber'],
                     ['OSÄKERHET', 'Mätperioden är ett år – för kort för säkra slutsatser om orsak', 'amber'],
@@ -2533,13 +2615,14 @@
                 note: 'Faktalåset redovisar också osäkerhet. Ett ärligt ”vi vet inte än” är bättre än en säker halvsanning.',
             },
             {
-                id: 'simhall',
+                id: 'skargarden',
+                sample: false,
                 speaker: 'Ledamot i investeringsdebatten',
-                claim: 'Tycköping behöver en ny simhall mer än ett nytt kulturhus!',
+                claim: 'Skärgården behöver pengarna mer än Haninge centrum!',
                 verdict: 'asikt',
                 lines: [
                     ['KLASSNING', 'Påståendet är en VÄRDERING – en prioritering mellan två mål', 'violet'],
-                    ['UNDERLAG', 'Kö till simskolan: 340 barn · kulturhusets lokaler: 47 år gamla', 'blue'],
+                    ['UNDERLAG', 'Det finns data om båda: servicen i skärgården och investeringsplanen för centrum', 'blue'],
                     ['UTSLAG', 'EJ GRANSKNINGSBART – värderingsfråga. Faktalåset granskar fakta, inte prioriteringar.', 'violet'],
                 ],
                 note: 'Här går gränsen för maskinen. Vad som är viktigast avgörs av väljarna och de folkvalda – KommunOS kan bara se till att debatten förs på korrekta siffror.',
@@ -2586,7 +2669,7 @@
             currentFact = fact;
             $$('.claim-btn', claimList).forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.id === fact.id)));
             $('#fact-claim').textContent = '”' + fact.claim + '”';
-            $('#fact-speaker').textContent = fact.speaker + ' · Tycköpings kommunfullmäktige';
+            $('#fact-speaker').textContent = fact.speaker + ' · Haninges kommunfullmäktige 2.0 (simulering)';
             $('#fact-guess').hidden = false;
             const answered = factAnswers.has(fact.id);
             guessBtns.forEach((b) => {
@@ -2619,7 +2702,10 @@
             factBusy = true;
             factConsole.replaceChildren();
             const caret = el('span', { class: 'caret', 'aria-hidden': 'true', text: '▍' });
-            const lines = [['KommunOS', 'Faktalåset aktiverat – analyserar påståendet…', 'blue'], ...fact.lines];
+            const intro = fact.sample
+                ? 'Faktalåset aktiverat – analyserar påståendet (simulerade exempelsiffror)…'
+                : 'Faktalåset aktiverat – analyserar påståendet…';
+            const lines = [['KommunOS', intro, 'blue'], ...fact.lines];
             for (const [tag, text, tone] of lines) {
                 factConsole.append(caret);
                 await wait(fresh ? 450 : 0);
@@ -2678,41 +2764,41 @@
            ========================================================= */
         const CASES = [
             {
-                bubble: 'Gatlampan på Björkvägen har varit trasig i tre veckor. Det är becksvart när jag går hem.',
+                bubble: 'Gatlampan på gångvägen mot Jordbro station har varit trasig i tre veckor. Det är becksvart när jag går hem.',
                 meta: ['27 felanmälningar', 'Gata & park'],
-                title: 'Byt armatur till LED på Björkvägen 14',
+                title: 'Byt armatur till LED på gångvägen vid Jordbro station',
                 details: ['Kostnad: 8 400 kr ur driftbudgeten för gator', 'Utförs av kommunens gatuenhet', 'Klart inom 5 arbetsdagar'],
                 checks: [['Budget', 'ryms (412 000 kr kvar)'], ['Regelverk', 'underhåll av befintlig belysning'], ['Lagkontroll', 'inga hinder hittade']],
                 confidence: 98,
                 correct: 'approve',
                 why: 'Rutinärende inom budget, utan lagkonflikter och utan påverkan på enskilda. Exakt den sortens vardagsbyråkrati KommunOS ska sköta – så att politikerna kan lägga tiden på de svåra frågorna.',
-                ifStopped: 'Björkvägen förblir mörk i flera veckor till medan ärendet väntar på nästa nämndmöte.',
+                ifStopped: 'Gångvägen förblir mörk i flera veckor till medan ärendet väntar på nästa nämndmöte.',
             },
             {
-                bubble: 'Varför betalar vi för biblioteket i Norrby när nästan ingen går dit?',
-                meta: ['12 synpunkter', 'Besöksstatistik', 'Kultur'],
-                title: 'Stäng biblioteksfilialen i Norrby',
-                details: ['Besparing: 1,4 Mkr per år', 'Besökarna hänvisas till huvudbiblioteket (14 km bort)', 'Antalet besök har minskat 31 % på fem år'],
-                checks: [['Budget', 'besparing 1,4 Mkr/år'], ['Regelverk', 'hyresavtalet kan sägas upp (9 mån)'], ['Lagkontroll', 'inga formella hinder hittade']],
+                bubble: 'Varför kör en bokbuss runt i kommunen när vi redan har fem bibliotek?',
+                meta: ['12 synpunkter', 'Utlåningsstatistik', 'Kultur'],
+                title: 'Lägg ner bokbussen',
+                details: ['Besparing: 1,4 Mkr per år', 'Låntagarna hänvisas till närmaste bibliotek', 'Antalet lån från bussen har minskat 31 % på fem år'],
+                checks: [['Budget', 'besparing 1,4 Mkr/år'], ['Regelverk', 'leasingavtalet kan sägas upp (9 mån)'], ['Lagkontroll', 'inga formella hinder hittade']],
                 confidence: 94,
                 correct: 'stop',
-                why: 'Att lägga ner ett bibliotek är inget rutinärende utan ett principiellt beslut som ska fattas öppet av fullmäktige. Folkbiblioteken ska enligt bibliotekslagen vara tillgängliga för alla, och eftersom barnkonventionen är svensk lag ska barnets bästa prövas. AI:n räknade kronor – men missade barnen, de äldre och alla utan bil i Norrby.',
-                better: 'be om en barnkonsekvensanalys och alternativ, till exempel ett meröppet bibliotek med självservice.',
-                consequence: 'Filialen stängs utan debatt. Barnen i Norrby förlorar sitt närmaste bibliotek och förtroendet för KommunOS rasar.',
+                why: 'Bokbussen är för många det enda biblioteket inom räckhåll – i de mindre orterna, för äldre och för barn utan skjuts. Att lägga ner den är ett principiellt beslut som ska fattas öppet av fullmäktige. Folkbiblioteken ska enligt bibliotekslagen vara tillgängliga för alla, och eftersom barnkonventionen är svensk lag ska barnets bästa prövas. AI:n räknade lån per krona – men missade vilka som lånar.',
+                better: 'be om en barnkonsekvensanalys och se över turerna i stället, med fler stopp där behovet är störst.',
+                consequence: 'Bokbussen försvinner utan debatt. Barn och äldre i kommunens mindre orter förlorar sitt bibliotek och förtroendet för KommunOS rasar.',
             },
             {
-                bubble: 'Vi har stått i förskolekö i fem månader. Hur ska jag kunna börja jobba?',
+                bubble: 'Vi har stått i förskolekö i fem månader i Vega. Hur ska jag kunna börja jobba?',
                 meta: ['38 barn i kö', 'Snittväntan 5,2 mån', 'Förskola'],
-                title: 'Öppna en tillfällig förskoleavdelning i paviljong på Västerby 3:12',
-                details: ['Kostnad: 2,6 Mkr ur investeringsbudgeten', 'Detaljplanen tillåter skola och förskola', 'Rekrytering av 4 förskollärare enligt kollektivavtal'],
+                title: 'Öppna en tillfällig förskoleavdelning i paviljong i Vega',
+                details: ['Kostnad: 2,6 Mkr ur investeringsbudgeten', 'Detaljplanen tillåter skola och förskola på tomten', 'Rekrytering av 4 förskollärare enligt kollektivavtal'],
                 checks: [['Budget', 'ryms i investeringsbudget 2026'], ['Detaljplan', 'förskola tillåten'], ['Lagkontroll', 'åtgärdar brott mot skollagens fyramånadersgräns']],
                 confidence: 96,
                 correct: 'approve',
-                why: 'Skollagen kräver att kommunen erbjuder förskoleplats inom fyra månader. Förslaget åtgärdar ett pågående lagbrott, ryms i budgeten och följer detaljplanen. Godkänn – och be gärna om en långsiktig plan för Västerby.',
+                why: 'Skollagen kräver att kommunen erbjuder förskoleplats inom fyra månader. Förslaget åtgärdar ett pågående lagbrott, ryms i budgeten och följer detaljplanen. Godkänn – och be gärna om en långsiktig plan för förskolor i Vega.',
                 ifStopped: 'Kön växer och kommunen fortsätter att bryta mot skollagens fyramånadersgräns.',
             },
             {
-                bubble: 'Gångtunneln vid stationen känns otrygg på kvällarna.',
+                bubble: 'Gångtunneln i Handen känns otrygg på kvällarna.',
                 meta: ['41 trygghetsanmälningar', 'Trygghet'],
                 title: 'Sätt upp 6 kameror med ansiktsigenkänning som larmar vid ”avvikande beteende”',
                 details: ['Kostnad: 180 000 kr', 'Automatisk identifiering mot register', 'Larm direkt till vaktbolag'],
@@ -2724,34 +2810,34 @@
                 consequence: 'Alla som går genom tunneln registreras biometriskt, och kommunen riskerar sanktionsavgift från Integritetsskyddsmyndigheten.',
             },
             {
-                bubble: 'Hemtjänsten kommer vid helt olika tider varje dag. Mamma blir orolig.',
-                meta: ['19 synpunkter från brukare', 'Äldreomsorg'],
-                title: 'Ny ruttplanering för hemtjänsten i område Syd',
-                details: ['Körtiden minskar 14 %', 'Fasta besökstider ±15 minuter', 'Ingen personalminskning – tiden flyttas till brukarna'],
+                bubble: 'Hemtjänsten på Ornö kommer vid helt olika tider varje dag. Pappa vet aldrig när de dyker upp.',
+                meta: ['19 synpunkter från brukare', 'Skärgården', 'Äldreomsorg'],
+                title: 'Samordna hemtjänstens besök på Ornö och Utö med båtresorna',
+                details: ['Väntetiden på bryggan minskar 14 %', 'Fasta besökstider ±15 minuter', 'Ingen personalminskning – tiden flyttas till brukarna'],
                 checks: [['Budget', 'kostnadsneutralt'], ['Kollektivavtal', 'scheman inom avtalets ramar'], ['Lagkontroll', 'planering – ingen myndighetsutövning']],
                 confidence: 97,
                 correct: 'approve',
-                why: 'En bra användning av algoritmer: ruttoptimering ger brukarna trygghet och personalen mindre stress. Beslutet gäller planering – inte beslut om enskilda – och personalens scheman följer kollektivavtalet.',
-                ifStopped: 'Brukarna får fortsätta vänta på oförutsägbara besök, och personalen kör 14 % längre än nödvändigt.',
+                why: 'En bra användning av algoritmer: planering efter båttiderna ger brukarna i skärgården trygghet och personalen mindre väntan. Beslutet gäller planering – inte beslut om enskilda – och personalens scheman följer kollektivavtalet.',
+                ifStopped: 'Brukarna på öarna får fortsätta vänta på oförutsägbara besök, och personalen blir kvar på bryggan i onödan.',
             },
             {
-                bubble: 'Vi vill ha ett utegym i Ekparken!',
+                bubble: 'Vi vill ha ett utegym vid Rudan!',
                 meta: ['63 röster i medborgarbudgeten', 'Fritid'],
-                title: 'Bygg utegym i Ekparken – fäll 3 gamla ekar för att få plats',
-                details: ['Kostnad: 340 000 kr', 'Placering: Ekbacken (plan yta efter fällning)', 'Detaljplan: parkmark'],
-                checks: [['Budget', 'ryms i medborgarbudgeten'], ['Detaljplan', 'utegym tillåtet på parkmark'], ['Lagkontroll', 'inga hinder hittade']],
+                title: 'Bygg utegym vid Rudans strand – fäll 3 gamla tallar för att få plats',
+                details: ['Kostnad: 340 000 kr', 'Placering: 25 meter från strandkanten', 'Plan yta efter fällning'],
+                checks: [['Budget', 'ryms i medborgarbudgeten'], ['Detaljplan', 'anläggning för friluftsliv tillåten'], ['Lagkontroll', 'inga hinder hittade']],
                 confidence: 93,
                 correct: 'stop',
-                why: 'Utegymmet är en bra idé – men gamla ekar räknas ofta som särskilt skyddsvärda träd, och fällningen kan kräva samråd med länsstyrelsen enligt miljöbalken. Står träden i en allé omfattas de dessutom av biotopskydd. AI:n valde den billigaste ytan utan att väga in naturvärdet.',
-                better: 'skicka tillbaka förslaget och placera gymmet på gräsytan 40 meter bort – ekarna står kvar.',
-                consequence: 'Tre 200-åriga ekar fälls. Länsstyrelsen inleder tillsyn och de som röstade fram gymmet känner sig lurade.',
+                why: 'Utegymmet är en bra idé – men så nära vattnet gäller normalt strandskydd enligt miljöbalken, och att bygga där kräver dispens med särskilda skäl. Gamla träd kan dessutom vara särskilt skyddsvärda. AI:n valde den plattaste ytan utan att väga in strandskyddet och naturvärdet.',
+                better: 'skicka tillbaka förslaget och placera gymmet vid motionsspåret, utanför strandskyddat område – tallarna står kvar.',
+                consequence: 'Tre gamla tallar fälls och gymmet byggs utan dispens. Beslutet kan överprövas, gymmet kan behöva rivas och pengarna från medborgarbudgeten är borta.',
             },
             {
                 bubble: 'Handläggningen av ekonomiskt bistånd tar alldeles för lång tid.',
                 meta: ['Ködata: 23 dagars handläggning', 'Socialtjänst'],
                 title: 'Automatisera avslag på ansökningar där riskmodellen bedömer fuskrisken till över 80 %',
-                details: ['Handläggningstiden minskar 60 %', 'Berör cirka 110 ansökningar per år', 'Modellen är tränad på historiska ärenden'],
-                checks: [['Budget', 'frigör 2 handläggartjänster'], ['Modell', 'träffsäkerhet 87 % på testdata'], ['Lagkontroll', 'förvaltningslagen tillåter automatiserade beslut']],
+                details: ['Handläggningstiden minskar 60 %', 'Berör cirka 250 ansökningar per år', 'Modellen är tränad på historiska ärenden'],
+                checks: [['Budget', 'frigör 3 handläggartjänster'], ['Modell', 'träffsäkerhet 87 % på testdata'], ['Lagkontroll', 'förvaltningslagen tillåter automatiserade beslut']],
                 confidence: 89,
                 correct: 'stop',
                 why: 'Beslut om ekonomiskt bistånd är myndighetsutövning mot enskilda människor. OP:s grundprincip är att inga beslut som drabbar enskilda fattas av en maskin utan mänsklig prövning. Riskmodeller tränade på historiska data kan diskriminera – i Nederländernas skandal kring barnomsorgsbidrag pekades tiotusentals familjer felaktigt ut som fuskare, bland annat med hjälp av en algoritm.',
@@ -2920,18 +3006,20 @@
            TEST 3: BUDGETTYCOON
            ========================================================= */
         const AREAS = [
-            { key: 'skola', name: 'Förskola & skola', short: 'skolan', icon: '🎒', base: 1250, min: 1100, max: 1450, w: 0.30 },
-            { key: 'omsorg', name: 'Äldreomsorg & funktionsstöd', short: 'omsorgen', icon: '🧓', base: 900, min: 780, max: 1050, w: 0.28 },
-            { key: 'trygghet', name: 'Socialtjänst & trygghet', short: 'tryggheten', icon: '🤝', base: 260, min: 210, max: 330, w: 0.16 },
-            { key: 'gata', name: 'Gator, parker & kollektivtrafik', short: 'gator & trafik', icon: '🚌', base: 230, min: 180, max: 300, w: 0.14 },
-            { key: 'kultur', name: 'Kultur & fritid', short: 'kultur & fritid', icon: '🎭', base: 120, min: 85, max: 170, w: 0.12 },
+            { key: 'skola', name: 'Förskola & skola', short: 'skolan', icon: '🎒', base: 3000, min: 2650, max: 3450, w: 0.30 },
+            { key: 'omsorg', name: 'Äldreomsorg & funktionsstöd', short: 'omsorgen', icon: '🧓', base: 1900, min: 1650, max: 2200, w: 0.28 },
+            { key: 'trygghet', name: 'Socialtjänst & trygghet', short: 'tryggheten', icon: '🤝', base: 720, min: 580, max: 900, w: 0.16 },
+            { key: 'gata', name: 'Gator, parker & natur', short: 'gator & natur', icon: '🌲', base: 420, min: 320, max: 540, w: 0.14 },
+            { key: 'kultur', name: 'Kultur & fritid', short: 'kultur & fritid', icon: '🎭', base: 330, min: 240, max: 460, w: 0.12 },
         ];
-        const ADMIN = 250;
-        const ADMIN_KOS = 205;
-        const TAX_BASE = 21.45;
-        const INCOME_BASE = 3000;
-        const INCOME_PER_KR = 75;
-        const SURPLUS_TARGET = 20;
+        const STEP = 10;            // Mkr per steg i reglagen och i KommunOS förslag
+        const TIP = 20;             // Mkr i rådgivarens tips
+        const ADMIN = 600;
+        const ADMIN_KOS = 492;      // −18 %
+        const TAX_BASE = 18.95;     // Haninges kommunalskatt 2026
+        const INCOME_BASE = 6950;   // skatteintäkter + statsbidrag, förenklat
+        const INCOME_PER_KR = 250;  // uppskattning
+        const SURPLUS_TARGET = 50;
 
         // Avtagande nytta: logistisk kurva över finansieringsgrad (1 = dagens nivå)
         const sat = (r) => 1 / (1 + Math.exp(-9 * (r - 0.93)));
@@ -2991,7 +3079,7 @@
                 id: 's-' + a.key,
                 min: a.min,
                 max: a.max,
-                step: 5,
+                step: STEP,
                 value: a.base,
                 'aria-describedby': 'k-' + a.key,
             });
@@ -3027,7 +3115,7 @@
         function marginalTip() {
             const gains = AREAS.map((a) => {
                 const v = budget.alloc[a.key];
-                const room = Math.min(10, a.max - v);
+                const room = Math.min(TIP, a.max - v);
                 return { a, gain: room > 0 ? (sat((v + room) / a.base) - sat(v / a.base)) * a.w * 100 : 0 };
             }).sort((x, y) => y.gain - x.gain);
             return gains[0];
@@ -3046,7 +3134,7 @@
             }
             const tip = marginalTip();
             if (tip.gain <= 0) return 'Budgeten är i balans. Alla verksamheter är redan maximalt finansierade inom modellens ramar.';
-            return `Budgeten är i balans. Just nu ger ${tip.a.short} mest trivsel per krona: +10 Mkr där höjer trivseln med cirka ${nf1.format(tip.gain)} procentenheter.`;
+            return `Budgeten är i balans. Just nu ger ${tip.a.short} mest trivsel per krona: +${TIP} Mkr där höjer trivseln med cirka ${nf1.format(tip.gain)} procentenheter.`;
         }
 
         function updateBudget(advice) {
@@ -3072,7 +3160,7 @@
             resultBox.classList.toggle('is-pos', m.result >= 0);
             $('#b-result-note').textContent = m.result < 0
                 ? 'Underskott – bryter mot balanskravet'
-                : m.result < SURPLUS_TARGET ? 'I balans, men under överskottsmålet +20 Mkr' : 'I balans ✓';
+                : m.result < SURPLUS_TARGET ? 'I balans, men under överskottsmålet +' + SURPLUS_TARGET + ' Mkr' : 'I balans ✓';
 
             const tv = Math.round(m.trivsel);
             $('#b-trivsel').textContent = pct(tv);
@@ -3095,23 +3183,23 @@
             const plan = { alloc: {}, tax: budget.tax, kos: true };
             // Fullmäktiges ramar: max 3 % neddragning per verksamhet, lagkrav är hårda gränser
             AREAS.forEach((a) => {
-                let v = clamp(Math.ceil(a.base * 0.97 / 5) * 5, a.min, a.max);
-                while (KPI[a.key](v / a.base).blocking && v < a.max) v += 5;
+                let v = clamp(Math.ceil(a.base * 0.97 / STEP) * STEP, a.min, a.max);
+                while (KPI[a.key](v / a.base).blocking && v < a.max) v += STEP;
                 plan.alloc[a.key] = v;
             });
-            // Fördela resten i steg om 5 Mkr där trivseln ökar mest per krona
+            // Fördela resten i steg om STEP Mkr där trivseln ökar mest per krona
             let guard = 0;
-            while (model(plan).result - 5 >= SURPLUS_TARGET && guard++ < 1000) {
+            while (model(plan).result - STEP >= SURPLUS_TARGET && guard++ < 1000) {
                 let best = null;
                 let bestGain = 0;
                 AREAS.forEach((a) => {
                     const v = plan.alloc[a.key];
-                    if (v + 5 > a.max) return;
-                    const gain = (sat((v + 5) / a.base) - sat(v / a.base)) * a.w;
+                    if (v + STEP > a.max) return;
+                    const gain = (sat((v + STEP) / a.base) - sat(v / a.base)) * a.w;
                     if (gain > bestGain) { bestGain = gain; best = a; }
                 });
                 if (!best) break;
-                plan.alloc[best.key] += 5;
+                plan.alloc[best.key] += STEP;
             }
 
             budget.kos = true;
@@ -3131,7 +3219,7 @@
             const review = cuts.length
                 ? `Men granska förslaget: maskinen minskar ${listSv(cuts)} eftersom det syns mindre i trivselmätaren. Är det rätt prioritering? Det avgör du – inte algoritmen.`
                 : 'Granska ändå förslaget – trivselmätaren fångar inte allt som är viktigt.';
-            updateBudget(`Förslag klart på 0,03 s: KommunOS aktiveras i administrationen (−45 Mkr) och pengarna fördelas där de ger mest trivsel per krona (${listSv(moves)} Mkr). Trivsel ${pct(m.trivsel)}, resultat ${signedMkr(Math.round(m.result))}. ${review}`);
+            updateBudget(`Förslag klart på 0,03 s: KommunOS aktiveras i administrationen (−${ADMIN - ADMIN_KOS} Mkr) och pengarna fördelas där de ger mest trivsel per krona (${listSv(moves)} Mkr). Trivsel ${pct(m.trivsel)}, resultat ${signedMkr(Math.round(m.result))}. ${review}`);
         });
 
         $('#b-reset').addEventListener('click', () => {
@@ -3177,10 +3265,10 @@
         // [steg, dagar]  (0 dagar = AI-beräkningen på 0,03 s)
         const RACES = [
             {
-                label: '🅿️ Asfaltera pendlarparkeringen',
+                label: '🅿️ Pendlarparkering i Västerhaninge',
                 old: [
                     ['Medborgarförslag registreras', 14],
-                    ['Remiss till tekniska nämnden', 60],
+                    ['Remiss till ansvarig nämnd', 60],
                     ['Förstudie och utredning', 180],
                     ['Behandling i nämnd', 45],
                     ['Bordläggs – ny utredning efter valet', 300],
@@ -3198,7 +3286,7 @@
                 ],
             },
             {
-                label: '💡 Belysning i gångtunneln',
+                label: '💡 Belysning i gångtunnel i Handen',
                 old: [
                     ['Medborgarförslag registreras', 14],
                     ['Remiss till trygghetsrådet', 45],
@@ -3217,10 +3305,10 @@
                 ],
             },
             {
-                label: '🛝 Ny lekplats i Västerby',
+                label: '🛝 Ny lekplats i Vega',
                 old: [
                     ['Medborgarförslag registreras', 14],
-                    ['Remiss till fritidsnämnden', 60],
+                    ['Remiss till ansvarig nämnd', 60],
                     ['Medborgardialog', 90],
                     ['Utredning och kalkyl', 150],
                     ['Behandling i nämnd', 45],

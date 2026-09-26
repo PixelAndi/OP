@@ -1,6 +1,6 @@
 # OP – Optimeringspartiet
 
-Webbplats för Optimeringspartiet (OP) och plattformsidén **KommunOS**: en förvaltnings-AI som sköter den dagliga kommunala byråkratin, medan folkvalda politiker är den mänskliga säkerhetsspärren.
+Webbplats för Optimeringspartiet (OP) i **Haninge** och plattformsidén **KommunOS**: en förvaltnings-AI som sköter den dagliga kommunala byråkratin, medan folkvalda politiker är den mänskliga säkerhetsspärren.
 
 ## Innehåll
 
@@ -8,6 +8,7 @@ Hela sajten finns i en enda fil, `index.html` (HTML, CSS och JavaScript utan ext
 
 - **Hero med KommunOS live**: mätare och ett flöde av inkommande ”tankebubblor” (går att pausa).
 - **Idén**: strategispelet jämfört med dagens kommunpolitik.
+- **Haninge**: så skulle KommunOS arbeta med skärgården, pendlingen, Haninge centrum, Vega, tryggheten och naturen.
 - **Så fungerar KommunOS**: de fyra stegen, med en knapp som kör ett vardagsärende genom hela kedjan.
 - **Testlabbet** med fyra interaktiva tester:
   1. **Faktalåset**: gissa om påståenden från talarstolen stämmer och se hur Faktalåset granskar dem.
@@ -18,7 +19,7 @@ Hela sajten finns i en enda fil, `index.html` (HTML, CSS och JavaScript utan ext
 
 Poäng, trivselmätaren och antalet klara tester visas i den fasta HUD-raden högst upp. Sidan har ljust och mörkt läge, fungerar på mobil och tar hänsyn till `prefers-reduced-motion`.
 
-> Alla siffror i simuleringarna gäller den påhittade exempelkommunen **Tycköping** och är till för att illustrera idén. Lagrum är förenklat beskrivna.
+> Platserna och frågorna är Haninges, men siffrorna i simuleringarna är förenklade exempel och inte kommunens verkliga data. Undantagen är invånarantalet, skattesatsen 18,95 kr (2026), intäktsnivån på cirka 7 miljarder kr och uppgifterna om Tvärförbindelse Södertörn, som är verkliga. Lagrum är förenklat beskrivna.
 
 ## Visa sidan
 
