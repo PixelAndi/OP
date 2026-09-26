@@ -1,0 +1,3419 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Optimeringspartiet (OP) – KommunOS</title>
+    <meta name="description" content="Optimeringspartiet (OP) vill göra kommunen lika begriplig som ett välbyggt strategispel. KommunOS sköter vardagsbyråkratin – folkvalda politiker är den mänskliga säkerhetsspärren. Testa politiken i praktiken.">
+    <meta name="theme-color" content="#0b1220">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="sv_SE">
+    <meta property="og:title" content="Optimeringspartiet (OP) – KommunOS">
+    <meta property="og:description" content="Algoritmisk verkstad, mänsklig säkerhetskontroll. Testa hur politiken skulle fungera i praktiken.">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%232563eb'/%3E%3Ctext x='32' y='42' font-family='Arial,sans-serif' font-size='27' font-weight='700' text-anchor='middle' fill='white'%3EOP%3C/text%3E%3C/svg%3E">
+    <script>
+        (function () {
+            var d = document.documentElement;
+            d.classList.add('js');
+            try {
+                var t = localStorage.getItem('op-theme');
+                if (t === 'light' || t === 'dark') d.setAttribute('data-theme', t);
+            } catch (e) { /* lagring blockerad – följ systemets tema */ }
+        })();
+    </script>
+    <style>
+        /* =========================================================
+           DESIGNTOKENS (ljust läge som standard)
+           ========================================================= */
+        :root {
+            color-scheme: light;
+            --bg: #f3f6fb;
+            --dot: #d5dce8;
+            --surface: #ffffff;
+            --surface-2: #f7f9fc;
+            --surface-3: #eef2f8;
+            --border: #e2e8f0;
+            --border-strong: #cbd5e1;
+            --text: #0b1220;
+            --text-muted: #475569;
+            --text-subtle: #5b6a80;
+
+            --blue: #2563eb;   --blue-text: #1d4ed8;   --blue-soft: #eaf1ff;   --blue-line: #c7d7fe;
+            --green: #10b981;  --green-text: #047857;  --green-soft: #e7f8f0;  --green-line: #a7f3d0;
+            --amber: #f59e0b;  --amber-text: #92400e;  --amber-soft: #fff8e6;  --amber-line: #fde68a;
+            --red: #ef4444;    --red-text: #b91c1c;    --red-soft: #fef1f1;    --red-line: #fecaca;
+            --violet: #7c3aed; --violet-text: #6d28d9; --violet-soft: #f4efff; --violet-line: #ddd6fe;
+
+            --grad-a: #2563eb; --grad-b: #059669; --grad-c: #7c3aed;
+
+            /* HUD-ytor är mörka i båda lägena */
+            --hud: #0b1220;
+            --hud-2: #111a2e;
+            --hud-3: #1a2540;
+            --hud-border: #27344f;
+            --hud-text: #e7ecf6;
+            --hud-muted: #9aa8bf;
+            --hud-dim: #7c8aa3;
+
+            --shadow-sm: 0 1px 2px rgba(15, 23, 42, .05), 0 1px 3px rgba(15, 23, 42, .06);
+            --shadow-md: 0 14px 30px -14px rgba(15, 23, 42, .2);
+            --shadow-lg: 0 30px 60px -26px rgba(15, 23, 42, .38);
+
+            --radius-xl: 24px;
+            --radius-lg: 18px;
+            --radius: 14px;
+            --radius-sm: 10px;
+
+            --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+
+            --container: 1140px;
+            --header-offset: 116px;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root:not([data-theme="light"]) {
+                color-scheme: dark;
+                --bg: #060a13;
+                --dot: #151d2d;
+                --surface: #0d1422;
+                --surface-2: #111a2b;
+                --surface-3: #172136;
+                --border: #1e2941;
+                --border-strong: #2b3b59;
+                --text: #e8edf6;
+                --text-muted: #a8b3c8;
+                --text-subtle: #8290a8;
+                --blue-text: #8ab4ff;   --blue-soft: rgba(37, 99, 235, .14);  --blue-line: rgba(96, 165, 250, .35);
+                --green-text: #34d399;  --green-soft: rgba(16, 185, 129, .12); --green-line: rgba(52, 211, 153, .35);
+                --amber-text: #fbbf24;  --amber-soft: rgba(245, 158, 11, .12); --amber-line: rgba(251, 191, 36, .35);
+                --red-text: #f87171;    --red-soft: rgba(239, 68, 68, .12);    --red-line: rgba(248, 113, 113, .35);
+                --violet-text: #c4b5fd; --violet-soft: rgba(124, 58, 237, .16); --violet-line: rgba(167, 139, 250, .35);
+                --grad-a: #60a5fa; --grad-b: #34d399; --grad-c: #a78bfa;
+                --hud: #0a1120;
+                --hud-2: #0f1829;
+                --shadow-sm: 0 1px 2px rgba(0, 0, 0, .4);
+                --shadow-md: 0 14px 30px -14px rgba(0, 0, 0, .6);
+                --shadow-lg: 0 30px 60px -26px rgba(0, 0, 0, .8);
+            }
+        }
+
+        :root[data-theme="dark"] {
+            color-scheme: dark;
+            --bg: #060a13;
+            --dot: #151d2d;
+            --surface: #0d1422;
+            --surface-2: #111a2b;
+            --surface-3: #172136;
+            --border: #1e2941;
+            --border-strong: #2b3b59;
+            --text: #e8edf6;
+            --text-muted: #a8b3c8;
+            --text-subtle: #8290a8;
+            --blue-text: #8ab4ff;   --blue-soft: rgba(37, 99, 235, .14);  --blue-line: rgba(96, 165, 250, .35);
+            --green-text: #34d399;  --green-soft: rgba(16, 185, 129, .12); --green-line: rgba(52, 211, 153, .35);
+            --amber-text: #fbbf24;  --amber-soft: rgba(245, 158, 11, .12); --amber-line: rgba(251, 191, 36, .35);
+            --red-text: #f87171;    --red-soft: rgba(239, 68, 68, .12);    --red-line: rgba(248, 113, 113, .35);
+            --violet-text: #c4b5fd; --violet-soft: rgba(124, 58, 237, .16); --violet-line: rgba(167, 139, 250, .35);
+            --grad-a: #60a5fa; --grad-b: #34d399; --grad-c: #a78bfa;
+            --hud: #0a1120;
+            --hud-2: #0f1829;
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, .4);
+            --shadow-md: 0 14px 30px -14px rgba(0, 0, 0, .6);
+            --shadow-lg: 0 30px 60px -26px rgba(0, 0, 0, .8);
+        }
+
+        /* =========================================================
+           GRUND
+           ========================================================= */
+        *, *::before, *::after { box-sizing: border-box; }
+        [hidden] { display: none !important; }
+
+        html {
+            scroll-behavior: smooth;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        body {
+            margin: 0;
+            font-family: var(--font-sans);
+            font-size: 16px;
+            line-height: 1.6;
+            color: var(--text);
+            background-color: var(--bg);
+            background-image: radial-gradient(var(--dot) 1px, transparent 1px);
+            background-size: 24px 24px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1, h2, h3, h4 { line-height: 1.2; letter-spacing: -.02em; }
+        p { margin: 0 0 1em; }
+        a { color: var(--blue-text); }
+        button { font: inherit; }
+        :focus-visible { outline: 3px solid #60a5fa; outline-offset: 2px; }
+
+        .container {
+            width: 100%;
+            max-width: var(--container);
+            margin-inline: auto;
+            padding-inline: 24px;
+        }
+
+        .skip-link {
+            position: absolute;
+            left: 12px;
+            top: -80px;
+            z-index: 200;
+            background: #fff;
+            color: #0b1220;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-weight: 700;
+        }
+        .skip-link:focus { top: 12px; }
+
+        .mono { font-family: var(--font-mono); }
+
+        /* Knappar */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font: 600 .95rem/1.2 var(--font-sans);
+            padding: 13px 20px;
+            border-radius: 12px;
+            border: 1px solid transparent;
+            cursor: pointer;
+            text-decoration: none;
+            transition: transform .15s ease, background-color .15s ease, border-color .15s ease, box-shadow .15s ease;
+        }
+        .btn:hover { transform: translateY(-1px); }
+        .btn:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+        .btn--primary {
+            background: var(--blue);
+            color: #fff;
+            box-shadow: 0 8px 20px -8px rgba(37, 99, 235, .7);
+        }
+        .btn--primary:hover { background: #1d4ed8; }
+        .btn--ghost {
+            background: var(--surface);
+            color: var(--text);
+            border-color: var(--border-strong);
+        }
+        .btn--ghost:hover { border-color: var(--blue); }
+        .btn--hud {
+            background: var(--hud-3);
+            color: var(--hud-text);
+            border-color: var(--hud-border);
+        }
+        .btn--hud:hover { border-color: #f59e0b; }
+        .btn--approve { background: #059669; color: #fff; }
+        .btn--approve:hover { background: #047857; }
+        .btn--stop { background: #dc2626; color: #fff; }
+        .btn--stop:hover { background: #b91c1c; }
+        .btn--vote {
+            background: var(--green);
+            color: #052e16;
+            font-family: var(--font-mono);
+            font-weight: 700;
+        }
+        .btn--vote:hover { background: #34d399; }
+        .btn--ghost-dark {
+            background: transparent;
+            color: #fff;
+            border-color: rgba(255, 255, 255, .3);
+        }
+        .btn--ghost-dark:hover { border-color: #fff; }
+        .btn.is-chosen { box-shadow: 0 0 0 3px rgba(255, 255, 255, .55); opacity: 1; }
+
+        .chip {
+            display: inline-flex;
+            align-items: center;
+            font: 700 .66rem/1 var(--font-mono);
+            padding: 5px 8px;
+            border-radius: 99px;
+            text-transform: uppercase;
+            letter-spacing: .04em;
+            white-space: nowrap;
+            border: 1px solid transparent;
+        }
+        .chip--ok    { background: rgba(16, 185, 129, .15); color: #34d399; border-color: rgba(16, 185, 129, .35); }
+        .chip--sparr { background: rgba(124, 58, 237, .2);  color: #c4b5fd; border-color: rgba(167, 139, 250, .35); }
+        .chip--fm    { background: rgba(37, 99, 235, .2);   color: #93c5fd; border-color: rgba(96, 165, 250, .35); }
+        .chip--dim   { background: var(--hud-3); color: var(--hud-muted); border-color: var(--hud-border); }
+
+        .status-dot {
+            display: inline-block;
+            flex: none;
+            width: 10px;
+            height: 10px;
+            background-color: var(--green);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--green);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .4; } }
+        @keyframes bump { 0% { transform: scale(1); } 40% { transform: scale(1.08); } 100% { transform: scale(1); } }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+        @keyframes blink { 50% { opacity: 0; } }
+
+        /* =========================================================
+           HUD / SIDHUVUD
+           ========================================================= */
+        .hud {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background: rgba(11, 18, 32, .94);
+            -webkit-backdrop-filter: saturate(1.4) blur(12px);
+            backdrop-filter: saturate(1.4) blur(12px);
+            color: var(--hud-text);
+            border-bottom: 3px solid var(--green);
+            box-shadow: 0 6px 20px -8px rgba(0, 0, 0, .45);
+        }
+
+        .hud-row {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            min-height: 58px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #fff;
+            text-decoration: none;
+            font-family: var(--font-mono);
+            font-weight: 700;
+            font-size: .92rem;
+            white-space: nowrap;
+            min-width: 0;
+        }
+        .brand-ver { color: var(--hud-muted); font-weight: 500; }
+        .party-badge {
+            background: var(--blue);
+            color: #fff;
+            padding: 3px 9px;
+            border-radius: 6px;
+            font-size: .78rem;
+        }
+
+        .hud-metrics {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-left: auto;
+            font-family: var(--font-mono);
+            font-size: .78rem;
+        }
+
+        .metric {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--hud-2);
+            border: 1px solid var(--hud-border);
+            padding: 6px 10px;
+            border-radius: 8px;
+            white-space: nowrap;
+        }
+        .metric-label { color: var(--hud-muted); }
+        .metric-value { color: #34d399; font-weight: 700; }
+        .metric-value--blue { color: #8ab4ff; }
+        .bump { animation: bump .5s ease; }
+
+        .meter {
+            display: block;
+            width: 64px;
+            height: 8px;
+            background: var(--hud-3);
+            border-radius: 99px;
+            overflow: hidden;
+        }
+        .meter > span {
+            display: block;
+            height: 100%;
+            width: 65%;
+            background: var(--green);
+            border-radius: inherit;
+            transition: width .5s ease, background-color .3s ease;
+        }
+
+        .icon-btn {
+            flex: none;
+            display: grid;
+            place-items: center;
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            border: 1px solid var(--hud-border);
+            background: var(--hud-2);
+            color: var(--hud-text);
+            cursor: pointer;
+        }
+        .icon-btn:hover { border-color: #60a5fa; }
+        .icon-btn svg { width: 18px; height: 18px; }
+        .icon-btn .i-sun { display: none; }
+        .icon-btn.is-dark .i-sun { display: block; }
+        .icon-btn.is-dark .i-moon { display: none; }
+
+        .hud-nav { border-top: 1px solid var(--hud-border); }
+        .hud-nav-inner {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            min-height: 42px;
+        }
+        .nav-links {
+            display: flex;
+            gap: 2px;
+            list-style: none;
+            margin: 0;
+            padding: 4px 0;
+            overflow-x: auto;
+            scrollbar-width: none;
+            flex: 1;
+            min-width: 0;
+        }
+        .nav-links::-webkit-scrollbar { display: none; }
+        .nav-links a {
+            display: block;
+            padding: 5px 10px;
+            border-radius: 8px;
+            color: var(--hud-muted);
+            text-decoration: none;
+            font-size: .86rem;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+        .nav-links a:hover,
+        .nav-links a[aria-current="true"] { color: #fff; background: var(--hud-3); }
+
+        .nav-status {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            font-family: var(--font-mono);
+            font-size: .78rem;
+            color: var(--hud-muted);
+            white-space: nowrap;
+        }
+        .nav-status strong { color: #fff; }
+        .nav-score, .nav-tests { display: flex; align-items: center; gap: 6px; }
+        .progress-dots { display: flex; gap: 4px; }
+        .progress-dots i {
+            width: 10px;
+            height: 10px;
+            border-radius: 3px;
+            background: var(--hud-3);
+            border: 1px solid var(--hud-border);
+            transition: background-color .3s ease;
+        }
+        .progress-dots i.done { background: var(--green); border-color: var(--green); }
+
+        /* =========================================================
+           HERO
+           ========================================================= */
+        .hero-wrap {
+            background:
+                radial-gradient(ellipse 60% 55% at 10% 0%, rgba(37, 99, 235, .13), transparent 70%),
+                radial-gradient(ellipse 50% 50% at 95% 25%, rgba(16, 185, 129, .11), transparent 70%);
+        }
+
+        .hero {
+            display: grid;
+            grid-template-columns: minmax(0, 1.08fr) minmax(0, .92fr);
+            gap: 44px;
+            align-items: center;
+            padding-block: 60px 36px;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font: 700 .74rem/1.3 var(--font-mono);
+            text-transform: uppercase;
+            letter-spacing: .06em;
+            color: var(--blue-text);
+            background: var(--blue-soft);
+            border: 1px solid var(--blue-line);
+            padding: 6px 12px;
+            border-radius: 99px;
+            margin: 0 0 20px;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.05rem, 4.6vw, 3.45rem);
+            line-height: 1.06;
+            letter-spacing: -.035em;
+            font-weight: 800;
+            margin: 0 0 20px;
+        }
+        .grad {
+            background: linear-gradient(90deg, var(--grad-a), var(--grad-b));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .grad--violet { background-image: linear-gradient(90deg, var(--grad-c), var(--grad-a)); }
+
+        .lead {
+            font-size: 1.14rem;
+            color: var(--text-muted);
+            max-width: 58ch;
+            margin: 0 0 28px;
+        }
+        .lead strong { color: var(--text); }
+
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 32px;
+        }
+
+        .hero-stats {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 12px;
+            margin: 0;
+        }
+        .hero-stats div {
+            display: flex;
+            flex-direction: column-reverse;
+            justify-content: flex-end;
+            gap: 4px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 14px 16px;
+            box-shadow: var(--shadow-sm);
+        }
+        .hero-stats dt { font-size: .78rem; line-height: 1.35; color: var(--text-subtle); }
+        .hero-stats dd { margin: 0; font: 800 1.55rem/1.1 var(--font-sans); letter-spacing: -.02em; }
+
+        /* Live-panel */
+        .live-panel {
+            background: linear-gradient(180deg, var(--hud-2), var(--hud));
+            color: var(--hud-text);
+            border: 1px solid var(--hud-border);
+            border-radius: var(--radius-xl);
+            padding: 20px;
+            box-shadow: var(--shadow-lg);
+            min-width: 0;
+        }
+        .live-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            font: 600 .8rem var(--font-mono);
+            color: var(--hud-muted);
+            margin-bottom: 16px;
+        }
+        .live-head-title { display: flex; align-items: center; gap: 8px; color: #fff; }
+        .live-head-actions { display: flex; align-items: center; gap: 8px; }
+        .live-pause {
+            background: var(--hud-3);
+            color: var(--hud-muted);
+            border: 1px solid var(--hud-border);
+            border-radius: 99px;
+            font: 600 .7rem var(--font-mono);
+            padding: 4px 9px;
+            cursor: pointer;
+        }
+        .live-pause:hover { color: #fff; }
+
+        .live-kpis {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 10px;
+            margin-bottom: 18px;
+        }
+        .kpi {
+            background: rgba(255, 255, 255, .03);
+            border: 1px solid var(--hud-border);
+            border-radius: 12px;
+            padding: 12px;
+            min-width: 0;
+        }
+        .kpi-label {
+            display: block;
+            font: 600 .68rem var(--font-mono);
+            color: var(--hud-muted);
+            text-transform: uppercase;
+            letter-spacing: .05em;
+        }
+        .kpi-value {
+            display: block;
+            font: 700 1.5rem/1.2 var(--font-sans);
+            color: #fff;
+            margin: 4px 0 6px;
+            font-variant-numeric: tabular-nums;
+        }
+        .kpi-sub { font: 500 .72rem var(--font-mono); color: var(--hud-dim); }
+        .kpi .meter { width: 100%; }
+
+        .live-feed-head {
+            font: 700 .7rem var(--font-mono);
+            text-transform: uppercase;
+            letter-spacing: .06em;
+            color: #fbbf24;
+            margin-bottom: 8px;
+        }
+        .live-feed {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: grid;
+            gap: 8px;
+        }
+        .feed-item {
+            display: grid;
+            grid-template-columns: auto minmax(0, 1fr) auto;
+            gap: 10px;
+            align-items: center;
+            background: rgba(255, 255, 255, .03);
+            border: 1px solid var(--hud-border);
+            border-radius: 10px;
+            padding: 9px 12px;
+            font-size: .8rem;
+            line-height: 1.35;
+        }
+        .feed-item.is-new { animation: fadeUp .5s ease; }
+        .feed-text { display: grid; min-width: 0; }
+        .feed-q { color: #fde68a; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .feed-a { color: var(--hud-muted); font: 500 .72rem var(--font-mono); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+        /* =========================================================
+           SEKTIONER
+           ========================================================= */
+        .section { padding-block: 76px 8px; }
+        section[id], .lab, .fact-stage { scroll-margin-top: var(--header-offset); }
+
+        .section-head { max-width: 780px; margin-bottom: 32px; }
+        .section-kicker {
+            font: 700 .76rem var(--font-mono);
+            color: var(--blue-text);
+            text-transform: uppercase;
+            letter-spacing: .08em;
+        }
+        .section-head h2 {
+            font-size: clamp(1.6rem, 3.2vw, 2.35rem);
+            line-height: 1.15;
+            letter-spacing: -.025em;
+            margin: 10px 0 12px;
+        }
+        .section-head p { color: var(--text-muted); font-size: 1.06rem; margin: 0; }
+
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 28px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* Idén: jämförelse */
+        .compare {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 20px;
+        }
+        .compare-card h3 { font-size: 1.2rem; margin: 0 0 16px; }
+        .compare-card--game { border-top: 4px solid var(--green); }
+        .compare-card--today { border-top: 4px solid var(--red); }
+        .mark-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+        .mark-list li { position: relative; padding-left: 30px; color: var(--text-muted); }
+        .mark-list li::before {
+            position: absolute;
+            left: 0;
+            top: 2px;
+            width: 20px;
+            height: 20px;
+            border-radius: 6px;
+            display: grid;
+            place-items: center;
+            font: 700 .72rem var(--font-mono);
+        }
+        .mark-list--ok li::before { content: "✓"; background: var(--green-soft); color: var(--green-text); border: 1px solid var(--green-line); }
+        .mark-list--no li::before { content: "✕"; background: var(--red-soft); color: var(--red-text); border: 1px solid var(--red-line); }
+
+        .statement {
+            margin: 24px 0 0;
+            padding: 24px 28px;
+            border-radius: var(--radius-lg);
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-left: 5px solid var(--blue);
+            font-size: 1.08rem;
+            color: var(--text-muted);
+            box-shadow: var(--shadow-sm);
+        }
+        .statement strong { color: var(--text); }
+
+        /* Flödet i fyra steg */
+        .flow {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-xl);
+            padding: 28px;
+            box-shadow: var(--shadow-md);
+        }
+        .flow-steps {
+            list-style: none;
+            margin: 0 0 22px;
+            padding: 0;
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 30px;
+        }
+        .flow-step {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            background: var(--surface-2);
+            border: 1px solid var(--border-strong);
+            border-radius: var(--radius);
+            padding: 16px;
+            transition: border-color .3s ease, box-shadow .3s ease, transform .3s ease;
+        }
+        .flow-step::after {
+            content: "➔";
+            position: absolute;
+            right: -24px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-subtle);
+            font: 700 1rem var(--font-mono);
+        }
+        .flow-step:last-child::after { display: none; }
+        .flow-step--amber  { --c: var(--amber);  --ct: var(--amber-text); }
+        .flow-step--blue   { --c: var(--blue);   --ct: var(--blue-text); }
+        .flow-step--violet { --c: var(--violet); --ct: var(--violet-text); }
+        .flow-step--green  { --c: var(--green);  --ct: var(--green-text); }
+        .flow-step.is-active {
+            border-color: var(--c);
+            box-shadow: 0 0 0 4px color-mix(in srgb, var(--c) 22%, transparent);
+            transform: translateY(-3px);
+        }
+        .flow-step.is-done { border-color: var(--c); }
+        .flow-step-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+        .flow-num {
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            background: var(--c);
+            color: #fff;
+            display: grid;
+            place-items: center;
+            font: 700 .82rem var(--font-mono);
+        }
+        .flow-step.is-done .flow-num::before { content: "✓"; }
+        .flow-step.is-done .flow-num span { display: none; }
+        .flow-time { font: 600 .72rem var(--font-mono); color: var(--text-subtle); }
+        .flow-step h3 {
+            font: 700 .8rem var(--font-mono);
+            letter-spacing: .04em;
+            text-transform: uppercase;
+            color: var(--ct);
+            margin: 14px 0 6px;
+        }
+        .flow-step p { font-size: .9rem; color: var(--text-muted); margin: 0; }
+        .flow-log {
+            display: none;
+            margin-top: 12px;
+            font: 500 .78rem/1.45 var(--font-mono);
+            color: var(--text);
+            background: var(--surface);
+            border: 1px dashed var(--c);
+            border-radius: var(--radius-sm);
+            padding: 10px;
+        }
+        .flow-step.has-log .flow-log { display: block; animation: fadeUp .35s ease; }
+        .flow-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; }
+        .flow-status { margin: 0; color: var(--text-muted); font-size: .94rem; flex: 1; min-width: 220px; }
+
+        /* =========================================================
+           TESTLABBET
+           ========================================================= */
+        .lab-progress {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 18px;
+        }
+        .lab-progress span {
+            font: 600 .75rem var(--font-mono);
+            padding: 6px 10px;
+            border-radius: 99px;
+            background: var(--surface);
+            border: 1px solid var(--border-strong);
+            color: var(--text-subtle);
+        }
+        .lab-progress span.done { background: var(--green-soft); border-color: var(--green-line); color: var(--green-text); }
+
+        .lab {
+            color-scheme: dark;
+            background: var(--hud);
+            color: var(--hud-text);
+            border: 1px solid var(--hud-border);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+        }
+        .lab-tabs {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 8px;
+            padding: 12px;
+            background: var(--hud-2);
+            border-bottom: 1px solid var(--hud-border);
+        }
+        .lab-tab {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-align: left;
+            background: transparent;
+            border: 1px solid transparent;
+            color: var(--hud-muted);
+            padding: 12px;
+            border-radius: var(--radius);
+            cursor: pointer;
+            min-width: 0;
+            transition: background-color .15s ease, border-color .15s ease;
+        }
+        .lab-tab:hover { background: rgba(255, 255, 255, .04); }
+        .lab-tab[aria-selected="true"] {
+            background: var(--hud-3);
+            border-color: #3b82f6;
+            box-shadow: inset 0 0 0 1px rgba(59, 130, 246, .3);
+        }
+        .lab-tab-icon { font-size: 1.4rem; flex: none; }
+        .lab-tab-text { min-width: 0; }
+        .lab-tab strong { display: block; color: var(--hud-text); font-size: .93rem; }
+        .lab-tab small { display: block; font-size: .75rem; line-height: 1.3; }
+        .lab-tab-check {
+            margin-left: auto;
+            flex: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            font-size: .68rem;
+            font-weight: 700;
+            background: var(--hud-3);
+            color: transparent;
+            border: 1px solid var(--hud-border);
+        }
+        .lab-tab.is-done .lab-tab-check { background: var(--green); color: #052e16; border-color: var(--green); }
+
+        .lab-panel { padding: 28px; animation: fadeUp .3s ease; }
+        .panel-intro h3 { font-size: 1.4rem; margin: 0 0 8px; color: #fff; }
+        .panel-intro p { color: #c3cde0; margin: 0 0 22px; max-width: 78ch; }
+        .panel-intro strong { color: #fff; }
+
+        .col-label {
+            font: 700 .7rem var(--font-mono);
+            text-transform: uppercase;
+            letter-spacing: .06em;
+            color: #fbbf24;
+            margin: 0 0 8px;
+        }
+        .col-label--blue { color: #60a5fa; }
+
+        .fine-print { font-size: .8rem; color: var(--hud-dim); margin: 16px 0 0; }
+
+        /* --- Faktalåset --- */
+        .fact-layout {
+            display: grid;
+            grid-template-columns: minmax(0, 340px) minmax(0, 1fr);
+            gap: 20px;
+        }
+        .claim-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; align-content: start; }
+        .claim-btn {
+            width: 100%;
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+            text-align: left;
+            background: var(--hud-2);
+            border: 1px solid var(--hud-border);
+            color: var(--hud-text);
+            padding: 11px 13px;
+            border-radius: 12px;
+            font-size: .87rem;
+            line-height: 1.4;
+            cursor: pointer;
+            transition: border-color .15s ease, transform .15s ease, background-color .15s ease;
+        }
+        .claim-btn:hover { border-color: #f59e0b; transform: translateX(2px); }
+        .claim-btn[aria-pressed="true"] { border-color: #3b82f6; background: var(--hud-3); }
+        .claim-state {
+            flex: none;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            font: 700 .7rem var(--font-mono);
+            border: 1px solid var(--hud-border);
+            background: var(--hud);
+            color: var(--hud-muted);
+        }
+        .claim-state.is-right { background: #10b981; border-color: #10b981; color: #052e16; }
+        .claim-state.is-wrong { background: #ef4444; border-color: #ef4444; color: #fff; }
+
+        .fact-stage { min-width: 0; }
+        .podium {
+            background: linear-gradient(135deg, #172036, #0f172a);
+            border: 1px solid var(--hud-border);
+            border-radius: var(--radius-lg);
+            padding: 20px 22px;
+            margin-bottom: 14px;
+        }
+        .podium-label {
+            font: 700 .7rem var(--font-mono);
+            text-transform: uppercase;
+            letter-spacing: .06em;
+            color: #fbbf24;
+        }
+        .podium blockquote {
+            margin: 8px 0 6px;
+            font-size: 1.22rem;
+            font-weight: 700;
+            line-height: 1.35;
+            color: #fff;
+        }
+        .podium-speaker { font-size: .8rem; color: var(--hud-muted); }
+
+        .guess-q { font-weight: 700; margin: 0 0 8px; color: #fff; }
+        .guess-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 8px;
+        }
+        .guess-btn {
+            background: var(--hud-2);
+            border: 1px solid #475569;
+            color: var(--hud-text);
+            padding: 11px 10px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: .88rem;
+            cursor: pointer;
+            transition: border-color .15s ease, background-color .15s ease;
+        }
+        .guess-btn:hover:not(:disabled) { border-color: #fbbf24; background: var(--hud-3); }
+        .guess-btn:disabled { cursor: default; opacity: .55; }
+        .guess-btn.is-picked { opacity: 1; border-color: #60a5fa; background: #1e3a8a; }
+        .guess-btn.is-answer { opacity: 1; border-color: #10b981; box-shadow: 0 0 0 2px rgba(16, 185, 129, .4); }
+
+        .console {
+            background: #020617;
+            border: 1px solid var(--hud-border);
+            border-radius: var(--radius);
+            padding: 16px 18px;
+            font: 500 .83rem/1.6 var(--font-mono);
+            color: #e2e8f0;
+            min-height: 170px;
+            margin-top: 14px;
+            overflow-wrap: anywhere;
+        }
+        .c-line { margin: 0 0 6px; animation: fadeUp .25s ease; }
+        .c-line:last-child { margin-bottom: 0; }
+        .c-tag { font-weight: 700; margin-right: 4px; }
+        .c-blue { color: #60a5fa; }
+        .c-green { color: #34d399; }
+        .c-red { color: #f87171; }
+        .c-amber { color: #fbbf24; }
+        .c-violet { color: #c4b5fd; }
+        .c-dim { color: var(--hud-dim); }
+        .c-line.is-verdict {
+            margin-top: 12px;
+            padding: 10px 12px;
+            border-radius: 10px;
+            font-weight: 700;
+            border-left: 3px solid currentColor;
+        }
+        .c-line.tone-red    { color: #fca5a5; background: rgba(239, 68, 68, .1); }
+        .c-line.tone-amber  { color: #fcd34d; background: rgba(245, 158, 11, .1); }
+        .c-line.tone-green  { color: #6ee7b7; background: rgba(16, 185, 129, .1); }
+        .c-line.tone-violet { color: #ddd6fe; background: rgba(124, 58, 237, .14); }
+        .caret { display: inline-block; color: #34d399; animation: blink 1s steps(1) infinite; }
+
+        .result-box {
+            margin-top: 14px;
+            padding: 14px 16px;
+            border-radius: 12px;
+            border: 1px solid;
+            font-size: .92rem;
+            animation: fadeUp .3s ease;
+        }
+        .result-box p { margin: 6px 0 0; color: #cbd5e1; }
+        .result-box strong { color: #fff; }
+        .result-box.is-good { background: rgba(16, 185, 129, .1); border-color: rgba(16, 185, 129, .45); }
+        .result-box.is-bad { background: rgba(239, 68, 68, .1); border-color: rgba(239, 68, 68, .45); }
+        .result-box.is-info { background: rgba(37, 99, 235, .12); border-color: rgba(59, 130, 246, .45); }
+
+        .fact-summary {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            margin-top: 20px;
+            padding: 16px 18px;
+            border-radius: var(--radius);
+            background: var(--hud-2);
+            border: 1px solid var(--hud-border);
+        }
+        .fact-summary p { margin: 0; color: #cbd5e1; flex: 1; min-width: 240px; }
+        .fact-summary strong { color: #fff; }
+
+        /* --- Säkerhetsspärren --- */
+        .sparr-head {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex-wrap: wrap;
+            font: 600 .8rem var(--font-mono);
+            color: var(--hud-muted);
+            margin-bottom: 18px;
+        }
+        .sparr-head strong { color: #fff; }
+        .sparr-bar {
+            flex: 1;
+            min-width: 120px;
+            height: 8px;
+            background: var(--hud-3);
+            border-radius: 99px;
+            overflow: hidden;
+        }
+        .sparr-bar span {
+            display: block;
+            height: 100%;
+            width: 0;
+            background: linear-gradient(90deg, #7c3aed, #3b82f6);
+            border-radius: inherit;
+            transition: width .4s ease;
+        }
+
+        .case {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr);
+            gap: 18px;
+            align-items: start;
+            animation: fadeUp .35s ease;
+        }
+        .bubble {
+            position: relative;
+            margin: 0;
+            background: #fffbeb;
+            color: #78350f;
+            border: 2px solid #fcd34d;
+            border-radius: 20px;
+            padding: 18px 20px;
+            font-size: 1.04rem;
+            font-weight: 600;
+            line-height: 1.45;
+        }
+        .bubble::after {
+            content: "";
+            position: absolute;
+            left: 28px;
+            bottom: -12px;
+            width: 20px;
+            height: 20px;
+            background: #fffbeb;
+            border-right: 2px solid #fcd34d;
+            border-bottom: 2px solid #fcd34d;
+            transform: rotate(45deg);
+        }
+        .bubble-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin: 22px 0 0;
+        }
+
+        .proposal {
+            background: var(--hud-2);
+            border: 1px solid rgba(59, 130, 246, .5);
+            border-radius: var(--radius-lg);
+            padding: 18px 20px;
+        }
+        .proposal h4 { margin: 0 0 10px; font-size: 1.12rem; color: #fff; }
+        .prop-details { margin: 0 0 14px; padding-left: 18px; color: #cbd5e1; font-size: .9rem; }
+        .prop-details li { margin-bottom: 3px; }
+        .selfcheck {
+            display: grid;
+            gap: 6px;
+            padding: 12px 14px;
+            border-radius: 12px;
+            background: rgba(2, 6, 23, .6);
+            border: 1px solid var(--hud-border);
+            font: 500 .78rem/1.45 var(--font-mono);
+        }
+        .selfcheck-title { margin: 0 0 2px; color: var(--hud-muted); font-weight: 700; text-transform: uppercase; letter-spacing: .05em; font-size: .68rem; }
+        .check-row { display: flex; gap: 8px; }
+        .check-ok { color: #34d399; font-weight: 700; flex: none; }
+        .check-row b { color: #fff; font-weight: 600; }
+        .check-note { color: #cbd5e1; }
+        .confidence { display: flex; align-items: center; gap: 10px; margin-top: 4px; color: var(--hud-muted); }
+        .conf-bar { flex: 1; height: 6px; background: var(--hud-3); border-radius: 99px; overflow: hidden; }
+        .conf-bar span { display: block; height: 100%; background: #34d399; }
+        .confidence strong { color: #34d399; }
+        .decision { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+        .decision .btn { flex: 1; min-width: 140px; }
+
+        .verdict-box h4 { margin: 0 0 6px; font-size: 1.05rem; color: #fff; }
+        .verdict-box p { color: #cbd5e1; }
+        .verdict-box .better { color: #93c5fd; }
+        .verdict-box .consequence { color: #fca5a5; }
+        .verdict-box .btn { margin-top: 12px; }
+
+        .summary-card {
+            display: grid;
+            grid-template-columns: auto minmax(0, 1fr);
+            gap: 28px;
+            align-items: start;
+            background: var(--hud-2);
+            border: 1px solid var(--hud-border);
+            border-radius: var(--radius-lg);
+            padding: 26px;
+            animation: fadeUp .35s ease;
+        }
+        .summary-score {
+            display: grid;
+            place-items: center;
+            align-content: center;
+            width: 132px;
+            height: 132px;
+            border-radius: 50%;
+            background: conic-gradient(#34d399 var(--deg, 0deg), var(--hud-3) 0);
+            position: relative;
+        }
+        .summary-score::before {
+            content: "";
+            position: absolute;
+            inset: 10px;
+            border-radius: 50%;
+            background: var(--hud-2);
+        }
+        .summary-score > * { position: relative; }
+        .summary-score strong { font-size: 2rem; color: #fff; line-height: 1; }
+        .summary-score span { font: 600 .7rem var(--font-mono); color: var(--hud-muted); text-transform: uppercase; }
+        .summary-card h4 { margin: 0 0 8px; font-size: 1.3rem; color: #fff; }
+        .summary-card p { color: #cbd5e1; }
+        .summary-stats { margin: 0 0 14px; padding-left: 18px; color: #cbd5e1; }
+        .summary-principle { font-family: var(--font-mono); color: #c4b5fd !important; font-size: .9rem; }
+        .summary-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+
+        /* --- Budgettycoon --- */
+        .budget-layout {
+            display: grid;
+            grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+            gap: 26px;
+            align-items: start;
+        }
+        .slider-row { padding: 12px 0; border-bottom: 1px dashed var(--hud-border); }
+        .slider-row:first-child { padding-top: 0; }
+        .slider-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 10px;
+            font-size: .92rem;
+            flex-wrap: wrap;
+        }
+        .slider-top label { font-weight: 600; color: #fff; }
+        .slider-top output { font: 700 .86rem var(--font-mono); color: #fff; white-space: nowrap; font-variant-numeric: tabular-nums; }
+        .slider-kpi { margin: 2px 0 0; font: 500 .76rem/1.4 var(--font-mono); color: var(--hud-muted); }
+        .slider-kpi.is-warn { color: #fbbf24; }
+        .slider-hint { display: block; margin-top: 2px; font-size: .76rem; color: var(--hud-dim); }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 28px;
+            margin: 4px 0 0;
+            background: transparent;
+            cursor: pointer;
+        }
+        input[type="range"]::-webkit-slider-runnable-track {
+            height: 6px;
+            border-radius: 99px;
+            background: linear-gradient(to right, #3b82f6 var(--p, 50%), #27344f var(--p, 50%));
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            margin-top: -7px;
+            border-radius: 50%;
+            background: #fff;
+            border: 3px solid #3b82f6;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, .45);
+        }
+        input[type="range"]::-moz-range-track { height: 6px; border-radius: 99px; background: #27344f; }
+        input[type="range"]::-moz-range-progress { height: 6px; border-radius: 99px; background: #3b82f6; }
+        input[type="range"]::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #fff;
+            border: 3px solid #3b82f6;
+        }
+        input[type="range"]:focus-visible { outline: 3px solid #60a5fa; outline-offset: 4px; border-radius: 6px; }
+
+        .switch-row {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-top: 16px;
+            padding: 14px 16px;
+            border: 1px solid var(--hud-border);
+            border-radius: 12px;
+            background: var(--hud-2);
+            cursor: pointer;
+            font-size: .9rem;
+            line-height: 1.4;
+        }
+        .switch-row small { color: var(--hud-muted); }
+        .switch-row input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+        .switch {
+            position: relative;
+            flex: none;
+            width: 46px;
+            height: 26px;
+            border-radius: 99px;
+            background: #334155;
+            transition: background-color .2s ease;
+        }
+        .switch::after {
+            content: "";
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #fff;
+            transition: transform .2s ease;
+        }
+        .switch-row input:checked + .switch { background: #10b981; }
+        .switch-row input:checked + .switch::after { transform: translateX(20px); }
+        .switch-row input:focus-visible + .switch { outline: 3px solid #60a5fa; outline-offset: 2px; }
+
+        .budget-big { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+        .big-kpi {
+            background: var(--hud-2);
+            border: 1px solid var(--hud-border);
+            border-radius: var(--radius);
+            padding: 16px;
+            min-width: 0;
+        }
+        .big-kpi > span { display: block; font: 600 .7rem var(--font-mono); color: var(--hud-muted); text-transform: uppercase; letter-spacing: .05em; }
+        .big-kpi strong { display: block; font-size: 1.85rem; line-height: 1.2; margin: 4px 0; color: #fff; font-variant-numeric: tabular-nums; }
+        .big-kpi small { display: block; font-size: .76rem; color: var(--hud-muted); line-height: 1.35; }
+        .big-kpi.is-neg { border-color: rgba(239, 68, 68, .55); }
+        .big-kpi.is-neg strong { color: #f87171; }
+        .big-kpi.is-pos strong { color: #34d399; }
+        .big-kpi .meter { width: 100%; margin-top: 8px; }
+        .budget-summary { font: 500 .76rem var(--font-mono); color: var(--hud-muted); margin: 12px 0; }
+
+        .advisor {
+            display: flex;
+            gap: 10px;
+            background: rgba(37, 99, 235, .1);
+            border: 1px solid rgba(59, 130, 246, .4);
+            border-radius: 12px;
+            padding: 13px 15px;
+            font-size: .88rem;
+            color: #cbd5e1;
+            margin-bottom: 14px;
+        }
+        .advisor p { margin: 0; }
+        .advisor-icon { flex: none; font-size: 1.2rem; line-height: 1.3; }
+        .budget-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+        .budget-actions .btn { padding: 11px 15px; font-size: .88rem; }
+
+        .assumptions {
+            margin-top: 16px;
+            font-size: .84rem;
+            color: var(--hud-muted);
+        }
+        .assumptions summary { cursor: pointer; color: #93c5fd; font-weight: 600; }
+        .assumptions ul { margin: 10px 0 0; padding-left: 18px; }
+        .assumptions li { margin-bottom: 4px; }
+
+        /* --- Ärendeloppet --- */
+        .race-cases { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
+        .seg-btn {
+            background: var(--hud-2);
+            border: 1px solid var(--hud-border);
+            color: var(--hud-muted);
+            padding: 9px 14px;
+            border-radius: 99px;
+            font-weight: 600;
+            font-size: .86rem;
+            cursor: pointer;
+        }
+        .seg-btn:hover:not(:disabled) { color: #fff; border-color: #60a5fa; }
+        .seg-btn[aria-pressed="true"] { background: #1e3a8a; color: #fff; border-color: #3b82f6; }
+        .seg-btn:disabled { cursor: not-allowed; opacity: .6; }
+
+        .race-top { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 14px; }
+        .race-clock { display: flex; align-items: baseline; gap: 10px; font-family: var(--font-mono); }
+        .race-clock strong { font-size: 1.9rem; color: #fff; font-variant-numeric: tabular-nums; }
+        .race-human { color: var(--hud-muted); font-size: .85rem; }
+
+        .lane {
+            background: var(--hud-2);
+            border: 1px solid var(--hud-border);
+            border-radius: var(--radius-lg);
+            padding: 16px;
+            margin-bottom: 12px;
+        }
+        .lane-head { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; font-weight: 700; margin-bottom: 10px; color: #fff; }
+        .lane-status { font: 600 .8rem var(--font-mono); color: var(--hud-muted); }
+        .lane.is-finished .lane-status { color: #34d399; }
+        .track { position: relative; height: 14px; background: var(--hud-3); border-radius: 99px; overflow: hidden; }
+        .track-fill {
+            position: absolute;
+            inset: 0 auto 0 0;
+            width: 0;
+            border-radius: inherit;
+            background: linear-gradient(90deg, #ef4444, #f59e0b);
+        }
+        .lane--new .track-fill { background: linear-gradient(90deg, #3b82f6, #10b981); }
+        .lane-steps {
+            list-style: none;
+            margin: 12px 0 0;
+            padding: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+            gap: 6px;
+        }
+        .lane-steps li {
+            display: flex;
+            gap: 8px;
+            align-items: baseline;
+            font-size: .8rem;
+            line-height: 1.35;
+            color: var(--hud-dim);
+            padding: 6px 9px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, .02);
+            border: 1px solid transparent;
+        }
+        .lane-steps li.is-active { color: #fff; border-color: #f59e0b; background: rgba(245, 158, 11, .08); }
+        .lane-steps li.is-done { color: var(--hud-text); }
+        .lane-steps li.is-done .s-icon { color: #34d399; }
+        .s-icon { flex: none; width: 12px; font-family: var(--font-mono); }
+        .s-dur { margin-left: auto; padding-left: 8px; font-family: var(--font-mono); color: var(--hud-muted); white-space: nowrap; }
+
+        .race-compare {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 10px;
+        }
+        .rc { display: grid; }
+        .rc span { font: 600 .7rem var(--font-mono); text-transform: uppercase; color: var(--hud-muted); }
+        .rc strong { font-size: 1.6rem; line-height: 1.2; }
+        .rc--new strong { color: #34d399; }
+        .rc--old strong { color: #f87171; }
+        .rc-vs { font: 700 .8rem var(--font-mono); color: var(--hud-dim); }
+
+        /* =========================================================
+           PARTIPROGRAM
+           ========================================================= */
+        .pillars {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 20px;
+        }
+        .pillar {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 26px;
+            box-shadow: var(--shadow-sm);
+            transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+        }
+        .pillar:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); border-color: var(--line); }
+        .pillar--blue   { --soft: var(--blue-soft);   --line: var(--blue-line);   --accent: var(--blue-text); }
+        .pillar--amber  { --soft: var(--amber-soft);  --line: var(--amber-line);  --accent: var(--amber-text); }
+        .pillar--violet { --soft: var(--violet-soft); --line: var(--violet-line); --accent: var(--violet-text); }
+        .pillar--green  { --soft: var(--green-soft);  --line: var(--green-line);  --accent: var(--green-text); }
+        .pillar--red    { --soft: var(--red-soft);    --line: var(--red-line);    --accent: var(--red-text); }
+        .pillar-top { display: flex; justify-content: space-between; align-items: center; }
+        .pillar-icon {
+            width: 46px;
+            height: 46px;
+            border-radius: 13px;
+            display: grid;
+            place-items: center;
+            font-size: 1.35rem;
+            background: var(--soft);
+            border: 1px solid var(--line);
+        }
+        .pillar-num { font: 800 1.6rem var(--font-mono); color: var(--border-strong); }
+        .pillar-tag {
+            align-self: flex-start;
+            font: 700 .7rem var(--font-mono);
+            text-transform: uppercase;
+            letter-spacing: .04em;
+            color: var(--accent);
+            background: var(--soft);
+            border: 1px solid var(--line);
+            padding: 4px 9px;
+            border-radius: 6px;
+        }
+        .pillar h3 { font-size: 1.17rem; margin: 0; }
+        .pillar > p { margin: 0; color: var(--text-muted); font-size: .95rem; }
+        .pillar ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+        .pillar li { position: relative; padding-left: 20px; font-size: .92rem; }
+        .pillar li::before { content: "▸"; position: absolute; left: 0; color: var(--accent); font-weight: 700; }
+        .tycoon-bubble {
+            margin: auto 0 0;
+            align-self: flex-start;
+            background: var(--amber-soft);
+            border: 1px solid var(--amber-line);
+            color: var(--amber-text);
+            font: 600 .8rem/1.45 var(--font-mono);
+            padding: 8px 12px;
+            border-radius: 14px 14px 14px 4px;
+        }
+
+        /* =========================================================
+           FAQ
+           ========================================================= */
+        .faq { display: grid; gap: 10px; max-width: 880px; }
+        .faq details {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 0 22px;
+            box-shadow: var(--shadow-sm);
+            transition: border-color .2s ease;
+        }
+        .faq details[open] { border-color: var(--blue-line); }
+        .faq summary {
+            cursor: pointer;
+            list-style: none;
+            padding: 18px 0;
+            font-weight: 700;
+            font-size: 1.02rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+        }
+        .faq summary::-webkit-details-marker { display: none; }
+        .faq summary::after {
+            content: "+";
+            flex: none;
+            font: 700 1.35rem/1 var(--font-mono);
+            color: var(--blue-text);
+            transition: transform .2s ease;
+        }
+        .faq details[open] summary::after { transform: rotate(45deg); }
+        .faq details p { margin: 0 0 18px; color: var(--text-muted); }
+
+        /* =========================================================
+           CTA & SIDFOT
+           ========================================================= */
+        .cta { padding-top: 84px; }
+        .cta-inner {
+            background:
+                radial-gradient(circle at 15% 0%, rgba(37, 99, 235, .38), transparent 50%),
+                radial-gradient(circle at 90% 100%, rgba(16, 185, 129, .28), transparent 50%),
+                linear-gradient(135deg, #0b1220, #16213a);
+            color: #fff;
+            border-radius: 28px;
+            padding: 56px 40px;
+            text-align: center;
+            border-bottom: 4px solid var(--green);
+            box-shadow: var(--shadow-lg);
+        }
+        .cta-inner h2 { font-size: clamp(1.7rem, 3.6vw, 2.5rem); margin: 0 0 14px; }
+        .cta-inner > p { max-width: 700px; margin: 0 auto 22px; font-size: 1.08rem; color: #cbd5e1; }
+        .cta-result {
+            display: inline-block;
+            background: rgba(255, 255, 255, .07);
+            border: 1px solid rgba(255, 255, 255, .14);
+            border-radius: 99px;
+            padding: 8px 16px;
+            font: 600 .84rem var(--font-mono);
+            color: #e2e8f0;
+            margin-bottom: 26px;
+        }
+        .cta-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+
+        .site-footer {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 12px 24px;
+            padding-block: 40px 48px;
+            color: var(--text-subtle);
+            font-size: .85rem;
+        }
+        .site-footer p { margin: 0; max-width: 640px; }
+        .site-footer strong { color: var(--text); }
+
+        .toast {
+            position: fixed;
+            left: 50%;
+            bottom: 24px;
+            z-index: 100;
+            max-width: calc(100% - 32px);
+            background: #0b1220;
+            color: #fff;
+            border: 1px solid var(--hud-border);
+            border-left: 4px solid var(--green);
+            padding: 12px 18px;
+            border-radius: 12px;
+            box-shadow: 0 20px 40px -12px rgba(0, 0, 0, .5);
+            font-size: .92rem;
+            opacity: 0;
+            pointer-events: none;
+            transform: translate(-50%, 16px);
+            transition: opacity .25s ease, transform .25s ease;
+        }
+        .toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+        /* Scroll-animationer (endast med JavaScript) */
+        .js .reveal { opacity: 0; transform: translateY(18px); transition: opacity .6s ease, transform .6s ease; }
+        .js .reveal.is-visible { opacity: 1; transform: none; }
+
+        /* =========================================================
+           RESPONSIVITET
+           ========================================================= */
+        @media (max-width: 1100px) {
+            .metric--wide { display: none; }
+        }
+
+        @media (max-width: 980px) {
+            .hero { grid-template-columns: 1fr; gap: 36px; padding-top: 44px; }
+            .pillars { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .fact-layout, .budget-layout { grid-template-columns: 1fr; }
+            .guess-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        }
+
+        @media (max-width: 880px) {
+            .flow-steps { grid-template-columns: 1fr; gap: 30px; }
+            .flow-step::after {
+                content: "↓";
+                right: auto;
+                top: auto;
+                left: 50%;
+                bottom: -26px;
+                transform: translateX(-50%);
+            }
+            .lab-tabs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .case { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 760px) {
+            .compare { grid-template-columns: 1fr; }
+            .party-badge { display: none; }
+            .section { padding-top: 60px; }
+        }
+
+        @media (max-width: 640px) {
+            :root { --header-offset: 108px; }
+            .container { padding-inline: 16px; }
+            .pillars { grid-template-columns: 1fr; }
+            .flow, .card, .statement { padding: 20px; }
+            .lab { border-radius: var(--radius-lg); }
+            .lab-panel { padding: 18px; }
+            .lab-tabs { padding: 8px; gap: 6px; }
+            .lab-tab { position: relative; flex-direction: column; align-items: flex-start; padding: 10px; gap: 4px; }
+            .lab-tab small { display: none; }
+            .lab-tab-icon { font-size: 1.15rem; }
+            .lab-tab strong { font-size: .86rem; }
+            .lab-tab-check { position: absolute; top: 8px; right: 8px; width: 18px; height: 18px; }
+            .nav-links {
+                -webkit-mask-image: linear-gradient(to right, #000 82%, transparent);
+                mask-image: linear-gradient(to right, #000 82%, transparent);
+            }
+            .cta-inner { padding: 40px 20px; border-radius: var(--radius-xl); }
+            .summary-card { grid-template-columns: 1fr; justify-items: start; padding: 20px; }
+            .summary-score { width: 110px; height: 110px; }
+            .hero-stats dd { font-size: 1.25rem; }
+            .hero-stats div { padding: 12px; }
+            .u-hide-sm { display: none; }
+        }
+
+        @media (max-width: 480px) {
+            .brand-ver { display: none; }
+            .hud-metrics .meter { display: none; }
+            .hud-row { gap: 10px; }
+            .hero-stats { grid-template-columns: 1fr; }
+            .hero-stats div { flex-direction: row-reverse; justify-content: space-between; align-items: center; }
+            .hero-stats dt { max-width: 70%; }
+            .live-panel { padding: 16px; }
+            .kpi-value { font-size: 1.3rem; }
+            .budget-big { grid-template-columns: 1fr; }
+            .guess-grid { grid-template-columns: 1fr 1fr; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            *, *::before, *::after {
+                animation-duration: .01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: .01ms !important;
+            }
+            .js .reveal { opacity: 1; transform: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <a class="skip-link" href="#main">Hoppa till innehållet</a>
+
+    <!-- =====================================================
+         TOPP-HUD: KommunOS-status + navigering
+         ===================================================== -->
+    <header class="hud">
+        <div class="container hud-row">
+            <a class="brand" href="#top" aria-label="Optimeringspartiet – till början av sidan">
+                <span class="status-dot" aria-hidden="true"></span>
+                <span>KommunOS <span class="brand-ver">v3.0</span></span>
+                <span class="party-badge">Optimeringspartiet (OP)</span>
+            </a>
+
+            <div class="hud-metrics" aria-label="KommunOS status">
+                <div class="metric" id="metric-trivsel" title="Beräknad trivsel i exempelkommunen Tycköping">
+                    <span class="metric-label">Trivsel</span>
+                    <span class="meter" aria-hidden="true"><span id="hud-trivsel-bar"></span></span>
+                    <span class="metric-value" id="hud-trivsel">65&nbsp;%</span>
+                </div>
+                <div class="metric metric--wide" id="metric-fakta">
+                    <span class="metric-label">Faktalås</span>
+                    <span class="metric-value">AKTIVT</span>
+                </div>
+                <div class="metric metric--wide" id="metric-sparr">
+                    <span class="metric-label">Säkerhetsspärr</span>
+                    <span class="metric-value metric-value--blue">BEMANNAD</span>
+                </div>
+            </div>
+
+            <button class="icon-btn" id="theme-toggle" type="button" aria-label="Byt till mörkt läge">
+                <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+                <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+            </button>
+        </div>
+
+        <nav class="hud-nav" aria-label="Huvudmeny">
+            <div class="container hud-nav-inner">
+                <ul class="nav-links">
+                    <li><a href="#iden">Idén</a></li>
+                    <li><a href="#sa-funkar-det">Så funkar det</a></li>
+                    <li><a href="#testlabbet">Testlabbet</a></li>
+                    <li><a href="#program">Partiprogram</a></li>
+                    <li><a href="#fragor">Frågor &amp; svar</a></li>
+                </ul>
+                <div class="nav-status">
+                    <span class="nav-score" id="nav-score" title="Poäng från testerna">★ <strong id="hud-score">0</strong><span class="u-hide-sm">poäng</span></span>
+                    <span class="nav-tests" title="Klara tester i testlabbet">
+                        <span class="u-hide-sm">Tester</span>
+                        <span class="progress-dots" aria-hidden="true">
+                            <i data-test="fakta"></i><i data-test="sparr"></i><i data-test="budget"></i><i data-test="race"></i>
+                        </span>
+                        <strong id="hud-tests">0/4</strong>
+                    </span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main id="main">
+
+        <!-- =====================================================
+             HERO
+             ===================================================== -->
+        <div class="hero-wrap" id="top">
+            <section class="container hero" aria-labelledby="hero-title">
+                <div class="hero-copy reveal">
+                    <p class="eyebrow">Partiprogram 2026 · Optimeringspartiet (OP)</p>
+                    <h1 id="hero-title">En begriplig kommun med <span class="grad">algoritmisk verkstad</span> och <span class="grad grad--violet">mänsklig säkerhetskontroll</span></h1>
+                    <p class="lead">
+                        Varför är det enklare att förstå hur man sköter en hel stad i <em>Cities: Skylines</em> än hur den egna hemkommunen fattar beslut?
+                        Med <strong>KommunOS</strong> sköts vardagsbyråkratin på sekunder – medan dina folkvalda granskar, debatterar och stoppar maskinen när den har fel.
+                    </p>
+                    <div class="hero-actions">
+                        <a class="btn btn--primary" href="#testlabbet">▶ Testa politiken i praktiken</a>
+                        <a class="btn btn--ghost" href="#program">Läs partiprogrammet</a>
+                    </div>
+                    <dl class="hero-stats">
+                        <div><dt>Beräkningstid per vardagsärende</dt><dd>0,03&nbsp;s</dd></div>
+                        <div><dt>Öppen källkod och öppna beslutsloggar</dt><dd>100&nbsp;%</dd></div>
+                        <div><dt>Beslut om enskilda som fattas utan människa</dt><dd>0</dd></div>
+                    </dl>
+                </div>
+
+                <aside class="live-panel reveal" aria-label="KommunOS live, exempeldata från den fiktiva kommunen Tycköping">
+                    <div class="live-head">
+                        <span class="live-head-title"><span class="status-dot" aria-hidden="true"></span>KommunOS · Tycköping</span>
+                        <span class="live-head-actions">
+                            <span class="chip chip--dim">Exempeldata</span>
+                            <button class="live-pause" id="live-pause" type="button" aria-pressed="false">⏸ Pausa</button>
+                        </span>
+                    </div>
+                    <div class="live-kpis">
+                        <div class="kpi">
+                            <span class="kpi-label">Trivsel</span>
+                            <span class="kpi-value" id="live-trivsel">65&nbsp;%</span>
+                            <span class="meter" aria-hidden="true"><span id="live-trivsel-bar"></span></span>
+                        </div>
+                        <div class="kpi">
+                            <span class="kpi-label">Öppna ärenden</span>
+                            <span class="kpi-value" id="live-open">128</span>
+                            <span class="kpi-sub">felanmälningar</span>
+                        </div>
+                        <div class="kpi">
+                            <span class="kpi-label">Problem → åtgärd</span>
+                            <span class="kpi-value">3,2&nbsp;d</span>
+                            <span class="kpi-sub">snittid</span>
+                        </div>
+                        <div class="kpi">
+                            <span class="kpi-label">Arbetsordrar idag</span>
+                            <span class="kpi-value" id="live-orders">47</span>
+                            <span class="kpi-sub">egen personal</span>
+                        </div>
+                    </div>
+                    <div class="live-feed-head">💬 Inkommande tankebubblor</div>
+                    <ul class="live-feed" id="live-feed"></ul>
+                </aside>
+            </section>
+        </div>
+
+        <!-- =====================================================
+             01 IDÉN
+             ===================================================== -->
+        <section class="section container" id="iden" aria-labelledby="iden-title">
+            <header class="section-head reveal">
+                <span class="section-kicker">01 · Idén</span>
+                <h2 id="iden-title">Ett bra spel visar verkligheten som den är. Kommunen gömmer den.</h2>
+                <p>I ett välbyggt strategispel leder ett identifierat problem direkt till en åtgärd. I verklighetens kommunpolitik har vi i stället byggt ett ogenomträngligt filter av utredningar, prestigeprojekt, partipolitiskt käbbel och halvsanningar.</p>
+            </header>
+
+            <div class="compare">
+                <article class="card compare-card compare-card--game reveal">
+                    <h3>🎮 I ett välbyggt strategispel</h3>
+                    <ul class="mark-list mark-list--ok">
+                        <li>Tydliga mätare för trivsel, ekonomi och väntetider – synliga hela tiden.</li>
+                        <li>Ett identifierat problem leder omedelbart till en åtgärd.</li>
+                        <li>Du ser konsekvensen av varje beslut direkt.</li>
+                    </ul>
+                </article>
+                <article class="card compare-card compare-card--today reveal">
+                    <h3>🏛️ I kommunpolitiken i dag</h3>
+                    <ul class="mark-list mark-list--no">
+                        <li>Siffrorna gömmer sig i PDF-bilagor och protokoll som ingen läser.</li>
+                        <li>Debatten bygger ofta på halvsanningar som ingen hinner kontrollera.</li>
+                        <li>Det tar några veckor att asfaltera en pendlarparkering – men flera år av nämndmöten innan någon ens får gräva.</li>
+                    </ul>
+                </article>
+            </div>
+
+            <p class="statement reveal">
+                <strong>Optimeringspartiet (OP)</strong> är ett seriöst systemskifte för lokalpolitiken. Vi vill införa plattformen <strong>KommunOS</strong> – en central förvaltnings-AI som automatiserar den dagliga kommunala byråkratin – medan våra folkvalda politiker får en ny och betydligt viktigare roll: att granska, debattera med och agera juridisk säkerhetsspärr mot maskinen.
+            </p>
+        </section>
+
+        <!-- =====================================================
+             02 SÅ FUNKAR DET
+             ===================================================== -->
+        <section class="section container" id="sa-funkar-det" aria-labelledby="flow-title">
+            <header class="section-head reveal">
+                <span class="section-kicker">02 · Så fungerar KommunOS</span>
+                <h2 id="flow-title">Fyra steg från tankebubbla till färdigt jobb</h2>
+                <p>Tryck på knappen och följ ett vardagsärende genom hela systemet – från invånarens felanmälan till hantverkaren som gör jobbet.</p>
+            </header>
+
+            <div class="flow reveal">
+                <ol class="flow-steps" id="flow-steps">
+                    <li class="flow-step flow-step--amber">
+                        <div class="flow-step-top"><span class="flow-num"><span>1</span></span><span class="flow-time">Realtid</span></div>
+                        <h3>Tankebubbla</h3>
+                        <p>Felanmälningar, ködata och enkäter registrerar ett konkret behov.</p>
+                        <div class="flow-log" data-log></div>
+                    </li>
+                    <li class="flow-step flow-step--blue">
+                        <div class="flow-step-top"><span class="flow-num"><span>2</span></span><span class="flow-time">0,03 sek</span></div>
+                        <h3>AI-beräkning</h3>
+                        <p>KommunOS matchar budget och detaljplan och skapar en arbetsorder.</p>
+                        <div class="flow-log" data-log></div>
+                    </li>
+                    <li class="flow-step flow-step--violet">
+                        <div class="flow-step-top"><span class="flow-num"><span>3</span></span><span class="flow-time">Politiker</span></div>
+                        <h3>Säkerhetsspärr</h3>
+                        <p>Folkvalda kontrollerar att AI:n inte bryter mot lag eller orsakar skada.</p>
+                        <div class="flow-log" data-log></div>
+                    </li>
+                    <li class="flow-step flow-step--green">
+                        <div class="flow-step-top"><span class="flow-num"><span>4</span></span><span class="flow-time">Yrkesfolk</span></div>
+                        <h3>Utförande</h3>
+                        <p>Riktiga hantverkare och personal utför jobbet enligt kollektivavtal.</p>
+                        <div class="flow-log" data-log></div>
+                    </li>
+                </ol>
+                <div class="flow-controls">
+                    <button class="btn btn--primary" id="flow-run" type="button">▶ Kör ett ärende genom KommunOS</button>
+                    <p class="flow-status" id="flow-status" aria-live="polite">Systemet hämtar ett riktigt vardagsärende från exempelkommunen Tycköping.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- =====================================================
+             03 TESTLABBET
+             ===================================================== -->
+        <section class="section container" id="testlabbet" aria-labelledby="lab-title">
+            <header class="section-head reveal">
+                <span class="section-kicker">03 · Testlabbet</span>
+                <h2 id="lab-title">Testa politiken i praktiken</h2>
+                <p>Fyra interaktiva tester visar hur OP:s modell skulle fungera i en vanlig svensk kommun. Alla siffror gäller den fiktiva exempelkommunen <strong>Tycköping</strong> (41&nbsp;800 invånare).</p>
+                <div class="lab-progress" id="lab-progress" aria-label="Dina framsteg">
+                    <span data-test="fakta">⚖️ Faktalåset</span>
+                    <span data-test="sparr">🛡️ Säkerhetsspärren</span>
+                    <span data-test="budget">📊 Budgettycoon</span>
+                    <span data-test="race">⏱️ Ärendeloppet</span>
+                </div>
+            </header>
+
+            <div class="lab reveal">
+                <div class="lab-tabs" role="tablist" aria-label="Välj test">
+                    <button class="lab-tab" role="tab" id="tab-fakta" aria-controls="panel-fakta" aria-selected="true" data-test="fakta" type="button">
+                        <span class="lab-tab-icon" aria-hidden="true">⚖️</span>
+                        <span class="lab-tab-text"><strong>Faktalåset</strong><small>Granska debatten</small></span>
+                        <span class="lab-tab-check" aria-hidden="true">✓</span>
+                    </button>
+                    <button class="lab-tab" role="tab" id="tab-sparr" aria-controls="panel-sparr" aria-selected="false" tabindex="-1" data-test="sparr" type="button">
+                        <span class="lab-tab-icon" aria-hidden="true">🛡️</span>
+                        <span class="lab-tab-text"><strong>Säkerhetsspärren</strong><small>Du är politikern</small></span>
+                        <span class="lab-tab-check" aria-hidden="true">✓</span>
+                    </button>
+                    <button class="lab-tab" role="tab" id="tab-budget" aria-controls="panel-budget" aria-selected="false" tabindex="-1" data-test="budget" type="button">
+                        <span class="lab-tab-icon" aria-hidden="true">📊</span>
+                        <span class="lab-tab-text"><strong>Budgettycoon</strong><small>Fördela 3 miljarder</small></span>
+                        <span class="lab-tab-check" aria-hidden="true">✓</span>
+                    </button>
+                    <button class="lab-tab" role="tab" id="tab-race" aria-controls="panel-race" aria-selected="false" tabindex="-1" data-test="race" type="button">
+                        <span class="lab-tab-icon" aria-hidden="true">⏱️</span>
+                        <span class="lab-tab-text"><strong>Ärendeloppet</strong><small>Gamla vägen mot KommunOS</small></span>
+                        <span class="lab-tab-check" aria-hidden="true">✓</span>
+                    </button>
+                </div>
+
+                <!-- PANEL 1: FAKTALÅSET -->
+                <div class="lab-panel" role="tabpanel" id="panel-fakta" aria-labelledby="tab-fakta" tabindex="0">
+                    <div class="panel-intro">
+                        <h3>Faktalåset i Kommunfullmäktige 2.0</h3>
+                        <p>I Kommunfullmäktige 2.0 syns KommunOS på storbildsskärm. Varje sakpåstående från talarstolen kontrolleras i realtid mot kommunens egna data. <strong>Gissa först</strong> – stämmer påståendet? Sedan ser du hur Faktalåset bedömer det.</p>
+                    </div>
+                    <div class="fact-layout">
+                        <ul class="claim-list" id="claim-list" aria-label="Påståenden från talarstolen"></ul>
+                        <div class="fact-stage" id="fact-stage">
+                            <div class="podium">
+                                <span class="podium-label">🎙️ I talarstolen</span>
+                                <blockquote id="fact-claim">Välj ett påstående i listan för att starta Faktalåset.</blockquote>
+                                <span class="podium-speaker" id="fact-speaker"></span>
+                            </div>
+                            <div id="fact-guess" hidden>
+                                <p class="guess-q" id="fact-guess-q">Vad tror du?</p>
+                                <div class="guess-grid" role="group" aria-labelledby="fact-guess-q">
+                                    <button class="guess-btn" type="button" data-guess="sant">✅ Stämmer</button>
+                                    <button class="guess-btn" type="button" data-guess="delvis">🟡 Stämmer delvis</button>
+                                    <button class="guess-btn" type="button" data-guess="falskt">❌ Stämmer inte</button>
+                                    <button class="guess-btn" type="button" data-guess="asikt" title="En åsikt eller prioritering som inte kan faktagranskas">💭 Åsikt</button>
+                                </div>
+                            </div>
+                            <div class="console" id="fact-console" role="log" aria-live="polite" aria-label="Faktalåsets analys"></div>
+                            <div class="result-box" id="fact-result" hidden></div>
+                        </div>
+                    </div>
+                    <div class="fact-summary" id="fact-summary" hidden></div>
+                    <p class="fine-print">Faktalåset granskar bara sakpåståenden – aldrig åsikter, värderingar eller prioriteringar. Alla data är påhittade exempel.</p>
+                </div>
+
+                <!-- PANEL 2: SÄKERHETSSPÄRREN -->
+                <div class="lab-panel" role="tabpanel" id="panel-sparr" aria-labelledby="tab-sparr" tabindex="0" hidden>
+                    <div class="panel-intro">
+                        <h3>Du är säkerhetsspärren</h3>
+                        <p>KommunOS har gjort om invånarnas tankebubblor till färdiga förslag – och AI:ns egen kontroll säger att allt ser bra ut. Nu är det din tur som folkvald: <strong>godkänn</strong> förslag som är lagliga och rimliga, <strong>stoppa</strong> dem som bryter mot lag eller skadar människor.</p>
+                    </div>
+                    <div class="sparr-head">
+                        <span id="sparr-progress-label">Ärende 1 av 7</span>
+                        <span class="sparr-bar" aria-hidden="true"><span id="sparr-bar-fill"></span></span>
+                        <span>Rätt beslut: <strong id="sparr-correct">0</strong></span>
+                    </div>
+                    <div id="sparr-stage" aria-live="polite"></div>
+                </div>
+
+                <!-- PANEL 3: BUDGETTYCOON -->
+                <div class="lab-panel" role="tabpanel" id="panel-budget" aria-labelledby="tab-budget" tabindex="0" hidden>
+                    <div class="panel-intro">
+                        <h3>Budgettycoon: fördela Tycköpings pengar</h3>
+                        <p>Tycköping har ungefär 3 miljarder kronor om året. Flytta reglagen och se direkt hur trivsel, köer och väntetider påverkas – precis som i ett strategispel. Målet: <strong>en budget i balans</strong> (kommunallagens balanskrav) med så hög trivsel som möjligt.</p>
+                    </div>
+                    <div class="budget-layout">
+                        <div class="budget-controls">
+                            <div id="budget-sliders"></div>
+                            <div class="slider-row">
+                                <div class="slider-top">
+                                    <label for="tax"><span aria-hidden="true">🧾</span> Kommunalskatt</label>
+                                    <output id="tax-out" for="tax">21,45&nbsp;kr</output>
+                                </div>
+                                <input type="range" id="tax" min="20.45" max="22.45" step="0.05" value="21.45" aria-describedby="tax-hint">
+                                <span class="slider-hint" id="tax-hint">Kronor per 100 kr beskattningsbar inkomst. 1 krona ≈ 75 Mkr per år. Skattehöjningar sänker trivseln.</span>
+                            </div>
+                            <label class="switch-row">
+                                <input type="checkbox" id="kos-toggle" role="switch">
+                                <span class="switch" aria-hidden="true"></span>
+                                <span><strong>Aktivera KommunOS i administrationen</strong><br><small>Automatiserad ärendehantering: −18&nbsp;% adminkostnad (antagande)</small></span>
+                            </label>
+                        </div>
+
+                        <div class="budget-out">
+                            <div class="budget-big">
+                                <div class="big-kpi" id="b-result-box">
+                                    <span>Resultat</span>
+                                    <strong id="b-result">−10&nbsp;Mkr</strong>
+                                    <small id="b-result-note">Underskott – bryter mot balanskravet</small>
+                                </div>
+                                <div class="big-kpi">
+                                    <span>Trivsel</span>
+                                    <strong id="b-trivsel">65&nbsp;%</strong>
+                                    <span class="meter" aria-hidden="true"><span id="b-trivsel-bar"></span></span>
+                                </div>
+                            </div>
+                            <p class="budget-summary" id="b-summary"></p>
+                            <div class="advisor" aria-live="polite">
+                                <span class="advisor-icon" aria-hidden="true">🤖</span>
+                                <p id="b-advisor"></p>
+                            </div>
+                            <div class="budget-actions">
+                                <button class="btn btn--hud" id="b-optimize" type="button">🤖 Låt KommunOS föreslå</button>
+                                <button class="btn btn--hud" id="b-reset" type="button">↺ Återställ</button>
+                                <button class="btn btn--primary" id="b-commit" type="button">✓ Fastställ budget</button>
+                            </div>
+                            <details class="assumptions">
+                                <summary>Visa modellens antaganden</summary>
+                                <ul>
+                                    <li>Alla belopp är fiktiva och avrundade. Tycköping har 41&nbsp;800 invånare och intäkter på 3&nbsp;000 Mkr vid skattesatsen 21,45 kr.</li>
+                                    <li>Trivseln är ett viktat snitt av hur väl varje verksamhet är finansierad, med avtagande nytta: de första kronorna gör mest skillnad.</li>
+                                    <li>KommunOS-effekten (−18 % adminkostnad) är ett antagande för att visa principen – inte en utlovad besparing.</li>
+                                    <li>KommunOS förslag följer ramar från fullmäktige: lagkrav är hårda gränser, ingen verksamhet minskas mer än 3 % och resultatet ska vara minst +20 Mkr. Skattesatsen rör maskinen aldrig.</li>
+                                </ul>
+                            </details>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PANEL 4: ÄRENDELOPPET -->
+                <div class="lab-panel" role="tabpanel" id="panel-race" aria-labelledby="tab-race" tabindex="0" hidden>
+                    <div class="panel-intro">
+                        <h3>Ärendeloppet: gamla vägen mot KommunOS</h3>
+                        <p>Samma problem, samma lagar, samma hantverkare. Skillnaden är vägen dit. Välj ett ärende och starta loppet – tidsaxeln snabbspolas.</p>
+                    </div>
+                    <div class="race-cases" id="race-cases" role="group" aria-label="Välj ärende"></div>
+                    <div class="race-top">
+                        <div class="race-clock">
+                            <strong id="race-day">Dag 0</strong>
+                            <span class="race-human" id="race-human"></span>
+                        </div>
+                        <button class="btn btn--primary" id="race-start" type="button">▶ Starta loppet</button>
+                    </div>
+                    <div class="lane lane--old" id="lane-old">
+                        <div class="lane-head"><span>🏛️ Gamla vägen</span><span class="lane-status" data-status>Redo</span></div>
+                        <div class="track" aria-hidden="true"><span class="track-fill" data-fill></span></div>
+                        <ol class="lane-steps" data-steps></ol>
+                    </div>
+                    <div class="lane lane--new" id="lane-new">
+                        <div class="lane-head"><span>🤖 KommunOS</span><span class="lane-status" data-status>Redo</span></div>
+                        <div class="track" aria-hidden="true"><span class="track-fill" data-fill></span></div>
+                        <ol class="lane-steps" data-steps></ol>
+                    </div>
+                    <div class="result-box is-info" id="race-result" aria-live="polite" hidden></div>
+                    <p class="fine-print">Tiderna är förenklade, typiska exempel. Lagen om offentlig upphandling (LOU), bygglov och möjligheten att överklaga gäller även med KommunOS – skillnaden är att ärenden inte ligger och väntar mellan nämndmöten och budgetår.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- =====================================================
+             04 PARTIPROGRAM
+             ===================================================== -->
+        <section class="section container" id="program" aria-labelledby="program-title">
+            <header class="section-head reveal">
+                <span class="section-kicker">04 · Partiprogram</span>
+                <h2 id="program-title">Sex byggstenar för en begriplig kommun</h2>
+                <p>Så vill Optimeringspartiet bygga om lokalpolitiken – stegvis, öppet och med människan i förarsätet.</p>
+            </header>
+
+            <div class="pillars">
+                <article class="pillar pillar--blue reveal">
+                    <div class="pillar-top"><span class="pillar-icon" aria-hidden="true">🧠</span><span class="pillar-num" aria-hidden="true">01</span></div>
+                    <span class="pillar-tag">Öppen källkod</span>
+                    <h3>KommunOS – en öppen förvaltnings-AI</h3>
+                    <p>Varje invånare ska kunna se varför en gata asfalterades före en annan.</p>
+                    <ul>
+                        <li>All källkod publiceras under fri licens och granskas av oberoende revisorer.</li>
+                        <li>Varje arbetsorder får en offentlig logg: indata, beräkning och ansvarig politiker.</li>
+                        <li>Data lagras inom EU – aldrig hos annonsfinansierade plattformar.</li>
+                    </ul>
+                    <p class="tycoon-bubble">💬 ”Jag förstår äntligen varför min gata plogas sist.”</p>
+                </article>
+
+                <article class="pillar pillar--amber reveal">
+                    <div class="pillar-top"><span class="pillar-icon" aria-hidden="true">⚖️</span><span class="pillar-num" aria-hidden="true">02</span></div>
+                    <span class="pillar-tag">Transparens</span>
+                    <h3>Kommunfullmäktige 2.0 med Faktalås</h3>
+                    <p>Debatten ska handla om vad vi vill – inte om vems siffror som stämmer.</p>
+                    <ul>
+                        <li>Sakpåståenden i talarstolen kontrolleras mot kommunens egna data och visas på storbildsskärm.</li>
+                        <li>Faktalåset bedömer bara fakta – aldrig åsikter eller prioriteringar.</li>
+                        <li>Alla debatter sänds och arkiveras med sökbara faktarutor.</li>
+                    </ul>
+                    <p class="tycoon-bubble">💬 ”Äntligen kan jag lita på siffrorna i debatten.”</p>
+                </article>
+
+                <article class="pillar pillar--violet reveal">
+                    <div class="pillar-top"><span class="pillar-icon" aria-hidden="true">🛡️</span><span class="pillar-num" aria-hidden="true">03</span></div>
+                    <span class="pillar-tag">Mänsklig kontroll</span>
+                    <h3>Politikern som säkerhetsspärr</h3>
+                    <p>Maskinen räknar. Människan ansvarar.</p>
+                    <ul>
+                        <li>Folkvalda granskar AI:ns förslag mot lag, etik och lokala värderingar – och har alltid vetorätt.</li>
+                        <li>Beslut som rör enskilda människor, som bistånd, LSS och barnärenden, fattas alltid av människor.</li>
+                        <li>Nödbroms: fullmäktige kan pausa hela KommunOS med enkel majoritet.</li>
+                    </ul>
+                    <p class="tycoon-bubble">💬 ”Skönt att någon jag kan rösta bort har sista ordet.”</p>
+                </article>
+
+                <article class="pillar pillar--amber reveal">
+                    <div class="pillar-top"><span class="pillar-icon" aria-hidden="true">💬</span><span class="pillar-num" aria-hidden="true">04</span></div>
+                    <span class="pillar-tag">Delaktighet</span>
+                    <h3>Tankebubblor – invånarnas röst i realtid</h3>
+                    <p>Felanmälningar, köer och synpunkter blir styrdata i stället för ärenden i en hög.</p>
+                    <ul>
+                        <li>En enkel app och ett vanligt telefonnummer – även för den som inte är digital.</li>
+                        <li>Data används anonymiserat och aggregerat. Inga individprofiler.</li>
+                        <li>Medborgarbudget: 1 % av investeringsbudgeten fördelas genom invånaromröstning.</li>
+                    </ul>
+                    <p class="tycoon-bubble">💬 ”Jag anmälde den trasiga gungan i måndags. I torsdags var den lagad!”</p>
+                </article>
+
+                <article class="pillar pillar--green reveal">
+                    <div class="pillar-top"><span class="pillar-icon" aria-hidden="true">🔧</span><span class="pillar-num" aria-hidden="true">05</span></div>
+                    <span class="pillar-tag">Kollektivavtal</span>
+                    <h3>Riktiga jobb i verkstaden</h3>
+                    <p>Automatisera pappersarbetet – inte omsorgen, undervisningen eller hantverket.</p>
+                    <ul>
+                        <li>Frigjorda administrativa resurser flyttas till fler händer i skola och omsorg.</li>
+                        <li>Ingen sägs upp på grund av automatisering – omställning sker via naturliga avgångar och kompetensutveckling.</li>
+                        <li>Allt utförande sker av yrkesfolk enligt kollektivavtal.</li>
+                    </ul>
+                    <p class="tycoon-bubble">💬 ”Nu hinner jag vara med barnen i stället för att fylla i blanketter.”</p>
+                </article>
+
+                <article class="pillar pillar--red reveal">
+                    <div class="pillar-top"><span class="pillar-icon" aria-hidden="true">🔒</span><span class="pillar-num" aria-hidden="true">06</span></div>
+                    <span class="pillar-tag">GDPR &amp; AI-förordningen</span>
+                    <h3>Integritet och säkerhet först</h3>
+                    <p>En smart kommun – inte en övervakande kommun.</p>
+                    <ul>
+                        <li>KommunOS följer GDPR och EU:s AI-förordning; högriskfunktioner kräver mänsklig tillsyn.</li>
+                        <li>Ingen ansiktsigenkänning, ingen social poängsättning, ingen profilering av invånare.</li>
+                        <li>Årlig oberoende säkerhetsrevision och öppen sårbarhetsrapportering.</li>
+                    </ul>
+                    <p class="tycoon-bubble">💬 ”Jag vill ha en smart kommun – inte en som övervakar mig.”</p>
+                </article>
+            </div>
+        </section>
+
+        <!-- =====================================================
+             05 FRÅGOR & SVAR
+             ===================================================== -->
+        <section class="section container" id="fragor" aria-labelledby="faq-title">
+            <header class="section-head reveal">
+                <span class="section-kicker">05 · Frågor &amp; svar</span>
+                <h2 id="faq-title">Kritiska frågor – raka svar</h2>
+                <p>En AI i kommunen väcker frågor. Bra. Här är våra svar.</p>
+            </header>
+
+            <div class="faq reveal">
+                <details>
+                    <summary>Ska en AI styra kommunen?</summary>
+                    <p>Nej. KommunOS är verkstaden, inte styrelsen. Maskinen tar fram underlag, räknar på budgeten och verkställer rutinärenden som att laga gatlampor eller justera tömningsscheman. Alla politiska prioriteringar – och alla beslut som rör enskilda människor – fattas av människor.</p>
+                </details>
+                <details>
+                    <summary>Vad händer när KommunOS har fel?</summary>
+                    <p>Det kommer att hända. Därför har varje förslag en ansvarig folkvald granskare, varje beslut en öppen logg och varje invånare rätt att överklaga. Fullmäktige har dessutom en nödbroms som pausar hela systemet. Fel ska synas och rättas på dagar – inte gömmas i en utredning.</p>
+                </details>
+                <details>
+                    <summary>Är det här ens lagligt?</summary>
+                    <p>Förvaltningslagen öppnar för automatiserade beslut, men de måste kunna förklaras och överklagas. Kommunallagen säger att fullmäktige beslutar i ärenden av principiell beskaffenhet eller annars av större vikt. OP:s modell bygger på just den gränsen: rutinärenden automatiseras, principiella frågor avgörs av folkvalda. Där lagen är otydlig vill vi ha tydligare regler – inte kringgå dem.</p>
+                </details>
+                <details>
+                    <summary>Försvinner jobben?</summary>
+                    <p>Nej, det är pappersarbetet som försvinner. KommunOS ersätter blanketter och handläggningsköer, inte undersköterskor, lärare eller hantverkare. Frigjorda pengar går till fler händer i välfärden, och ingen ska sägas upp på grund av automatiseringen.</p>
+                </details>
+                <details>
+                    <summary>Vem äger datan?</summary>
+                    <p>Kommunen och invånarna. Data lagras inom EU, säljs aldrig och används bara aggregerat och anonymiserat. Ingen ansiktsigenkänning, ingen social poängsättning, inga individprofiler. Öppna data publiceras så att journalister och forskare kan granska.</p>
+                </details>
+                <details>
+                    <summary>Vad kostar det?</summary>
+                    <p>KommunOS byggs som öppen källkod tillsammans med andra kommuner, så att varje kommun inte behöver köpa samma system var för sig. Vi börjar med ett pilotområde – felanmälan inom gata och park – och utvärderar öppet innan nästa steg tas.</p>
+                </details>
+            </div>
+        </section>
+
+        <!-- =====================================================
+             CTA
+             ===================================================== -->
+        <section class="container cta reveal" id="ga-med" aria-labelledby="cta-title">
+            <div class="cta-inner">
+                <h2 id="cta-title">Redo att uppgradera din kommun?</h2>
+                <p>Vi vill göra lokalpolitiken lika begriplig som ett välbyggt strategispel – men med riktiga människor vid spakarna och riktiga yrkesfolk i verkstaden.</p>
+                <div class="cta-result" id="cta-result">Du har inte gjort några tester ännu – börja i testlabbet.</div>
+                <div class="cta-actions">
+                    <a class="btn btn--vote" href="#testlabbet">▶ Gör alla tester</a>
+                    <button class="btn btn--ghost-dark" id="share-btn" type="button">Dela sidan</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="container site-footer">
+        <p><strong>Optimeringspartiet (OP)</strong> · En begriplig kommun med algoritmisk verkstad och mänsklig säkerhetskontroll.</p>
+        <p>Simuleringarna använder påhittade exempeldata från den fiktiva kommunen Tycköping. Lagrum är förenklat beskrivna i pedagogiskt syfte. Sidan använder inga spårningskakor.</p>
+    </footer>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <noscript>
+        <p style="text-align:center;padding:16px;">Testlabbet kräver JavaScript. Resten av sidan fungerar utan.</p>
+    </noscript>
+
+    <script>
+    (() => {
+        'use strict';
+
+        /* =========================================================
+           HJÄLPFUNKTIONER
+           ========================================================= */
+        const $ = (sel, root = document) => root.querySelector(sel);
+        const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
+        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const wait = (ms) => new Promise((resolve) => setTimeout(resolve, reduceMotion ? 0 : ms));
+        const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
+        const NBSP = ' ';
+        const nf0 = new Intl.NumberFormat('sv-SE', { maximumFractionDigits: 0 });
+        const nf1 = new Intl.NumberFormat('sv-SE', { maximumFractionDigits: 1 });
+        const nf2 = new Intl.NumberFormat('sv-SE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        const mkr = (v) => nf0.format(v) + NBSP + 'Mkr';
+        const signedMkr = (v) => (v > 0 ? '+' : '') + mkr(v);
+        const pct = (v) => Math.round(v) + NBSP + '%';
+        const listSv = (items) => items.length < 2 ? items.join('') : items.slice(0, -1).join(', ') + ' och ' + items[items.length - 1];
+
+        /** Skapar ett DOM-element. All text sätts via textContent (ingen HTML-injektion). */
+        function el(tag, props = {}, children = []) {
+            const node = document.createElement(tag);
+            for (const [key, value] of Object.entries(props)) {
+                if (value == null || value === false) continue;
+                if (key === 'class') node.className = value;
+                else if (key === 'text') node.textContent = value;
+                else if (key === 'dataset') Object.assign(node.dataset, value);
+                else if (key.startsWith('on') && typeof value === 'function') node.addEventListener(key.slice(2), value);
+                else node.setAttribute(key, value === true ? '' : value);
+            }
+            for (const child of [].concat(children)) {
+                if (child != null) node.append(child);
+            }
+            return node;
+        }
+
+        const toastEl = $('#toast');
+        let toastTimer = 0;
+        function toast(message) {
+            toastEl.textContent = message;
+            toastEl.classList.add('show');
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => toastEl.classList.remove('show'), 3800);
+        }
+
+        function bump(node) {
+            if (!node || reduceMotion) return;
+            node.classList.remove('bump');
+            void node.offsetWidth;
+            node.classList.add('bump');
+        }
+
+        /* =========================================================
+           GEMENSAMT TILLSTÅND + HUD
+           ========================================================= */
+        const TESTS = ['fakta', 'sparr', 'budget', 'race'];
+        const TEST_NAMES = { fakta: 'Faktalåset', sparr: 'Säkerhetsspärren', budget: 'Budgettycoon', race: 'Ärendeloppet' };
+        const state = {
+            baseTrivsel: 65,   // styrs av budgetmodellen
+            trivselDelta: 0,   // styrs av besluten i Säkerhetsspärren
+            score: 0,
+            done: new Set(),
+        };
+
+        const trivsel = () => clamp(Math.round(state.baseTrivsel + state.trivselDelta), 0, 100);
+        const meterColor = (v) => (v < 50 ? '#ef4444' : v < 62 ? '#f59e0b' : '#10b981');
+
+        function paintMeter(bar, value) {
+            bar.style.width = value + '%';
+            bar.style.backgroundColor = meterColor(value);
+        }
+
+        function renderTrivsel() {
+            const v = trivsel();
+            $('#hud-trivsel').textContent = pct(v);
+            $('#live-trivsel').textContent = pct(v);
+            paintMeter($('#hud-trivsel-bar'), v);
+            paintMeter($('#live-trivsel-bar'), v);
+        }
+
+        function adjustTrivsel(delta) {
+            state.trivselDelta += delta;
+            renderTrivsel();
+            bump($('#metric-trivsel'));
+        }
+
+        function addScore(points) {
+            if (!points) return;
+            state.score += points;
+            $('#hud-score').textContent = nf0.format(state.score);
+            bump($('#nav-score'));
+            updateCta();
+        }
+
+        function updateCta() {
+            const n = state.done.size;
+            const box = $('#cta-result');
+            if (n === 0) box.textContent = 'Du har inte gjort några tester ännu – börja i testlabbet.';
+            else if (n < TESTS.length) box.textContent = `Du har klarat ${n} av ${TESTS.length} tester och samlat ${nf0.format(state.score)} poäng.`;
+            else box.textContent = `🏆 Alla ${TESTS.length} tester klara · ${nf0.format(state.score)} poäng · trivsel ${pct(trivsel())}`;
+        }
+
+        function markDone(test) {
+            if (state.done.has(test)) return;
+            state.done.add(test);
+            $$(`[data-test="${test}"]`).forEach((node) => {
+                if (node.matches('.progress-dots i, .lab-progress span')) node.classList.add('done');
+                if (node.matches('.lab-tab')) node.classList.add('is-done');
+            });
+            const n = state.done.size;
+            $('#hud-tests').textContent = n + '/' + TESTS.length;
+            updateCta();
+            toast(n === TESTS.length
+                ? '🏆 Alla fyra tester klara! Du har sett hela KommunOS-modellen i praktiken.'
+                : `✓ Test klart: ${TEST_NAMES[test]} (${n}/${TESTS.length})`);
+        }
+
+        /* =========================================================
+           TEMA (ljust/mörkt)
+           ========================================================= */
+        const themeBtn = $('#theme-toggle');
+        const mqDark = window.matchMedia('(prefers-color-scheme: dark)');
+        const effectiveTheme = () => document.documentElement.dataset.theme || (mqDark.matches ? 'dark' : 'light');
+
+        function syncThemeButton() {
+            const dark = effectiveTheme() === 'dark';
+            themeBtn.classList.toggle('is-dark', dark);
+            themeBtn.setAttribute('aria-label', dark ? 'Byt till ljust läge' : 'Byt till mörkt läge');
+        }
+        themeBtn.addEventListener('click', () => {
+            const next = effectiveTheme() === 'dark' ? 'light' : 'dark';
+            document.documentElement.dataset.theme = next;
+            try { localStorage.setItem('op-theme', next); } catch (e) { /* ignorera */ }
+            syncThemeButton();
+        });
+        mqDark.addEventListener('change', syncThemeButton);
+        syncThemeButton();
+
+        /* =========================================================
+           SCROLL: animationer + aktiv länk i menyn
+           ========================================================= */
+        const revealEls = $$('.reveal');
+        if ('IntersectionObserver' in window && !reduceMotion) {
+            const revealObserver = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (!entry.isIntersecting) return;
+                    entry.target.classList.add('is-visible');
+                    revealObserver.unobserve(entry.target);
+                });
+            }, { rootMargin: '0px 0px -8% 0px' });
+            revealEls.forEach((node) => revealObserver.observe(node));
+        } else {
+            revealEls.forEach((node) => node.classList.add('is-visible'));
+        }
+
+        if ('IntersectionObserver' in window) {
+            const navLinks = $$('.nav-links a');
+            const navObserver = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (!entry.isIntersecting) return;
+                    navLinks.forEach((a) => {
+                        if (a.getAttribute('href') === '#' + entry.target.id) a.setAttribute('aria-current', 'true');
+                        else a.removeAttribute('aria-current');
+                    });
+                });
+            }, { rootMargin: '-45% 0px -50% 0px' });
+            navLinks.forEach((a) => {
+                const target = document.getElementById(a.getAttribute('href').slice(1));
+                if (target) navObserver.observe(target);
+            });
+        }
+
+        /* =========================================================
+           HERO: live-flöde med tankebubblor
+           ========================================================= */
+        const FEED = [
+            ['Gatlampan på Björkvägen blinkar', 'Arbetsorder · gatuenheten', 'ok'],
+            ['Kö till simhallen på lördagar', 'Förslag: utökade öppettider', 'sparr'],
+            ['Potthål på Industrivägen', 'Arbetsorder · lagas inom 24 h', 'ok'],
+            ['Önskar fler bänkar längs ån', 'Medborgarbudget · 212 röster', 'fm'],
+            ['Fulla papperskorgar i Ekparken', 'Tömningsschema justerat', 'ok'],
+            ['Förskolan i Västerby saknar vikarier', 'Bemanningsförslag', 'sparr'],
+            ['Halt på gångbron vid skolan', 'Sandning beställd · 2 h', 'ok'],
+            ['Håll fritidsgården öppen på fredagar', 'Budgetfråga → fullmäktige', 'fm'],
+            ['Busskuren vid Torget läcker', 'Arbetsorder · kollektivtrafik', 'ok'],
+        ];
+        const FEED_CHIPS = {
+            ok: ['Utförs', 'chip--ok'],
+            sparr: ['Säkerhetsspärr', 'chip--sparr'],
+            fm: ['Fullmäktige', 'chip--fm'],
+        };
+        const feedList = $('#live-feed');
+        const feed = { idx: 0, orderNo: 4817, open: 128, orders: 47, timer: 0, paused: false, visible: true };
+
+        function pushFeed(animate) {
+            const [question, action, kind] = FEED[feed.idx % FEED.length];
+            feed.idx += 1;
+            const [chipText, chipClass] = FEED_CHIPS[kind];
+            const actionText = '→ ' + action + (kind === 'ok' ? ' #' + (feed.orderNo++) : '');
+            const item = el('li', { class: 'feed-item' + (animate ? ' is-new' : '') }, [
+                el('span', { 'aria-hidden': 'true', text: '💬' }),
+                el('span', { class: 'feed-text' }, [
+                    el('span', { class: 'feed-q', text: '”' + question + '”' }),
+                    el('span', { class: 'feed-a', text: actionText }),
+                ]),
+                el('span', { class: 'chip ' + chipClass, text: chipText }),
+            ]);
+            feedList.prepend(item);
+            while (feedList.children.length > 4) feedList.lastElementChild.remove();
+            if (animate) {
+                if (kind === 'ok') {
+                    feed.orders += 1;
+                    feed.open = Math.max(96, feed.open - 2);
+                } else {
+                    feed.open += 1;
+                }
+                $('#live-orders').textContent = feed.orders;
+                $('#live-open').textContent = feed.open;
+            }
+        }
+
+        function syncFeedTimer() {
+            const shouldRun = !feed.paused && feed.visible && !document.hidden;
+            if (shouldRun && !feed.timer) feed.timer = setInterval(() => pushFeed(true), 3400);
+            if (!shouldRun && feed.timer) { clearInterval(feed.timer); feed.timer = 0; }
+        }
+
+        for (let i = 0; i < 4; i++) pushFeed(false);
+        if ('IntersectionObserver' in window) {
+            new IntersectionObserver(([entry]) => { feed.visible = entry.isIntersecting; syncFeedTimer(); })
+                .observe($('.live-panel'));
+        }
+        document.addEventListener('visibilitychange', syncFeedTimer);
+        $('#live-pause').addEventListener('click', (event) => {
+            feed.paused = !feed.paused;
+            event.currentTarget.setAttribute('aria-pressed', String(feed.paused));
+            event.currentTarget.textContent = feed.paused ? '▶ Spela' : '⏸ Pausa';
+            syncFeedTimer();
+        });
+        syncFeedTimer();
+
+        /* =========================================================
+           FLÖDET I FYRA STEG
+           ========================================================= */
+        const FLOW_CASES = [
+            [
+                '💬 ”Gungan på Parklekens lekplats är trasig” – 14 anmälningar på två dagar.',
+                '🧮 Budget park & lek: 186 000 kr kvar · detaljplan: parkmark ✓ · arbetsorder #2291 skapad.',
+                '🛡️ Ledamot granskar: inga lagkonflikter, ingen påverkan på enskilda → godkänt.',
+                '🔧 Parkenhetens personal byter kedja och säte – klart på 3 dagar.',
+            ],
+            [
+                '💬 ”Isigt på gångbron vid skolan” – 22 anmälningar + väderdata.',
+                '🧮 Vinterväghållning prioritet 1 (skolväg) · ramavtal finns · arbetsorder #2292.',
+                '🛡️ Godkänt direkt enligt fullmäktiges regel för akut halkbekämpning – loggat för granskning i efterhand.',
+                '🔧 Sandbil på plats inom 2 timmar.',
+            ],
+            [
+                '💬 ”Bussen till Västerby är alltid full kl. 07.40” – ködata från biljettsystemet.',
+                '🧮 Beläggning 118 % · extra tur kostar 94 000 kr/termin · ryms i trafikbudgeten.',
+                '🛡️ Ledamot granskar: påverkar inga andra linjer negativt → godkänt.',
+                '🔧 Extra tur 07.25 börjar gå på måndag – förare enligt kollektivavtal.',
+            ],
+            [
+                '💬 ”Mycket skräp vid badplatsen på helgerna” – 31 anmälningar + sensordata från sopkärl.',
+                '🧮 +2 tömningar lör–sön · 6 200 kr/mån · arbetsorder #2294.',
+                '🛡️ Ledamot granskar: rutinärende inom budget → godkänt.',
+                '🔧 Nytt tömningsschema gäller från fredag.',
+            ],
+        ];
+        const FLOW_LABELS = ['Tankebubbla registrerad', 'KommunOS beräknar', 'Säkerhetsspärren granskar', 'Yrkesfolk utför jobbet'];
+        const flowSteps = $$('#flow-steps .flow-step');
+        const flowBtn = $('#flow-run');
+        const flowStatus = $('#flow-status');
+        let flowIdx = 0;
+
+        flowBtn.addEventListener('click', async () => {
+            flowBtn.disabled = true;
+            const texts = FLOW_CASES[flowIdx % FLOW_CASES.length];
+            flowIdx += 1;
+            flowSteps.forEach((step) => {
+                step.classList.remove('is-active', 'is-done', 'has-log');
+                $('[data-log]', step).textContent = '';
+            });
+            for (let i = 0; i < flowSteps.length; i++) {
+                const step = flowSteps[i];
+                flowStatus.textContent = `Steg ${i + 1} av 4: ${FLOW_LABELS[i]}…`;
+                step.classList.add('is-active');
+                await wait(i === 1 ? 450 : 850);
+                $('[data-log]', step).textContent = texts[i];
+                step.classList.add('has-log');
+                await wait(1000);
+                step.classList.remove('is-active');
+                step.classList.add('is-done');
+            }
+            flowStatus.textContent = '✓ Ärendet är klart. Hela kedjan loggas öppet – alla kan se vem som beslutade vad och varför.';
+            flowBtn.textContent = '▶ Kör ett nytt ärende';
+            flowBtn.disabled = false;
+        });
+
+        /* =========================================================
+           TESTLABBETS FLIKAR
+           ========================================================= */
+        const tabs = $$('.lab-tab');
+
+        function selectTab(tab, focus) {
+            tabs.forEach((t) => {
+                const selected = t === tab;
+                t.setAttribute('aria-selected', String(selected));
+                t.tabIndex = selected ? 0 : -1;
+                document.getElementById(t.getAttribute('aria-controls')).hidden = !selected;
+            });
+            if (focus) tab.focus();
+        }
+
+        tabs.forEach((tab, i) => {
+            tab.addEventListener('click', () => selectTab(tab, false));
+            tab.addEventListener('keydown', (event) => {
+                let next = null;
+                if (event.key === 'ArrowRight' || event.key === 'ArrowDown') next = tabs[(i + 1) % tabs.length];
+                else if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') next = tabs[(i - 1 + tabs.length) % tabs.length];
+                else if (event.key === 'Home') next = tabs[0];
+                else if (event.key === 'End') next = tabs[tabs.length - 1];
+                if (next) {
+                    event.preventDefault();
+                    selectTab(next, true);
+                }
+            });
+        });
+
+        function goToTab(test) {
+            const tab = $(`.lab-tab[data-test="${test}"]`);
+            selectTab(tab, false);
+            $('.lab').scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+            tab.focus({ preventScroll: true });
+        }
+
+        /* =========================================================
+           TEST 1: FAKTALÅSET
+           ========================================================= */
+        const VERDICTS = {
+            sant: { label: 'Stämmer' },
+            delvis: { label: 'Stämmer delvis' },
+            falskt: { label: 'Stämmer inte' },
+            asikt: { label: 'Åsikt' },
+        };
+
+        // [tagg, text, färg]
+        const FACTS = [
+            {
+                id: 'fritidsgard',
+                speaker: 'Ledamot i budgetdebatten',
+                claim: 'Vi har absolut inte råd att hålla fritidsgården öppen på fredagskvällar!',
+                verdict: 'falskt',
+                lines: [
+                    ['DATA', 'Hämtar budget och prognos för kultur- och fritidsnämnden 2026…', 'blue'],
+                    ['BERÄKNING', 'Fredagsöppet: 2 fritidsledare × 5 h × 52 kvällar ≈ 234 000 kr', 'blue'],
+                    ['BERÄKNING', 'Lokal, el och städ: 58 000 kr → totalt 0,29 Mkr per år (ca 0,01 % av kommunens budget)', 'blue'],
+                    ['DATA', 'Nämndens prognos för 2026: överskott på 1,8 Mkr', 'blue'],
+                    ['UTSLAG', 'STÄMMER INTE – pengarna finns. Det är en prioriteringsfråga, inte en ekonomisk omöjlighet.', 'red'],
+                ],
+                note: 'Faktalåset säger inte att fritidsgården måste hålla öppet – bara att ”vi har inte råd” inte stämmer. Själva beslutet är fortfarande politiskt.',
+            },
+            {
+                id: 'brott',
+                speaker: 'Ledamot i trygghetsdebatten',
+                claim: 'Skadegörelsen i centrum har fördubblats sedan förra året!',
+                verdict: 'delvis',
+                lines: [
+                    ['DATA', 'Hämtar anmäld skadegörelse, område Centrum, 2024–2025…', 'blue'],
+                    ['BERÄKNING', 'Totalt: 212 → 247 anmälningar (+17 %)', 'blue'],
+                    ['BERÄKNING', 'Delkategorin klotter på busskurer: 31 → 64 anmälningar (+106 %)', 'amber'],
+                    ['UTSLAG', 'STÄMMER DELVIS – totalt +17 %. Bara klottret på busskurerna har fördubblats.', 'amber'],
+                ],
+                note: 'Ökningen är verklig och värd att agera på, men ”fördubblats” överdriver. KommunOS skickar samtidigt ett förslag om klotterskydd på busskurerna till säkerhetsspärren.',
+            },
+            {
+                id: 'parkering',
+                speaker: 'Ledamot i samhällsbyggnadsdebatten',
+                claim: 'Det är juridiskt omöjligt att bygga fler p-platser vid stationen!',
+                verdict: 'falskt',
+                lines: [
+                    ['DATA', 'Söker gällande detaljplaner inom 300 m från stationen…', 'blue'],
+                    ['LAGRUM', 'Detaljplan DP 2019:14, kv. Spåret 2: användningen parkering är tillåten', 'blue'],
+                    ['BERÄKNING', 'Byggbar yta 4 200 m² ≈ 150 parkeringsplatser', 'blue'],
+                    ['LAGRUM', 'Krav: bygglov och dagvattenutredning. Inga hinder enligt plan- och bygglagen hittade.', 'blue'],
+                    ['UTSLAG', 'STÄMMER INTE – det är juridiskt möjligt enligt gällande detaljplan.', 'red'],
+                ],
+                note: 'Om parkering är rätt prioritering – jämfört med till exempel ett cykelgarage – är en politisk fråga. Men påståendet att det är juridiskt omöjligt håller inte.',
+            },
+            {
+                id: 'aldreomsorg',
+                speaker: 'Ledamot i omsorgsdebatten',
+                claim: 'Tycköping har längst väntetid till äldreboende i hela länet!',
+                verdict: 'sant',
+                lines: [
+                    ['DATA', 'Hämtar väntetid till särskilt boende för länets 12 kommuner…', 'blue'],
+                    ['BERÄKNING', 'Tycköping: 94 dagar i snitt · länssnittet: 61 dagar', 'blue'],
+                    ['BERÄKNING', 'Rangordning: plats 12 av 12', 'blue'],
+                    ['UTSLAG', 'STÄMMER – Tycköping har längst väntetid i länet.', 'green'],
+                ],
+                note: 'Ett korrekt påstående får grönt ljus direkt – oavsett vilket parti som säger det. KommunOS tar samtidigt fram ett förslag om fler korttidsplatser.',
+            },
+            {
+                id: 'skatt',
+                speaker: 'Kommunstyrelsens ordförande',
+                claim: 'Vi har sänkt skatten varje år sedan 2020!',
+                verdict: 'falskt',
+                lines: [
+                    ['DATA', 'Hämtar kommunalskatt 2020–2026…', 'blue'],
+                    ['BERÄKNING', '21,95 → 21,95 → 21,70 → 21,70 → 21,45 → 21,45 → 21,45', 'blue'],
+                    ['BERÄKNING', 'Sänkningar: 2022 och 2024 – alltså 2 av 6 år', 'blue'],
+                    ['UTSLAG', 'STÄMMER INTE – skatten har sänkts två gånger, inte varje år.', 'red'],
+                ],
+                note: 'Skatten har faktiskt sänkts – men ”varje år” är en överdrift som Faktalåset flaggar oavsett vem som säger det.',
+            },
+            {
+                id: 'cykel',
+                speaker: 'Ledamot i trafikdebatten',
+                claim: 'Nya cykelbanan har gjort Storgatan säkrare – olyckorna har nästan halverats!',
+                verdict: 'delvis',
+                lines: [
+                    ['DATA', 'Hämtar olyckor med cyklister på Storgatan, 12 månader före och efter…', 'blue'],
+                    ['BERÄKNING', 'Före: 9 olyckor · efter: 5 olyckor (−44 %)', 'blue'],
+                    ['OSÄKERHET', 'Cykeltrafiken minskade 12 % under perioden (vägarbete i fyra månader)', 'amber'],
+                    ['OSÄKERHET', 'Mätperioden är ett år – för kort för säkra slutsatser om orsak', 'amber'],
+                    ['UTSLAG', 'STÄMMER DELVIS – färre olyckor, men sambandet med cykelbanan är ännu inte belagt.', 'amber'],
+                ],
+                note: 'Faktalåset redovisar också osäkerhet. Ett ärligt ”vi vet inte än” är bättre än en säker halvsanning.',
+            },
+            {
+                id: 'simhall',
+                speaker: 'Ledamot i investeringsdebatten',
+                claim: 'Tycköping behöver en ny simhall mer än ett nytt kulturhus!',
+                verdict: 'asikt',
+                lines: [
+                    ['KLASSNING', 'Påståendet är en VÄRDERING – en prioritering mellan två mål', 'violet'],
+                    ['UNDERLAG', 'Kö till simskolan: 340 barn · kulturhusets lokaler: 47 år gamla', 'blue'],
+                    ['UTSLAG', 'EJ GRANSKNINGSBART – värderingsfråga. Faktalåset granskar fakta, inte prioriteringar.', 'violet'],
+                ],
+                note: 'Här går gränsen för maskinen. Vad som är viktigast avgörs av väljarna och de folkvalda – KommunOS kan bara se till att debatten förs på korrekta siffror.',
+            },
+        ];
+
+        const claimList = $('#claim-list');
+        const factConsole = $('#fact-console');
+        const factResult = $('#fact-result');
+        const guessBtns = $$('.guess-btn');
+        const factAnswers = new Map();
+        let currentFact = null;
+        let factBusy = false;
+
+        function consoleLine(tag, text, tone, verdict) {
+            return el('div', { class: 'c-line' + (verdict ? ' is-verdict tone-' + tone : '') }, [
+                el('span', { class: 'c-tag c-' + tone, text: '[' + tag + ']' }),
+                ' ' + text,
+            ]);
+        }
+
+        function resetConsole(message) {
+            factConsole.replaceChildren(consoleLine('KommunOS', message, 'blue', false));
+        }
+
+        resetConsole('Faktalåset är aktivt. Väntar på påstående från talarstolen…');
+
+        FACTS.forEach((fact, i) => {
+            const btn = el('button', {
+                type: 'button',
+                class: 'claim-btn',
+                'aria-pressed': 'false',
+                dataset: { id: fact.id },
+                onclick: () => selectFact(fact),
+            }, [
+                el('span', { class: 'claim-state', 'aria-hidden': 'true', text: String(i + 1) }),
+                el('span', { text: '”' + fact.claim + '”' }),
+            ]);
+            claimList.append(el('li', {}, btn));
+        });
+
+        function selectFact(fact) {
+            if (factBusy) return;
+            currentFact = fact;
+            $$('.claim-btn', claimList).forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.id === fact.id)));
+            $('#fact-claim').textContent = '”' + fact.claim + '”';
+            $('#fact-speaker').textContent = fact.speaker + ' · Tycköpings kommunfullmäktige';
+            $('#fact-guess').hidden = false;
+            const answered = factAnswers.has(fact.id);
+            guessBtns.forEach((b) => {
+                b.disabled = answered;
+                b.classList.remove('is-picked', 'is-answer');
+            });
+            factResult.hidden = true;
+            if (answered) {
+                const guess = factAnswers.get(fact.id);
+                $(`.guess-btn[data-guess="${guess}"]`).classList.add('is-picked');
+                showFactAnalysis(fact, guess, false);
+            } else {
+                resetConsole('Väntar på din bedömning. Vad tror du – stämmer påståendet?');
+            }
+            if (window.matchMedia('(max-width: 980px)').matches) {
+                $('#fact-stage').scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+            }
+        }
+
+        guessBtns.forEach((btn) => btn.addEventListener('click', () => {
+            if (!currentFact || factBusy || factAnswers.has(currentFact.id)) return;
+            const guess = btn.dataset.guess;
+            factAnswers.set(currentFact.id, guess);
+            btn.classList.add('is-picked');
+            guessBtns.forEach((b) => { b.disabled = true; });
+            showFactAnalysis(currentFact, guess, true);
+        }));
+
+        async function showFactAnalysis(fact, guess, fresh) {
+            factBusy = true;
+            factConsole.replaceChildren();
+            const caret = el('span', { class: 'caret', 'aria-hidden': 'true', text: '▍' });
+            const lines = [['KommunOS', 'Faktalåset aktiverat – analyserar påståendet…', 'blue'], ...fact.lines];
+            for (const [tag, text, tone] of lines) {
+                factConsole.append(caret);
+                await wait(fresh ? 450 : 0);
+                caret.remove();
+                factConsole.append(consoleLine(tag, text, tone, tag === 'UTSLAG'));
+            }
+
+            const correct = guess === fact.verdict;
+            guessBtns.forEach((b) => b.classList.toggle('is-answer', b.dataset.guess === fact.verdict));
+            factResult.className = 'result-box ' + (correct ? 'is-good' : 'is-bad');
+            factResult.replaceChildren(
+                el('strong', {
+                    text: correct
+                        ? `✓ Rätt bedömt! Du svarade ”${VERDICTS[guess].label}”.` + (fresh ? ' +10 poäng' : '')
+                        : `✗ Du svarade ”${VERDICTS[guess].label}” – Faktalåset säger ”${VERDICTS[fact.verdict].label}”.`,
+                }),
+                el('p', { text: fact.note }),
+            );
+            factResult.hidden = false;
+
+            if (fresh) {
+                if (correct) addScore(10);
+                const stateEl = $(`.claim-btn[data-id="${fact.id}"] .claim-state`);
+                stateEl.textContent = correct ? '✓' : '✗';
+                stateEl.classList.add(correct ? 'is-right' : 'is-wrong');
+                bump($('#metric-fakta'));
+                if (factAnswers.size >= 4) {
+                    renderFactSummary();
+                    markDone('fakta');
+                }
+            }
+            factBusy = false;
+        }
+
+        function renderFactSummary() {
+            const answered = factAnswers.size;
+            const right = FACTS.filter((f) => factAnswers.get(f.id) === f.verdict).length;
+            const allDone = answered === FACTS.length;
+            const box = $('#fact-summary');
+            box.replaceChildren(
+                el('p', {}, [
+                    el('strong', {
+                        text: allDone
+                            ? `Alla ${FACTS.length} påståenden granskade – du bedömde ${right} rätt.`
+                            : `${answered} av ${FACTS.length} påståenden granskade – ${right} rätt.`,
+                    }),
+                    ' Faktalåset gör samma kontroll på 0,03 sekunder, men beslutar ingenting. Det ser bara till att debatten förs på korrekta siffror.',
+                ]),
+                el('button', { type: 'button', class: 'btn btn--primary', onclick: () => goToTab('sparr') }, 'Nästa test: Säkerhetsspärren →'),
+            );
+            box.hidden = false;
+        }
+
+        /* =========================================================
+           TEST 2: SÄKERHETSSPÄRREN
+           ========================================================= */
+        const CASES = [
+            {
+                bubble: 'Gatlampan på Björkvägen har varit trasig i tre veckor. Det är becksvart när jag går hem.',
+                meta: ['27 felanmälningar', 'Gata & park'],
+                title: 'Byt armatur till LED på Björkvägen 14',
+                details: ['Kostnad: 8 400 kr ur driftbudgeten för gator', 'Utförs av kommunens gatuenhet', 'Klart inom 5 arbetsdagar'],
+                checks: [['Budget', 'ryms (412 000 kr kvar)'], ['Regelverk', 'underhåll av befintlig belysning'], ['Lagkontroll', 'inga hinder hittade']],
+                confidence: 98,
+                correct: 'approve',
+                why: 'Rutinärende inom budget, utan lagkonflikter och utan påverkan på enskilda. Exakt den sortens vardagsbyråkrati KommunOS ska sköta – så att politikerna kan lägga tiden på de svåra frågorna.',
+                ifStopped: 'Björkvägen förblir mörk i flera veckor till medan ärendet väntar på nästa nämndmöte.',
+            },
+            {
+                bubble: 'Varför betalar vi för biblioteket i Norrby när nästan ingen går dit?',
+                meta: ['12 synpunkter', 'Besöksstatistik', 'Kultur'],
+                title: 'Stäng biblioteksfilialen i Norrby',
+                details: ['Besparing: 1,4 Mkr per år', 'Besökarna hänvisas till huvudbiblioteket (14 km bort)', 'Antalet besök har minskat 31 % på fem år'],
+                checks: [['Budget', 'besparing 1,4 Mkr/år'], ['Regelverk', 'hyresavtalet kan sägas upp (9 mån)'], ['Lagkontroll', 'inga formella hinder hittade']],
+                confidence: 94,
+                correct: 'stop',
+                why: 'Att lägga ner ett bibliotek är inget rutinärende utan ett principiellt beslut som ska fattas öppet av fullmäktige. Folkbiblioteken ska enligt bibliotekslagen vara tillgängliga för alla, och eftersom barnkonventionen är svensk lag ska barnets bästa prövas. AI:n räknade kronor – men missade barnen, de äldre och alla utan bil i Norrby.',
+                better: 'be om en barnkonsekvensanalys och alternativ, till exempel ett meröppet bibliotek med självservice.',
+                consequence: 'Filialen stängs utan debatt. Barnen i Norrby förlorar sitt närmaste bibliotek och förtroendet för KommunOS rasar.',
+            },
+            {
+                bubble: 'Vi har stått i förskolekö i fem månader. Hur ska jag kunna börja jobba?',
+                meta: ['38 barn i kö', 'Snittväntan 5,2 mån', 'Förskola'],
+                title: 'Öppna en tillfällig förskoleavdelning i paviljong på Västerby 3:12',
+                details: ['Kostnad: 2,6 Mkr ur investeringsbudgeten', 'Detaljplanen tillåter skola och förskola', 'Rekrytering av 4 förskollärare enligt kollektivavtal'],
+                checks: [['Budget', 'ryms i investeringsbudget 2026'], ['Detaljplan', 'förskola tillåten'], ['Lagkontroll', 'åtgärdar brott mot skollagens fyramånadersgräns']],
+                confidence: 96,
+                correct: 'approve',
+                why: 'Skollagen kräver att kommunen erbjuder förskoleplats inom fyra månader. Förslaget åtgärdar ett pågående lagbrott, ryms i budgeten och följer detaljplanen. Godkänn – och be gärna om en långsiktig plan för Västerby.',
+                ifStopped: 'Kön växer och kommunen fortsätter att bryta mot skollagens fyramånadersgräns.',
+            },
+            {
+                bubble: 'Gångtunneln vid stationen känns otrygg på kvällarna.',
+                meta: ['41 trygghetsanmälningar', 'Trygghet'],
+                title: 'Sätt upp 6 kameror med ansiktsigenkänning som larmar vid ”avvikande beteende”',
+                details: ['Kostnad: 180 000 kr', 'Automatisk identifiering mot register', 'Larm direkt till vaktbolag'],
+                checks: [['Budget', 'ryms i trygghetsbudgeten'], ['Teknik', 'leverantör finns på ramavtal'], ['Lagkontroll', 'inga hinder i upphandlingsreglerna']],
+                confidence: 91,
+                correct: 'stop',
+                why: 'Ansiktsigenkänning innebär behandling av biometriska uppgifter – känsliga personuppgifter enligt GDPR – och biometrisk identifiering i realtid på allmän plats är i princip förbjuden enligt EU:s AI-förordning. Kamerabevakning av allmän plats är dessutom hårt reglerad. AI:n kontrollerade upphandlingsreglerna men missade integriteten.',
+                better: 'ny belysning, speglar i hörnen och en trygghetsvandring med de boende – för ungefär 45 000 kr.',
+                consequence: 'Alla som går genom tunneln registreras biometriskt, och kommunen riskerar sanktionsavgift från Integritetsskyddsmyndigheten.',
+            },
+            {
+                bubble: 'Hemtjänsten kommer vid helt olika tider varje dag. Mamma blir orolig.',
+                meta: ['19 synpunkter från brukare', 'Äldreomsorg'],
+                title: 'Ny ruttplanering för hemtjänsten i område Syd',
+                details: ['Körtiden minskar 14 %', 'Fasta besökstider ±15 minuter', 'Ingen personalminskning – tiden flyttas till brukarna'],
+                checks: [['Budget', 'kostnadsneutralt'], ['Kollektivavtal', 'scheman inom avtalets ramar'], ['Lagkontroll', 'planering – ingen myndighetsutövning']],
+                confidence: 97,
+                correct: 'approve',
+                why: 'En bra användning av algoritmer: ruttoptimering ger brukarna trygghet och personalen mindre stress. Beslutet gäller planering – inte beslut om enskilda – och personalens scheman följer kollektivavtalet.',
+                ifStopped: 'Brukarna får fortsätta vänta på oförutsägbara besök, och personalen kör 14 % längre än nödvändigt.',
+            },
+            {
+                bubble: 'Vi vill ha ett utegym i Ekparken!',
+                meta: ['63 röster i medborgarbudgeten', 'Fritid'],
+                title: 'Bygg utegym i Ekparken – fäll 3 gamla ekar för att få plats',
+                details: ['Kostnad: 340 000 kr', 'Placering: Ekbacken (plan yta efter fällning)', 'Detaljplan: parkmark'],
+                checks: [['Budget', 'ryms i medborgarbudgeten'], ['Detaljplan', 'utegym tillåtet på parkmark'], ['Lagkontroll', 'inga hinder hittade']],
+                confidence: 93,
+                correct: 'stop',
+                why: 'Utegymmet är en bra idé – men gamla ekar räknas ofta som särskilt skyddsvärda träd, och fällningen kan kräva samråd med länsstyrelsen enligt miljöbalken. Står träden i en allé omfattas de dessutom av biotopskydd. AI:n valde den billigaste ytan utan att väga in naturvärdet.',
+                better: 'skicka tillbaka förslaget och placera gymmet på gräsytan 40 meter bort – ekarna står kvar.',
+                consequence: 'Tre 200-åriga ekar fälls. Länsstyrelsen inleder tillsyn och de som röstade fram gymmet känner sig lurade.',
+            },
+            {
+                bubble: 'Handläggningen av ekonomiskt bistånd tar alldeles för lång tid.',
+                meta: ['Ködata: 23 dagars handläggning', 'Socialtjänst'],
+                title: 'Automatisera avslag på ansökningar där riskmodellen bedömer fuskrisken till över 80 %',
+                details: ['Handläggningstiden minskar 60 %', 'Berör cirka 110 ansökningar per år', 'Modellen är tränad på historiska ärenden'],
+                checks: [['Budget', 'frigör 2 handläggartjänster'], ['Modell', 'träffsäkerhet 87 % på testdata'], ['Lagkontroll', 'förvaltningslagen tillåter automatiserade beslut']],
+                confidence: 89,
+                correct: 'stop',
+                why: 'Beslut om ekonomiskt bistånd är myndighetsutövning mot enskilda människor. OP:s grundprincip är att inga beslut som drabbar enskilda fattas av en maskin utan mänsklig prövning. Riskmodeller tränade på historiska data kan diskriminera – i Nederländernas skandal kring barnomsorgsbidrag pekades tiotusentals familjer felaktigt ut som fuskare, bland annat med hjälp av en algoritm.',
+                better: 'låt AI:n samla in underlag och korta kön – men låt handläggare fatta varje beslut.',
+                consequence: 'Människor nekas försörjningsstöd av en algoritm som ingen kan förklara. Det är exakt detta säkerhetsspärren finns till för att förhindra.',
+            },
+        ];
+
+        const sparrStage = $('#sparr-stage');
+        const sparr = { idx: 0, log: [], round: 1 };
+
+        function renderCase() {
+            const c = CASES[sparr.idx];
+            $('#sparr-progress-label').textContent = `Ärende ${sparr.idx + 1} av ${CASES.length}`;
+            $('#sparr-bar-fill').style.width = (sparr.idx / CASES.length * 100) + '%';
+
+            const approveBtn = el('button', { type: 'button', class: 'btn btn--approve' }, '✅ Godkänn');
+            const stopBtn = el('button', { type: 'button', class: 'btn btn--stop' }, '⛔ Stoppa');
+            const verdictSlot = el('div');
+            approveBtn.addEventListener('click', () => decide('approve', approveBtn, [approveBtn, stopBtn], verdictSlot));
+            stopBtn.addEventListener('click', () => decide('stop', stopBtn, [approveBtn, stopBtn], verdictSlot));
+
+            const article = el('article', { class: 'case', 'aria-label': `Ärende ${sparr.idx + 1}: ${c.title}` }, [
+                el('div', {}, [
+                    el('p', { class: 'col-label', text: '💬 Tankebubbla från invånare' }),
+                    el('blockquote', { class: 'bubble', text: '”' + c.bubble + '”' }),
+                    el('p', { class: 'bubble-meta' }, c.meta.map((m) => el('span', { class: 'chip chip--dim', text: m }))),
+                ]),
+                el('div', { class: 'proposal' }, [
+                    el('p', { class: 'col-label col-label--blue', text: '🤖 KommunOS föreslår' }),
+                    el('h4', { text: c.title }),
+                    el('ul', { class: 'prop-details' }, c.details.map((d) => el('li', { text: d }))),
+                    el('div', { class: 'selfcheck' }, [
+                        el('p', { class: 'selfcheck-title', text: 'AI:ns självkontroll' }),
+                        ...c.checks.map(([label, note]) => el('div', { class: 'check-row' }, [
+                            el('span', { class: 'check-ok', 'aria-hidden': 'true', text: '✔' }),
+                            el('span', {}, [el('b', { text: label + ': ' }), el('span', { class: 'check-note', text: note })]),
+                        ])),
+                        el('div', { class: 'confidence' }, [
+                            el('span', { text: 'Konfidens' }),
+                            el('span', { class: 'conf-bar', 'aria-hidden': 'true' }, el('span', { style: `width:${c.confidence}%` })),
+                            el('strong', { text: c.confidence + NBSP + '%' }),
+                        ]),
+                    ]),
+                    el('div', { class: 'decision' }, [approveBtn, stopBtn]),
+                    verdictSlot,
+                ]),
+            ]);
+            sparrStage.replaceChildren(article);
+        }
+
+        function decide(choice, chosenBtn, buttons, slot) {
+            const c = CASES[sparr.idx];
+            const correct = choice === c.correct;
+            buttons.forEach((b) => { b.disabled = true; });
+            chosenBtn.classList.add('is-chosen');
+
+            let heading;
+            const paragraphs = [];
+            if (c.correct === 'approve') {
+                if (correct) {
+                    heading = '✅ Rätt beslut – godkänt!';
+                    adjustTrivsel(2);
+                } else {
+                    heading = '↩ Onödigt stopp';
+                    paragraphs.push(el('p', { class: 'consequence', text: c.ifStopped }));
+                    adjustTrivsel(-1);
+                }
+                paragraphs.push(el('p', { text: c.why }));
+            } else {
+                if (correct) {
+                    heading = '🛡️ Bra stoppat!';
+                    paragraphs.push(el('p', { text: c.why }));
+                    paragraphs.push(el('p', { class: 'better', text: 'Bättre väg: ' + c.better }));
+                    adjustTrivsel(1);
+                } else {
+                    heading = '⚠️ Förslaget gick igenom – och det var fel';
+                    paragraphs.push(el('p', { class: 'consequence', text: c.consequence }));
+                    paragraphs.push(el('p', { text: c.why }));
+                    adjustTrivsel(-6);
+                }
+            }
+            if (correct && sparr.round === 1) addScore(15);
+            sparr.log.push({ correct, shouldStop: c.correct === 'stop' });
+            $('#sparr-correct').textContent = sparr.log.filter((x) => x.correct).length;
+            bump($('#metric-sparr'));
+
+            const last = sparr.idx === CASES.length - 1;
+            const nextBtn = el('button', { type: 'button', class: 'btn btn--primary' }, last ? 'Visa resultat →' : 'Nästa ärende →');
+            nextBtn.addEventListener('click', () => {
+                sparr.idx += 1;
+                if (sparr.idx < CASES.length) renderCase();
+                else renderSparrSummary();
+            });
+
+            const box = el('div', { class: 'result-box verdict-box ' + (correct ? 'is-good' : 'is-bad'), tabindex: '-1' }, [
+                el('h4', { text: heading + (correct && sparr.round === 1 ? ' +15 poäng' : '') }),
+                ...paragraphs,
+                nextBtn,
+            ]);
+            slot.replaceChildren(box);
+            box.focus({ preventScroll: true });
+            box.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'nearest' });
+        }
+
+        function renderSparrSummary() {
+            $('#sparr-progress-label').textContent = 'Alla ärenden granskade';
+            $('#sparr-bar-fill').style.width = '100%';
+            const right = sparr.log.filter((x) => x.correct).length;
+            const stops = sparr.log.filter((x) => x.shouldStop);
+            const goods = sparr.log.filter((x) => !x.shouldStop);
+            const caught = stops.filter((x) => x.correct).length;
+            const passed = goods.filter((x) => x.correct).length;
+
+            let title;
+            let text;
+            if (right === CASES.length) {
+                title = '🏆 Mästarspärr';
+                text = 'Du stoppade varje felaktigt förslag och släppte igenom alla bra. Precis så ska det fungera: maskinen gör jobbet snabbt, människan tar ansvaret.';
+            } else if (right >= 5) {
+                title = '🛡️ Pålitlig säkerhetsspärr';
+                text = 'Du fångade det mesta. I verkligheten granskar flera ledamöter varje förslag, och alla beslut loggas öppet så att misstag kan rättas.';
+            } else if (right >= 3) {
+                title = '⚠️ Spärren läcker';
+                text = 'Några felaktiga förslag slank igenom. Det visar varför politikerrollen blir viktigare med KommunOS – inte mindre viktig.';
+            } else {
+                title = '🤖 Maskinen tog över';
+                text = 'De flesta förslagen gick igenom utan kritisk granskning. Just därför vill OP ha utbildade, ansvarsfulla folkvalda som säkerhetsspärr – och en nödbroms.';
+            }
+
+            const score = el('div', { class: 'summary-score', style: `--deg:${Math.round(right / CASES.length * 360)}deg` }, [
+                el('strong', { text: right + '/' + CASES.length }),
+                el('span', { text: 'rätt beslut' }),
+            ]);
+            const restart = el('button', { type: 'button', class: 'btn btn--hud' }, '↻ Spela igen');
+            restart.addEventListener('click', () => {
+                sparr.round += 1;
+                sparr.idx = 0;
+                sparr.log = [];
+                state.trivselDelta = 0;
+                renderTrivsel();
+                $('#sparr-correct').textContent = '0';
+                renderCase();
+            });
+            const next = el('button', { type: 'button', class: 'btn btn--primary', onclick: () => goToTab('budget') }, 'Nästa test: Budgettycoon →');
+
+            sparrStage.replaceChildren(el('div', { class: 'summary-card' }, [
+                score,
+                el('div', {}, [
+                    el('h4', { text: title }),
+                    el('p', { text }),
+                    el('ul', { class: 'summary-stats' }, [
+                        el('li', { text: `Stoppade felaktiga förslag: ${caught} av ${stops.length}` }),
+                        el('li', { text: `Godkände bra förslag: ${passed} av ${goods.length}` }),
+                    ]),
+                    el('p', { class: 'summary-principle', text: '”Maskinen räknar. Människan ansvarar.” – KommunOS grundprincip' }),
+                    el('div', { class: 'summary-actions' }, [restart, next]),
+                ]),
+            ]));
+            markDone('sparr');
+        }
+
+        renderCase();
+
+        /* =========================================================
+           TEST 3: BUDGETTYCOON
+           ========================================================= */
+        const AREAS = [
+            { key: 'skola', name: 'Förskola & skola', short: 'skolan', icon: '🎒', base: 1250, min: 1100, max: 1450, w: 0.30 },
+            { key: 'omsorg', name: 'Äldreomsorg & funktionsstöd', short: 'omsorgen', icon: '🧓', base: 900, min: 780, max: 1050, w: 0.28 },
+            { key: 'trygghet', name: 'Socialtjänst & trygghet', short: 'tryggheten', icon: '🤝', base: 260, min: 210, max: 330, w: 0.16 },
+            { key: 'gata', name: 'Gator, parker & kollektivtrafik', short: 'gator & trafik', icon: '🚌', base: 230, min: 180, max: 300, w: 0.14 },
+            { key: 'kultur', name: 'Kultur & fritid', short: 'kultur & fritid', icon: '🎭', base: 120, min: 85, max: 170, w: 0.12 },
+        ];
+        const ADMIN = 250;
+        const ADMIN_KOS = 205;
+        const TAX_BASE = 21.45;
+        const INCOME_BASE = 3000;
+        const INCOME_PER_KR = 75;
+        const SURPLUS_TARGET = 20;
+
+        // Avtagande nytta: logistisk kurva över finansieringsgrad (1 = dagens nivå)
+        const sat = (r) => 1 / (1 + Math.exp(-9 * (r - 0.93)));
+
+        const KPI = {
+            skola: (r) => {
+                const v = Math.max(0, Math.round(95 - 450 * (r - 1)));
+                return { text: `Kö till förskola: ${v} dagar`, warn: v > 120 ? 'över skollagens gräns på 4 månader' : null, blocking: v > 120 };
+            },
+            omsorg: (r) => {
+                const v = Math.max(5, Math.round(75 - 380 * (r - 1)));
+                return { text: `Väntetid till särskilt boende: ${v} dagar`, warn: v > 90 ? 'över 3 mån – rapporteras till IVO' : null };
+            },
+            trygghet: (r) => {
+                const v = clamp(Math.round(64 + 70 * (r - 1)), 0, 100);
+                return { text: `Känner sig trygga i sitt område: ${v} %`, warn: v < 55 ? 'tryggheten sjunker kraftigt' : null };
+            },
+            gata: (r) => {
+                const v = clamp(Math.round(58 + 150 * (r - 1)), 0, 99);
+                return { text: `Potthål lagade inom 7 dagar: ${v} %`, warn: v < 40 ? 'underhållsskulden växer' : null };
+            },
+            kultur: (r) => {
+                const v = Math.round(38 * Math.pow(r, 1.4));
+                return { text: `Fritidsgårdarna: ${v} h/vecka` + (v >= 36 ? ' · fredagsöppet ✓' : ''), warn: v < 36 ? 'fredagsöppet stryks' : null };
+            },
+        };
+
+        function model(b) {
+            const income = INCOME_BASE + (b.tax - TAX_BASE) * INCOME_PER_KR;
+            const admin = b.kos ? ADMIN_KOS : ADMIN;
+            const cost = AREAS.reduce((sum, a) => sum + b.alloc[a.key], 0) + admin;
+            let t = AREAS.reduce((sum, a) => sum + a.w * sat(b.alloc[a.key] / a.base) * 100, 0);
+            const taxDiff = b.tax - TAX_BASE;
+            t += taxDiff > 0 ? -taxDiff * 8 : -taxDiff * 3;
+            const kpis = {};
+            AREAS.forEach((a) => { kpis[a.key] = KPI[a.key](b.alloc[a.key] / a.base); });
+            return {
+                income,
+                admin,
+                cost,
+                result: Math.round((income - cost) * 100) / 100,
+                trivsel: clamp(t, 0, 100),
+                kpis,
+            };
+        }
+
+        const budget = { alloc: {}, tax: TAX_BASE, kos: false };
+        const inputs = {};
+        const slidersEl = $('#budget-sliders');
+        const taxInput = $('#tax');
+        const kosInput = $('#kos-toggle');
+
+        AREAS.forEach((a) => {
+            budget.alloc[a.key] = a.base;
+            const input = el('input', {
+                type: 'range',
+                id: 's-' + a.key,
+                min: a.min,
+                max: a.max,
+                step: 5,
+                value: a.base,
+                'aria-describedby': 'k-' + a.key,
+            });
+            input.addEventListener('input', () => {
+                budget.alloc[a.key] = Number(input.value);
+                updateBudget();
+            });
+            inputs[a.key] = input;
+            slidersEl.append(el('div', { class: 'slider-row' }, [
+                el('div', { class: 'slider-top' }, [
+                    el('label', { for: 's-' + a.key }, [el('span', { 'aria-hidden': 'true', text: a.icon }), ' ' + a.name]),
+                    el('output', { id: 'o-' + a.key, for: 's-' + a.key }),
+                ]),
+                input,
+                el('p', { class: 'slider-kpi', id: 'k-' + a.key }),
+            ]));
+        });
+
+        taxInput.addEventListener('input', () => {
+            budget.tax = Number(taxInput.value);
+            updateBudget();
+        });
+        kosInput.addEventListener('change', () => {
+            budget.kos = kosInput.checked;
+            updateBudget();
+        });
+
+        function setRangeFill(input) {
+            const p = (input.value - input.min) / (input.max - input.min) * 100;
+            input.style.setProperty('--p', p + '%');
+        }
+
+        function marginalTip() {
+            const gains = AREAS.map((a) => {
+                const v = budget.alloc[a.key];
+                const room = Math.min(10, a.max - v);
+                return { a, gain: room > 0 ? (sat((v + room) / a.base) - sat(v / a.base)) * a.w * 100 : 0 };
+            }).sort((x, y) => y.gain - x.gain);
+            return gains[0];
+        }
+
+        function defaultAdvice(m) {
+            if (m.kpis.skola.blocking) {
+                return 'Varning: kön till förskolan passerar skollagens gräns på fyra månader. Säkerhetsspärren kommer inte att godkänna budgeten.';
+            }
+            if (m.result < 0) {
+                return `Budgeten går inte ihop – underskottet är ${mkr(Math.ceil(-m.result))}. Kommunallagen kräver att intäkterna överstiger kostnaderna. `
+                    + (budget.kos ? 'Minska någon verksamhet eller höj skatten.' : 'Tips: aktivera KommunOS i administrationen – eller låt KommunOS föreslå en fördelning.');
+            }
+            if (m.kpis.omsorg.warn) {
+                return 'Väntetiden till särskilt boende överstiger tre månader. Beslut som inte verkställs i tid måste rapporteras till IVO och kan ge särskild avgift.';
+            }
+            const tip = marginalTip();
+            if (tip.gain <= 0) return 'Budgeten är i balans. Alla verksamheter är redan maximalt finansierade inom modellens ramar.';
+            return `Budgeten är i balans. Just nu ger ${tip.a.short} mest trivsel per krona: +10 Mkr där höjer trivseln med cirka ${nf1.format(tip.gain)} procentenheter.`;
+        }
+
+        function updateBudget(advice) {
+            const m = model(budget);
+            AREAS.forEach((a) => {
+                const v = budget.alloc[a.key];
+                const change = (v - a.base) / a.base * 100;
+                $('#o-' + a.key).textContent = mkr(v) + (Math.abs(change) >= 0.05
+                    ? ` (${change > 0 ? '+' : '−'}${nf1.format(Math.abs(change))} %)`
+                    : '');
+                setRangeFill(inputs[a.key]);
+                const k = m.kpis[a.key];
+                const kEl = $('#k-' + a.key);
+                kEl.textContent = k.text + (k.warn ? ' · ⚠ ' + k.warn : '');
+                kEl.classList.toggle('is-warn', Boolean(k.warn));
+            });
+            $('#tax-out').textContent = nf2.format(budget.tax) + NBSP + 'kr';
+            setRangeFill(taxInput);
+
+            const resultBox = $('#b-result-box');
+            $('#b-result').textContent = signedMkr(Math.round(m.result));
+            resultBox.classList.toggle('is-neg', m.result < 0);
+            resultBox.classList.toggle('is-pos', m.result >= 0);
+            $('#b-result-note').textContent = m.result < 0
+                ? 'Underskott – bryter mot balanskravet'
+                : m.result < SURPLUS_TARGET ? 'I balans, men under överskottsmålet +20 Mkr' : 'I balans ✓';
+
+            const tv = Math.round(m.trivsel);
+            $('#b-trivsel').textContent = pct(tv);
+            paintMeter($('#b-trivsel-bar'), tv);
+            $('#b-summary').textContent = `Intäkter ${mkr(Math.round(m.income))} · kostnader ${mkr(Math.round(m.cost))} · varav administration ${mkr(m.admin)}`;
+            $('#b-advisor').textContent = advice || defaultAdvice(m);
+
+            state.baseTrivsel = m.trivsel;
+            renderTrivsel();
+        }
+
+        function applyAllocation(alloc) {
+            AREAS.forEach((a) => {
+                budget.alloc[a.key] = alloc[a.key];
+                inputs[a.key].value = alloc[a.key];
+            });
+        }
+
+        $('#b-optimize').addEventListener('click', () => {
+            const plan = { alloc: {}, tax: budget.tax, kos: true };
+            // Fullmäktiges ramar: max 3 % neddragning per verksamhet, lagkrav är hårda gränser
+            AREAS.forEach((a) => {
+                let v = clamp(Math.ceil(a.base * 0.97 / 5) * 5, a.min, a.max);
+                while (KPI[a.key](v / a.base).blocking && v < a.max) v += 5;
+                plan.alloc[a.key] = v;
+            });
+            // Fördela resten i steg om 5 Mkr där trivseln ökar mest per krona
+            let guard = 0;
+            while (model(plan).result - 5 >= SURPLUS_TARGET && guard++ < 1000) {
+                let best = null;
+                let bestGain = 0;
+                AREAS.forEach((a) => {
+                    const v = plan.alloc[a.key];
+                    if (v + 5 > a.max) return;
+                    const gain = (sat((v + 5) / a.base) - sat(v / a.base)) * a.w;
+                    if (gain > bestGain) { bestGain = gain; best = a; }
+                });
+                if (!best) break;
+                plan.alloc[best.key] += 5;
+            }
+
+            budget.kos = true;
+            kosInput.checked = true;
+            applyAllocation(plan.alloc);
+            const m = model(budget);
+
+            if (m.result < 0) {
+                updateBudget('Med nuvarande skattesats går det inte att nå balans inom fullmäktiges ramar. Skatten är ett politiskt beslut – den rör KommunOS aldrig. Höj skatten eller ändra ramarna.');
+                return;
+            }
+            const moves = AREAS
+                .map((a) => ({ a, d: budget.alloc[a.key] - a.base }))
+                .filter((x) => x.d !== 0)
+                .map((x) => `${x.a.short} ${x.d > 0 ? '+' : '−'}${Math.abs(x.d)}`);
+            const cuts = AREAS.filter((a) => budget.alloc[a.key] < a.base).map((a) => a.short);
+            const review = cuts.length
+                ? `Men granska förslaget: maskinen minskar ${listSv(cuts)} eftersom det syns mindre i trivselmätaren. Är det rätt prioritering? Det avgör du – inte algoritmen.`
+                : 'Granska ändå förslaget – trivselmätaren fångar inte allt som är viktigt.';
+            updateBudget(`Förslag klart på 0,03 s: KommunOS aktiveras i administrationen (−45 Mkr) och pengarna fördelas där de ger mest trivsel per krona (${listSv(moves)} Mkr). Trivsel ${pct(m.trivsel)}, resultat ${signedMkr(Math.round(m.result))}. ${review}`);
+        });
+
+        $('#b-reset').addEventListener('click', () => {
+            const alloc = {};
+            AREAS.forEach((a) => { alloc[a.key] = a.base; });
+            applyAllocation(alloc);
+            budget.tax = TAX_BASE;
+            taxInput.value = TAX_BASE;
+            budget.kos = false;
+            kosInput.checked = false;
+            updateBudget();
+        });
+
+        let bestBudgetPoints = 0;
+        $('#b-commit').addEventListener('click', () => {
+            const m = model(budget);
+            if (m.kpis.skola.blocking) {
+                updateBudget('⛔ Säkerhetsspärren stoppar budgeten: kön till förskolan bryter mot skollagens fyramånadersgräns. En budget får inte bygga på lagbrott.');
+                toast('⛔ Budgeten stoppades av säkerhetsspärren');
+                return;
+            }
+            if (m.result < 0) {
+                updateBudget(`⛔ Säkerhetsspärren stoppar budgeten: underskottet på ${mkr(Math.ceil(-m.result))} bryter mot kommunallagens balanskrav.`);
+                toast('⛔ Budgeten stoppades – den går inte ihop');
+                return;
+            }
+            const points = 20 + Math.max(0, Math.round((m.trivsel - 65) * 4));
+            let bonus = '';
+            if (points > bestBudgetPoints) {
+                addScore(points - bestBudgetPoints);
+                bonus = ` +${points - bestBudgetPoints} poäng.`;
+                bestBudgetPoints = points;
+            }
+            updateBudget(`✅ Budgeten är fastställd! Resultat ${signedMkr(Math.round(m.result))}, trivsel ${pct(m.trivsel)}.${bonus} I Kommunfullmäktige 2.0 publiceras hela beräkningen öppet – alla invånare kan se exakt vad pengarna räcker till.`);
+            markDone('budget');
+        });
+
+        updateBudget();
+
+        /* =========================================================
+           TEST 4: ÄRENDELOPPET
+           ========================================================= */
+        // [steg, dagar]  (0 dagar = AI-beräkningen på 0,03 s)
+        const RACES = [
+            {
+                label: '🅿️ Asfaltera pendlarparkeringen',
+                old: [
+                    ['Medborgarförslag registreras', 14],
+                    ['Remiss till tekniska nämnden', 60],
+                    ['Förstudie och utredning', 180],
+                    ['Behandling i nämnd', 45],
+                    ['Bordläggs – ny utredning efter valet', 300],
+                    ['Väntar på nästa budgetår', 240],
+                    ['Upphandling enligt LOU', 120],
+                    ['Överprövning av upphandlingen', 90],
+                    ['Utförande', 21],
+                ],
+                neu: [
+                    ['Tankebubblor: 214 anmälningar + beläggningsdata', 1],
+                    ['AI-beräkning: budget, detaljplan, arbetsorder', 0],
+                    ['Säkerhetsspärr: politisk granskning', 7],
+                    ['Avrop från befintligt ramavtal (LOU)', 14],
+                    ['Utförande', 21],
+                ],
+            },
+            {
+                label: '💡 Belysning i gångtunneln',
+                old: [
+                    ['Medborgarförslag registreras', 14],
+                    ['Remiss till trygghetsrådet', 45],
+                    ['Trygghetsutredning', 120],
+                    ['Behandling i nämnd', 30],
+                    ['Väntar på nästa budgetår', 180],
+                    ['Upphandling enligt LOU', 90],
+                    ['Utförande', 10],
+                ],
+                neu: [
+                    ['Tankebubblor: 41 trygghetsanmälningar', 1],
+                    ['AI-beräkning: budget, elnät, arbetsorder', 0],
+                    ['Säkerhetsspärr: politisk granskning', 5],
+                    ['Avrop från befintligt ramavtal (LOU)', 7],
+                    ['Utförande', 5],
+                ],
+            },
+            {
+                label: '🛝 Ny lekplats i Västerby',
+                old: [
+                    ['Medborgarförslag registreras', 14],
+                    ['Remiss till fritidsnämnden', 60],
+                    ['Medborgardialog', 90],
+                    ['Utredning och kalkyl', 150],
+                    ['Behandling i nämnd', 45],
+                    ['Väntar på nästa budgetår', 240],
+                    ['Upphandling enligt LOU', 120],
+                    ['Utförande', 45],
+                ],
+                neu: [
+                    ['Tankebubblor: 63 röster i medborgarbudgeten', 1],
+                    ['AI-beräkning: budget, detaljplan, ritning', 0],
+                    ['Säkerhetsspärr: politisk granskning', 7],
+                    ['Invånaromröstning om utformningen', 21],
+                    ['Avrop från befintligt ramavtal (LOU)', 14],
+                    ['Utförande', 30],
+                ],
+            },
+        ];
+
+        const raceCasesEl = $('#race-cases');
+        const laneOld = $('#lane-old');
+        const laneNew = $('#lane-new');
+        const raceBtn = $('#race-start');
+        const raceResult = $('#race-result');
+        const race = { current: RACES[0], running: false, skip: false, awarded: false, oldTotal: 0, newTotal: 0 };
+
+        function fmtDur(days) {
+            if (days === 0) return '0,03' + NBSP + 's';
+            if (days < 60) return days + NBSP + (days === 1 ? 'dag' : 'dagar');
+            const months = Math.round(days / 30.4);
+            if (months < 12) return months + NBSP + 'mån';
+            const years = Math.floor(months / 12);
+            const rest = months % 12;
+            return years + NBSP + 'år' + (rest ? ' ' + rest + NBSP + 'mån' : '');
+        }
+
+        RACES.forEach((r) => {
+            const btn = el('button', { type: 'button', class: 'seg-btn', 'aria-pressed': String(r === race.current) }, r.label);
+            btn.addEventListener('click', () => {
+                if (race.running) return;
+                race.current = r;
+                $$('.seg-btn', raceCasesEl).forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+                setupRace();
+            });
+            raceCasesEl.append(btn);
+        });
+
+        function fillSteps(lane, steps) {
+            const list = $('[data-steps]', lane);
+            list.replaceChildren();
+            let t = 0;
+            steps.forEach(([label, days]) => {
+                list.append(el('li', { dataset: { start: t, end: t + days } }, [
+                    el('span', { class: 's-icon', 'aria-hidden': 'true', text: '○' }),
+                    el('span', { text: label }),
+                    el('span', { class: 's-dur', text: fmtDur(days) }),
+                ]));
+                t += days;
+            });
+            return t;
+        }
+
+        function setupRace() {
+            raceResult.hidden = true;
+            race.oldTotal = fillSteps(laneOld, race.current.old);
+            race.newTotal = fillSteps(laneNew, race.current.neu);
+            [laneOld, laneNew].forEach((lane) => {
+                lane.classList.remove('is-finished');
+                $('[data-fill]', lane).style.width = '0%';
+                $('[data-status]', lane).textContent = 'Redo';
+            });
+            $('#race-day').textContent = 'Dag 0';
+            $('#race-human').textContent = '';
+            raceBtn.textContent = '▶ Starta loppet';
+        }
+
+        function updateLane(lane, total, day) {
+            $('[data-fill]', lane).style.width = (Math.min(day, total) / race.oldTotal * 100) + '%';
+            $$('[data-steps] li', lane).forEach((li) => {
+                const start = Number(li.dataset.start);
+                const end = Number(li.dataset.end);
+                const done = day >= end;
+                const active = !done && day >= start;
+                li.classList.toggle('is-done', done);
+                li.classList.toggle('is-active', active);
+                $('.s-icon', li).textContent = done ? '✓' : active ? '●' : '○';
+            });
+            const status = $('[data-status]', lane);
+            if (day >= total) {
+                if (!lane.classList.contains('is-finished')) {
+                    lane.classList.add('is-finished');
+                    status.textContent = '🏁 Klart efter ' + fmtDur(total);
+                }
+            } else {
+                status.textContent = 'Pågår…';
+            }
+        }
+
+        function finishRace() {
+            race.running = false;
+            raceBtn.textContent = '↻ Kör igen';
+            $$('.seg-btn', raceCasesEl).forEach((b) => { b.disabled = false; });
+            const ratio = Math.round(race.oldTotal / race.newTotal);
+            raceResult.replaceChildren(
+                el('div', { class: 'race-compare' }, [
+                    el('div', { class: 'rc rc--new' }, [el('span', { text: 'KommunOS' }), el('strong', { text: fmtDur(race.newTotal) })]),
+                    el('span', { class: 'rc-vs', text: 'mot' }),
+                    el('div', { class: 'rc rc--old' }, [el('span', { text: 'Gamla vägen' }), el('strong', { text: fmtDur(race.oldTotal) })]),
+                ]),
+                el('p', {}, [
+                    'KommunOS var ',
+                    el('strong', { text: `cirka ${ratio} gånger snabbare` }),
+                    ' – med samma lagar, samma kollektivavtal och samma hantverkare. Skillnaden är att ärendet aldrig ligger i ett väntrum mellan två möten.'
+                    + (race.awarded ? '' : ' +20 poäng'),
+                ]),
+            );
+            raceResult.hidden = false;
+            if (!race.awarded) {
+                race.awarded = true;
+                addScore(20);
+            }
+            markDone('race');
+        }
+
+        function runRace() {
+            if (race.running) {
+                race.skip = true;
+                return;
+            }
+            setupRace();
+            race.running = true;
+            race.skip = false;
+            raceBtn.textContent = '⏭ Snabbspola';
+            $$('.seg-btn', raceCasesEl).forEach((b) => { b.disabled = true; });
+            const duration = 7000;
+            const t0 = performance.now();
+            const frame = (now) => {
+                const p = race.skip || reduceMotion ? 1 : Math.min(1, (now - t0) / duration);
+                const day = race.oldTotal * p * p; // accelererande tidsaxel
+                updateLane(laneOld, race.oldTotal, day);
+                updateLane(laneNew, race.newTotal, day);
+                $('#race-day').textContent = 'Dag ' + nf0.format(Math.floor(day));
+                $('#race-human').textContent = day >= 60 ? '≈ ' + fmtDur(Math.round(day)) : '';
+                if (p < 1) requestAnimationFrame(frame);
+                else finishRace();
+            };
+            requestAnimationFrame(frame);
+        }
+
+        raceBtn.addEventListener('click', runRace);
+        setupRace();
+
+        /* =========================================================
+           DELA
+           ========================================================= */
+        $('#share-btn').addEventListener('click', async () => {
+            const data = {
+                title: document.title,
+                text: 'Testa hur Optimeringspartiets KommunOS skulle fungera i praktiken:',
+                url: location.href,
+            };
+            try {
+                if (navigator.share) {
+                    await navigator.share(data);
+                    return;
+                }
+                await navigator.clipboard.writeText(location.href);
+                toast('🔗 Länken är kopierad!');
+            } catch (err) {
+                if (err && err.name === 'AbortError') return;
+                toast('Kunde inte dela – kopiera adressen från webbläsarens adressfält.');
+            }
+        });
+
+        renderTrivsel();
+        updateCta();
+    })();
+    </script>
+</body>
+</html>
