@@ -14,7 +14,7 @@
     <script>
         (function () {
             var d = document.documentElement;
-            d.classList.add('js');
+            d.lang = 'sv';
             try {
                 var t = localStorage.getItem('op-theme');
                 if (t === 'light' || t === 'dark') d.setAttribute('data-theme', t);
@@ -264,7 +264,7 @@
            ========================================================= */
         .hud {
             position: sticky;
-            top: 0;
+            top: env(safe-area-inset-top, 0px);
             z-index: 50;
             background: rgba(11, 18, 32, .94);
             -webkit-backdrop-filter: saturate(1.4) blur(12px);
@@ -1500,10 +1500,6 @@
         }
         .toast.show { opacity: 1; transform: translate(-50%, 0); }
 
-        /* Scroll-animationer (endast med JavaScript) */
-        .js .reveal { opacity: 0; transform: translateY(18px); transition: opacity .6s ease, transform .6s ease; }
-        .js .reveal.is-visible { opacity: 1; transform: none; }
-
         /* =========================================================
            RESPONSIVITET
            ========================================================= */
@@ -1583,7 +1579,6 @@
                 animation-iteration-count: 1 !important;
                 transition-duration: .01ms !important;
             }
-            .js .reveal { opacity: 1; transform: none; }
         }
     </style>
 </head>
@@ -1654,7 +1649,7 @@
              ===================================================== -->
         <div class="hero-wrap" id="top">
             <section class="container hero" aria-labelledby="hero-title">
-                <div class="hero-copy reveal">
+                <div class="hero-copy">
                     <p class="eyebrow">Partiprogram 2026 · Optimeringspartiet (OP)</p>
                     <h1 id="hero-title">En begriplig kommun med <span class="grad">algoritmisk verkstad</span> och <span class="grad grad--violet">mänsklig säkerhetskontroll</span></h1>
                     <p class="lead">
@@ -1672,7 +1667,7 @@
                     </dl>
                 </div>
 
-                <aside class="live-panel reveal" aria-label="KommunOS live, exempeldata från den fiktiva kommunen Tycköping">
+                <aside class="live-panel" aria-label="KommunOS live, exempeldata från den fiktiva kommunen Tycköping">
                     <div class="live-head">
                         <span class="live-head-title"><span class="status-dot" aria-hidden="true"></span>KommunOS · Tycköping</span>
                         <span class="live-head-actions">
@@ -1712,14 +1707,14 @@
              01 IDÉN
              ===================================================== -->
         <section class="section container" id="iden" aria-labelledby="iden-title">
-            <header class="section-head reveal">
+            <header class="section-head">
                 <span class="section-kicker">01 · Idén</span>
                 <h2 id="iden-title">Ett bra spel visar verkligheten som den är. Kommunen gömmer den.</h2>
                 <p>I ett välbyggt strategispel leder ett identifierat problem direkt till en åtgärd. I verklighetens kommunpolitik har vi i stället byggt ett ogenomträngligt filter av utredningar, prestigeprojekt, partipolitiskt käbbel och halvsanningar.</p>
             </header>
 
             <div class="compare">
-                <article class="card compare-card compare-card--game reveal">
+                <article class="card compare-card compare-card--game">
                     <h3>🎮 I ett välbyggt strategispel</h3>
                     <ul class="mark-list mark-list--ok">
                         <li>Tydliga mätare för trivsel, ekonomi och väntetider – synliga hela tiden.</li>
@@ -1727,7 +1722,7 @@
                         <li>Du ser konsekvensen av varje beslut direkt.</li>
                     </ul>
                 </article>
-                <article class="card compare-card compare-card--today reveal">
+                <article class="card compare-card compare-card--today">
                     <h3>🏛️ I kommunpolitiken i dag</h3>
                     <ul class="mark-list mark-list--no">
                         <li>Siffrorna gömmer sig i PDF-bilagor och protokoll som ingen läser.</li>
@@ -1737,7 +1732,7 @@
                 </article>
             </div>
 
-            <p class="statement reveal">
+            <p class="statement">
                 <strong>Optimeringspartiet (OP)</strong> är ett seriöst systemskifte för lokalpolitiken. Vi vill införa plattformen <strong>KommunOS</strong> – en central förvaltnings-AI som automatiserar den dagliga kommunala byråkratin – medan våra folkvalda politiker får en ny och betydligt viktigare roll: att granska, debattera med och agera juridisk säkerhetsspärr mot maskinen.
             </p>
         </section>
@@ -1746,13 +1741,13 @@
              02 SÅ FUNKAR DET
              ===================================================== -->
         <section class="section container" id="sa-funkar-det" aria-labelledby="flow-title">
-            <header class="section-head reveal">
+            <header class="section-head">
                 <span class="section-kicker">02 · Så fungerar KommunOS</span>
                 <h2 id="flow-title">Fyra steg från tankebubbla till färdigt jobb</h2>
                 <p>Tryck på knappen och följ ett vardagsärende genom hela systemet – från invånarens felanmälan till hantverkaren som gör jobbet.</p>
             </header>
 
-            <div class="flow reveal">
+            <div class="flow">
                 <ol class="flow-steps" id="flow-steps">
                     <li class="flow-step flow-step--amber">
                         <div class="flow-step-top"><span class="flow-num"><span>1</span></span><span class="flow-time">Realtid</span></div>
@@ -1790,7 +1785,7 @@
              03 TESTLABBET
              ===================================================== -->
         <section class="section container" id="testlabbet" aria-labelledby="lab-title">
-            <header class="section-head reveal">
+            <header class="section-head">
                 <span class="section-kicker">03 · Testlabbet</span>
                 <h2 id="lab-title">Testa politiken i praktiken</h2>
                 <p>Fyra interaktiva tester visar hur OP:s modell skulle fungera i en vanlig svensk kommun. Alla siffror gäller den fiktiva exempelkommunen <strong>Tycköping</strong> (41&nbsp;800 invånare).</p>
@@ -1802,7 +1797,7 @@
                 </div>
             </header>
 
-            <div class="lab reveal">
+            <div class="lab">
                 <div class="lab-tabs" role="tablist" aria-label="Välj test">
                     <button class="lab-tab" role="tab" id="tab-fakta" aria-controls="panel-fakta" aria-selected="true" data-test="fakta" type="button">
                         <span class="lab-tab-icon" aria-hidden="true">⚖️</span>
@@ -1965,14 +1960,14 @@
              04 PARTIPROGRAM
              ===================================================== -->
         <section class="section container" id="program" aria-labelledby="program-title">
-            <header class="section-head reveal">
+            <header class="section-head">
                 <span class="section-kicker">04 · Partiprogram</span>
                 <h2 id="program-title">Sex byggstenar för en begriplig kommun</h2>
                 <p>Så vill Optimeringspartiet bygga om lokalpolitiken – stegvis, öppet och med människan i förarsätet.</p>
             </header>
 
             <div class="pillars">
-                <article class="pillar pillar--blue reveal">
+                <article class="pillar pillar--blue">
                     <div class="pillar-top"><span class="pillar-icon" aria-hidden="true">🧠</span><span class="pillar-num" aria-hidden="true">01</span></div>
                     <span class="pillar-tag">Öppen källkod</span>
                     <h3>KommunOS – en öppen förvaltnings-AI</h3>
@@ -1985,7 +1980,7 @@
                     <p class="tycoon-bubble">💬 ”Jag förstår äntligen varför min gata plogas sist.”</p>
                 </article>
 
-                <article class="pillar pillar--amber reveal">
+                <article class="pillar pillar--amber">
                     <div class="pillar-top"><span class="pillar-icon" aria-hidden="true">⚖️</span><span class="pillar-num" aria-hidden="true">02</span></div>
                     <span class="pillar-tag">Transparens</span>
                     <h3>Kommunfullmäktige 2.0 med Faktalås</h3>
@@ -1998,7 +1993,7 @@
                     <p class="tycoon-bubble">💬 ”Äntligen kan jag lita på siffrorna i debatten.”</p>
                 </article>
 
-                <article class="pillar pillar--violet reveal">
+                <article class="pillar pillar--violet">
                     <div class="pillar-top"><span class="pillar-icon" aria-hidden="true">🛡️</span><span class="pillar-num" aria-hidden="true">03</span></div>
                     <span class="pillar-tag">Mänsklig kontroll</span>
                     <h3>Politikern som säkerhetsspärr</h3>
@@ -2011,7 +2006,7 @@
                     <p class="tycoon-bubble">💬 ”Skönt att någon jag kan rösta bort har sista ordet.”</p>
                 </article>
 
-                <article class="pillar pillar--amber reveal">
+                <article class="pillar pillar--amber">
                     <div class="pillar-top"><span class="pillar-icon" aria-hidden="true">💬</span><span class="pillar-num" aria-hidden="true">04</span></div>
                     <span class="pillar-tag">Delaktighet</span>
                     <h3>Tankebubblor – invånarnas röst i realtid</h3>
@@ -2024,7 +2019,7 @@
                     <p class="tycoon-bubble">💬 ”Jag anmälde den trasiga gungan i måndags. I torsdags var den lagad!”</p>
                 </article>
 
-                <article class="pillar pillar--green reveal">
+                <article class="pillar pillar--green">
                     <div class="pillar-top"><span class="pillar-icon" aria-hidden="true">🔧</span><span class="pillar-num" aria-hidden="true">05</span></div>
                     <span class="pillar-tag">Kollektivavtal</span>
                     <h3>Riktiga jobb i verkstaden</h3>
@@ -2037,7 +2032,7 @@
                     <p class="tycoon-bubble">💬 ”Nu hinner jag vara med barnen i stället för att fylla i blanketter.”</p>
                 </article>
 
-                <article class="pillar pillar--red reveal">
+                <article class="pillar pillar--red">
                     <div class="pillar-top"><span class="pillar-icon" aria-hidden="true">🔒</span><span class="pillar-num" aria-hidden="true">06</span></div>
                     <span class="pillar-tag">GDPR &amp; AI-förordningen</span>
                     <h3>Integritet och säkerhet först</h3>
@@ -2056,13 +2051,13 @@
              05 FRÅGOR & SVAR
              ===================================================== -->
         <section class="section container" id="fragor" aria-labelledby="faq-title">
-            <header class="section-head reveal">
+            <header class="section-head">
                 <span class="section-kicker">05 · Frågor &amp; svar</span>
                 <h2 id="faq-title">Kritiska frågor – raka svar</h2>
                 <p>En AI i kommunen väcker frågor. Bra. Här är våra svar.</p>
             </header>
 
-            <div class="faq reveal">
+            <div class="faq">
                 <details>
                     <summary>Ska en AI styra kommunen?</summary>
                     <p>Nej. KommunOS är verkstaden, inte styrelsen. Maskinen tar fram underlag, räknar på budgeten och verkställer rutinärenden som att laga gatlampor eller justera tömningsscheman. Alla politiska prioriteringar – och alla beslut som rör enskilda människor – fattas av människor.</p>
@@ -2093,7 +2088,7 @@
         <!-- =====================================================
              CTA
              ===================================================== -->
-        <section class="container cta reveal" id="ga-med" aria-labelledby="cta-title">
+        <section class="container cta" id="ga-med" aria-labelledby="cta-title">
             <div class="cta-inner">
                 <h2 id="cta-title">Redo att uppgradera din kommun?</h2>
                 <p>Vi vill göra lokalpolitiken lika begriplig som ett välbyggt strategispel – men med riktiga människor vid spakarna och riktiga yrkesfolk i verkstaden.</p>
@@ -2255,25 +2250,13 @@
             syncThemeButton();
         });
         mqDark.addEventListener('change', syncThemeButton);
+        // Värdsidan (t.ex. en inbäddning) kan också sätta data-theme
+        new MutationObserver(syncThemeButton).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
         syncThemeButton();
 
         /* =========================================================
-           SCROLL: animationer + aktiv länk i menyn
+           SCROLL: aktiv länk i menyn
            ========================================================= */
-        const revealEls = $$('.reveal');
-        if ('IntersectionObserver' in window && !reduceMotion) {
-            const revealObserver = new IntersectionObserver((entries) => {
-                entries.forEach((entry) => {
-                    if (!entry.isIntersecting) return;
-                    entry.target.classList.add('is-visible');
-                    revealObserver.unobserve(entry.target);
-                });
-            }, { rootMargin: '0px 0px -8% 0px' });
-            revealEls.forEach((node) => revealObserver.observe(node));
-        } else {
-            revealEls.forEach((node) => node.classList.add('is-visible'));
-        }
-
         if ('IntersectionObserver' in window) {
             const navLinks = $$('.nav-links a');
             const navObserver = new IntersectionObserver((entries) => {
@@ -3392,7 +3375,10 @@
         /* =========================================================
            DELA
            ========================================================= */
-        $('#share-btn').addEventListener('click', async () => {
+        const shareBtn = $('#share-btn');
+        // Inbäddad i en ram känner sidan inte till sin egen adress – dölj knappen där
+        if (window.self !== window.top) shareBtn.hidden = true;
+        shareBtn.addEventListener('click', async () => {
             const data = {
                 title: document.title,
                 text: 'Testa hur Optimeringspartiets KommunOS skulle fungera i praktiken:',
