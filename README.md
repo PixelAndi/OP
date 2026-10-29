@@ -3,7 +3,6 @@ Optimeringspartiet
 
 ## Lönekoll
 
-[`lonekoll/`](lonekoll/) – check your pay against the time clock: photos of the
-clock, pay calculation under Livsmedelsavtalet (bakeries) and a line-by-line
-comparison with the pay slip. Runs entirely on the phone. See
-[lonekoll/README.md](lonekoll/README.md).
+Lönekoll has moved to its own repository:
+[PixelAndi/lonekoll](https://github.com/PixelAndi/lonekoll), live at
+https://pixelandi.github.io/lonekoll/.
